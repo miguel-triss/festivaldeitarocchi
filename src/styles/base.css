@@ -183,6 +183,10 @@ p { text-wrap: pretty; max-width: var(--measure); }
   width: min(100% - 2 * var(--gutter), var(--max));
   margin-inline: auto;
 }
+/* leave room for the Passport rail on the right (symmetric, so it stays centred) */
+@media (min-width: 901px) and (min-height: 561px) {
+  .wrap { width: min(100% - 2 * var(--gutter) - 5rem, var(--max)); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
