@@ -1,0 +1,113 @@
+---
+// X · La Notte degli Arcani. The darkest moment of the page, and its
+// warmest: the illuminated portal of the moodboard. A great arch of lanterns
+// lights up lamp by lamp as you scroll, the moon rises over it, and the
+// Dimore glow at its feet.
+import Star from "./art/Star.astro";
+
+const N = 31;
+const lamps = Array.from({ length: N }, (_, i) => {
+  const t = i / (N - 1);
+  // up the left pier, over the arch, down the right pier
+  const pier = 0.28, R = 250, cx = 400, top = 330, base = 700;
+  let x, y;
+  if (t < pier) { x = cx - R; y = base - (t / pier) * (base - top); }
+  else if (t > 1 - pier) { x = cx + R; y = top + ((t - (1 - pier)) / pier) * (base - top); }
+  else {
+    const a = Math.PI - ((t - pier) / (1 - 2 * pier)) * Math.PI;
+    x = cx + R * Math.cos(a); y = top - R * Math.sin(a);
+  }
+  return { x, y };
+});
+const doors = [150, 250, 550, 650];
+const sky: [number, number, number][] = [[6, 12, 0.7], [18, 34, 0.45], [30, 8, 0.55], [70, 14, 0.8], [84, 30, 0.5], [93, 8, 0.45], [12, 60, 0.4], [88, 62, 0.45], [48, 5, 0.4]];
+---
+
+<section class="section notte" id="notte" data-scene="night" aria-labelledby="h-notte">
+  <div class="notte-sky" aria-hidden="true">
+    {sky.map(([x, y, s]) => <span style={`left:${x}%;top:${y}%`}><Star size={`${s}rem`} /></span>)}
+  </div>
+
+  <div class="wrap notte-head">
+    <header class="sec-head">
+      <span class="sec-num" aria-hidden="true">X</span>
+      <h2 class="sec-title" id="h-notte">La Notte degli Arcani</h2>
+    </header>
+    <p class="statement notte-statement" data-split>
+      La domenica sera, <em>la Notte degli Arcani.</em>
+    </p>
+  </div>
+
+  <figure class="portal" data-notte aria-hidden="true">
+    <svg viewBox="0 0 800 740">
+      <defs>
+        <radialGradient id="lamp-glow">
+          <stop offset="0" stop-color="var(--c-gold)" stop-opacity=".9" />
+          <stop offset=".35" stop-color="var(--c-gold)" stop-opacity=".35" />
+          <stop offset="1" stop-color="var(--c-gold)" stop-opacity="0" />
+        </radialGradient>
+        <radialGradient id="floor-glow">
+          <stop offset="0" stop-color="var(--c-terra)" stop-opacity=".55" />
+          <stop offset="1" stop-color="var(--c-terra)" stop-opacity="0" />
+        </radialGradient>
+      </defs>
+      <ellipse class="floor-glow" cx="400" cy="700" rx="420" ry="250" fill="url(#floor-glow)" />
+      <path class="portal-arch" d="M150 700V330A250 250 0 0 1 650 330V700" />
+      <path class="portal-arch portal-arch--in" d="M178 700V330A222 222 0 0 1 622 330V700" />
+      <mask id="notte-moon-cut"><rect x="340" y="150" width="120" height="120" fill="#fff" /><circle cx="418" cy="196" r="32" fill="#000" /></mask>
+      <g class="portal-moon"><circle cx="400" cy="210" r="36" fill="var(--c-gold)" mask="url(#notte-moon-cut)" /></g>
+      <path class="portal-eye" d="M372 104Q400 84 428 104Q400 124 372 104Z" />
+      <circle class="portal-eye-dot" cx="400" cy="104" r="6" />
+      {doors.map((x) => (
+        <g class="dimora-glow">
+          <path d={`M${x - 26} 700V660a26 26 0 0 1 52 0V700Z`} class="dimora-door" />
+        </g>
+      ))}
+      <path d="M0 700H800" class="portal-ground" />
+      {lamps.map((l) => (
+        <g class="lamp" transform={`translate(${l.x.toFixed(1)} ${l.y.toFixed(1)})`}>
+          <circle r="16" fill="url(#lamp-glow)" class="lamp-glow" />
+          <circle r="3.6" class="lamp-core" />
+        </g>
+      ))}
+    </svg>
+  </figure>
+
+  <div class="wrap notte-text">
+    <p class="lead" data-rise>
+      Interventi performativi nelle diverse Dimore e la chiusura finale nell'Hub.
+    </p>
+  </div>
+</section>
+
+<style>
+  .notte {
+    padding-block: var(--section-dense) var(--section-airy);
+    background: var(--c-night-deep);
+    overflow: clip;
+  }
+  .notte-sky { position: absolute; inset: 0; pointer-events: none; }
+  .notte-sky span { position: absolute; }
+  .notte-statement { max-width: 16ch; }
+  .notte-statement :global(em) { color: var(--c-gold); }
+  .portal { margin: var(--s-7) auto 0; width: min(92vw, 56rem); }
+  .portal svg { width: 100%; overflow: visible; }
+  .portal-arch { fill: none; stroke: var(--c-gold); stroke-width: 1.4; opacity: 0.55; }
+  .portal-arch--in { opacity: 0.25; stroke-dasharray: 3 7; }
+  .portal-eye { fill: none; stroke: var(--c-gold); stroke-width: 1.6; }
+  .portal-eye-dot { fill: var(--c-gold); }
+  .portal-ground { stroke: var(--c-cream); stroke-width: 0.8; opacity: 0.35; }
+  .dimora-door { fill: color-mix(in oklab, var(--c-gold) 85%, var(--c-terra)); }
+  .lamp-core { fill: var(--c-cream); }
+  :global(.motion) .lamp-core { animation: lamp 3.8s ease-in-out infinite; }
+  .lamp:nth-child(3n) .lamp-core { animation-delay: -1.3s; }
+  .lamp:nth-child(3n + 1) .lamp-core { animation-delay: -2.6s; }
+  @keyframes lamp { 50% { opacity: 0.75; } }
+  .notte-text { margin-top: var(--s-6); text-align: center; }
+  .notte-text .lead { margin-inline: auto; max-width: 30rem; font-family: var(--font-display); font-size: var(--step-2); }
+
+  @media (max-width: 900px) {
+    .notte-statement { font-size: var(--step-4); }
+    .portal { width: 100%; }
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+// Footer: the logo panel of the moodboard, small, at the end of the night.
+// "Torna all'alba" takes you back to the hero, the start of the day.
+import Wordmark from "./art/Wordmark.astro";
+import Star from "./art/Star.astro";
+import TornEdge from "./art/TornEdge.astro";
+import { CONTACT_EMAIL, sections } from "../data/sections";
+---
+
+<footer class="footer" data-scene="night">
+  <TornEdge profile="moodboard-bottom" side="top" color="var(--c-night-deep)" rim="color-mix(in oklab, var(--c-gold) 50%, transparent)" mirror />
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <div class="footer-mark"><Wordmark as="p" color="var(--c-cream)" /></div>
+      <p class="footer-payoff">Arte <Star size=".5em" /> Cultura <Star size=".5em" /> Simbolo <Star size=".5em" /> Immaginario</p>
+      <p class="footer-by">Ideato e prodotto da Ècate Studio</p>
+    </div>
+    <nav class="footer-nav" aria-label="Sezioni, di nuovo">
+      <ol role="list">
+        {sections.map((s) => <li><a href={`#${s.id}`}><span>{s.numeral}</span>{s.title}</a></li>)}
+      </ol>
+    </nav>
+    <div class="footer-contact">
+      <p class="eyebrow">Contatti</p>
+      <a class="footer-mail" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+      <p>Fabbrica del Vapore, Milano</p>
+      <p class="placeholder">[SOCIAL DA CONFERMARE]</p>
+      <p class="placeholder">[INFORMATIVA PRIVACY E COOKIE]</p>
+      <a class="footer-top" href="#top"><Star size=".9em" color="var(--c-gold)" /> Torna all'alba</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    padding-block: var(--section-dense) var(--s-7);
+    background: var(--c-night-deep);
+    color: var(--c-cream);
+    border-top: 1px solid color-mix(in oklab, var(--c-gold) 20%, transparent);
+  }
+  .footer-grid { display: grid; grid-template-columns: 5fr 4fr 3fr; gap: var(--s-8); align-items: start; }
+  .footer-mark { width: min(100%, 22rem); }
+  .footer-payoff { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6em; margin-top: var(--s-5); font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-pink); }
+  .footer-by { margin-top: var(--s-4); font-family: var(--font-display); font-style: italic; font-size: var(--step-1); }
+  .footer-nav ol { list-style: none; padding: 0; columns: 2; column-gap: var(--s-6); }
+  .footer-nav a { display: flex; gap: 0.7em; padding: 0.25em 0; text-decoration: none; font-size: var(--step--1); }
+  .footer-nav a:hover { color: var(--c-gold); }
+  .footer-nav span { width: 2.2em; color: var(--c-gold); font-family: var(--font-display); letter-spacing: 0.1em; }
+  .footer-contact { display: grid; gap: var(--s-2); justify-items: start; font-size: var(--step--1); }
+  .footer-contact .eyebrow { color: var(--c-gold); }
+  .footer-mail { font-family: var(--font-display); font-size: var(--step-1); }
+  .footer-contact .placeholder { font-size: 0.75rem; }
+  .footer-top { margin-top: var(--s-4); display: inline-flex; align-items: center; gap: 0.5em; font-family: var(--font-display); font-size: var(--step-1); text-decoration: none; color: var(--c-gold); }
+
+  @media (max-width: 900px) {
+    .footer-grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-7); }
+  }
+</style>

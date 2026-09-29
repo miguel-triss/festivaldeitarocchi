@@ -8,3 +8,4 @@
 - Nessuna opera d'arte commissionata per l'hero: l'hero si regge su sole, logo e cielo.
 - Contatto: ftvtarocchi@ecatestudio.org
 - Domande a cui non è arrivata risposta, si applicano i default del piano: solo italiano; Call for Artists "in arrivo"; grafia "Ècate" come nel file dei contenuti (da confermare, brief e infografica usano "Écate").
+- Modulo di contatto: le richieste arrivano a miguel@lunaria.agency tramite FormSubmit (nessun backend). Al primo invio arriva una email di attivazione da confermare; poi sostituire l'indirizzo con l'alias fornito da FormSubmit (`src/data/sections.ts`). Il contatto pubblico mostrato resta ftvtarocchi@ecatestudio.org.

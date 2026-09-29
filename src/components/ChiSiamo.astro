@@ -1,0 +1,117 @@
+---
+// IX · Chi siamo. Ècate Studio. Ècate is Hecate, whose sign is the triple
+// moon (waxing, full, waning): it becomes the studio's mark here. A sun is
+// drawn in ink line by line, as the hand drawing the sun in the moodboard.
+import Moon from "./art/Moon.astro";
+import Star from "./art/Star.astro";
+
+// a hand-drawn sun: disc, face, and rays of two lengths, as ink strokes
+const rays = Array.from({ length: 24 }, (_, i) => {
+  const a = (i / 24) * Math.PI * 2;
+  const r1 = 62, r2 = i % 2 ? 92 : 112;
+  const w = i % 2 ? 0.05 : 0.08;
+  const p = (r: number, d: number) => `${(150 + r * Math.cos(a + d)).toFixed(1)} ${(150 + r * Math.sin(a + d)).toFixed(1)}`;
+  return `M${p(r1, -w)}L${p(r2, 0)}L${p(r1, w)}`;
+});
+---
+
+<section class="section chi" id="chi-siamo" data-scene="night" aria-labelledby="h-chi">
+  <div class="wrap chi-grid">
+    <div class="chi-text">
+      <header class="sec-head">
+        <span class="sec-num" aria-hidden="true">IX</span>
+        <h2 class="sec-title" id="h-chi">Chi siamo</h2>
+      </header>
+
+      <div class="chi-mark" aria-hidden="true">
+        <Moon lit={0.35} size="2.4rem" color="var(--c-gold)" waning />
+        <Moon lit={1} size="2.4rem" color="var(--c-gold)" />
+        <Moon lit={0.35} size="2.4rem" color="var(--c-gold)" />
+      </div>
+      <p class="statement chi-statement" data-split>
+        Il Festival dei Tarocchi è ideato e prodotto da <em>Ècate Studio.</em>
+      </p>
+      <p class="lead" data-rise>
+        Ècate Studio sviluppa format culturali originali, progetti artistici, eventi, contenuti ed editoria. Il Festival
+        nasce all'interno di questa attività e raccoglie esperienze già sviluppate nel rapporto tra Tarocchi, arte,
+        pubblico e istituzioni culturali.
+      </p>
+
+      <div class="speed" data-rise="0.1">
+        <p class="eyebrow">Prima del Festival</p>
+        <h3 class="speed-title">Tarot Speed Date</h3>
+        <p>presentato in contesti istituzionali, tra cui</p>
+        <ul role="list" class="speed-places">
+          <li><Star size=".8em" color="var(--c-gold)" /><span><strong>Palazzo Reale</strong> Milano</span></li>
+          <li><Star size=".8em" color="var(--c-gold)" /><span><strong>Accademia Carrara</strong> Bergamo</span></li>
+        </ul>
+      </div>
+
+      <p class="chi-next" data-rise>
+        Il Festival amplia questa ricerca attraverso un progetto autonomo, costruito su scala nazionale e internazionale.
+      </p>
+      <p class="placeholder chi-team">[FONDATORI, DIREZIONE ARTISTICA, GRUPPO DI LAVORO, COMITATO SCIENTIFICO, FORMA GIURIDICA: DA COMPLETARE]</p>
+    </div>
+
+    <figure class="ink-sun" aria-hidden="true" data-ink-sun>
+      <svg viewBox="0 0 300 300">
+        <circle class="ink" cx="150" cy="150" r="58" />
+        {rays.map((d) => <path class="ink ink--ray" d={d} />)}
+        <path class="ink ink--face" d="M126 140q6 -6 12 0M162 140q6 -6 12 0M124 132q8 -6 16 -2M160 130q8 -4 16 2M150 142q-4 14 2 16M140 170q10 6 20 0" />
+      </svg>
+      <span class="ink-pot"></span>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .chi { padding-block: var(--section-airy) var(--section-dense); }
+  .chi-grid { display: grid; grid-template-columns: 7fr 5fr; gap: var(--s-8); align-items: center; }
+  .chi-mark { display: flex; gap: var(--s-2); margin-bottom: var(--s-5); }
+  .chi-statement { max-width: 17ch; }
+  .chi-statement :global(em) { color: var(--c-gold); }
+  .chi-text .lead { margin-top: var(--s-6); color: color-mix(in oklab, var(--c-cream) 88%, var(--c-pink)); }
+
+  .speed {
+    margin-top: var(--s-7);
+    padding: var(--s-6);
+    border: 1px solid color-mix(in oklab, var(--c-gold) 45%, transparent);
+    border-radius: 12rem 12rem 0.5rem 0.5rem;
+    text-align: center;
+    display: grid;
+    justify-items: center;
+    gap: var(--s-2);
+    max-width: 30rem;
+  }
+  .speed .eyebrow { color: var(--c-gold); }
+  .speed-title { font-size: var(--step-4); font-style: italic; }
+  .speed-places { list-style: none; padding: 0; display: grid; gap: var(--s-2); margin-top: var(--s-2); }
+  .speed-places li { display: flex; align-items: center; gap: 0.6em; font-family: var(--font-display); font-size: var(--step-1); }
+  .speed-places strong { font-weight: 600; margin-right: 0.35em; }
+
+  .chi-next { margin-top: var(--s-7); font-family: var(--font-display); font-size: var(--step-2); line-height: 1.3; max-width: 30ch; }
+  .chi-team { display: inline-block; margin-top: var(--s-6); font-size: var(--step--1); color: var(--c-cream); }
+
+  .ink-sun { margin: 0; position: relative; }
+  .ink-sun svg { width: 100%; max-width: 30rem; overflow: visible; margin-inline: auto; }
+  .ink { fill: none; stroke: var(--c-gold); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .ink--ray { stroke-width: 1.8; }
+  .ink--face { stroke-width: 1.6; stroke: var(--c-cream); }
+  .ink-pot {
+    position: absolute;
+    right: 12%;
+    bottom: 4%;
+    width: 3.2rem;
+    height: 3rem;
+    border-radius: 45% 45% 40% 40%;
+    background: var(--c-night);
+    box-shadow: inset 0 6px 0 var(--c-night-deep), 0 0 0 1px color-mix(in oklab, var(--c-gold) 40%, transparent);
+  }
+
+  @media (max-width: 900px) {
+    .chi { padding-top: var(--section-dense); }
+    .chi-grid { grid-template-columns: minmax(0, 1fr); }
+    .chi-statement { font-size: var(--step-4); }
+    .ink-sun { order: -1; max-width: 16rem; margin-inline: auto; }
+  }
+</style>

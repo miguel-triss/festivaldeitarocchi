@@ -1,0 +1,184 @@
+---
+// VIII · Una rete culturale, la roadmap, la visione di lungo periodo.
+// Night is falling. The network is an astrolabe: the Fabbrica at the centre,
+// the kinds of institution on its rings, turning slowly with the scroll. The
+// roadmap is the moon waxing from crescent to full, one phase per stage.
+import Star from "./art/Star.astro";
+import Moon from "./art/Moon.astro";
+
+const institutions = ["musei", "fondazioni", "università", "accademie", "biblioteche", "archivi", "editori", "centri di ricerca"];
+const topics = ["ricerca", "prestiti", "attività scientifiche", "incontri", "pubblicazioni", "educational", "produzione artistica", "progetti speciali"];
+const sectors = ["design", "moda", "editoria", "tecnologia", "hospitality", "produzione culturale"];
+const stages = [
+  { lit: 0.22, when: "Prima edizione", what: "Un numero selezionato di Dimore alla Fabbrica del Vapore, per verificare il modello produttivo, concentrare le risorse e mantenere un livello elevato nelle opere e negli allestimenti." },
+  { lit: 0.62, when: "Edizioni successive", what: "Il numero delle Dimore aumenta fino alla configurazione completa dei ventidue Arcani Maggiori. Crescono la Collezione Permanente, l'Archivio, il programma e le collaborazioni." },
+  { lit: 1, when: "Una fase successiva", what: "Milano Open City coinvolge altre istituzioni e luoghi della città. La Fabbrica del Vapore resta il centro della manifestazione." },
+];
+const growth = ["numero delle Dimore", "opere prodotte", "patrimonio acquisito", "attività di ricerca", "pubblicazioni", "istituzioni coinvolte", "collaborazioni internazionali"];
+const R1 = 150, R2 = 205;
+const ring = institutions.map((t, i) => {
+  const a = (i / institutions.length) * Math.PI * 2 - Math.PI / 2;
+  return { t, x: 250 + R2 * Math.cos(a), y: 250 + R2 * Math.sin(a), a: (a * 180) / Math.PI };
+});
+---
+
+<section class="section rete" id="rete" data-scene="night" aria-labelledby="h-rete">
+  <div class="wrap">
+    <header class="sec-head">
+      <span class="sec-num" aria-hidden="true">VIII</span>
+      <h2 class="sec-title" id="h-rete">Una rete culturale in costruzione</h2>
+    </header>
+
+    <div class="rete-top">
+      <div class="rete-text">
+        <p class="statement rete-statement" data-split>
+          Accanto alla sede principale, il Festival intende costruire <em>relazioni.</em>
+        </p>
+        <p class="lead" data-rise>
+          Con musei, fondazioni, università, accademie, biblioteche, archivi, editori, centri di ricerca e altre
+          istituzioni.
+        </p>
+        <div class="rete-lists" data-rise="0.1">
+          <div>
+            <p class="eyebrow">Le collaborazioni possono riguardare</p>
+            <ul role="list" class="dots">{topics.map((t) => <li>{t}</li>)}</ul>
+          </div>
+          <div>
+            <p class="eyebrow">E aziende dei settori</p>
+            <ul role="list" class="dots">{sectors.map((t) => <li>{t}</li>)}</ul>
+            <p class="rete-small">insieme a realtà interessate a sostenere arte e ricerca.</p>
+          </div>
+        </div>
+      </div>
+
+      <figure class="astrolabe" data-astrolabe>
+        <svg viewBox="-60 -20 620 540" role="img" aria-label="La Fabbrica del Vapore al centro e intorno i tipi di istituzioni con cui il Festival costruisce relazioni">
+          <g class="astro-turn">
+            <circle cx="250" cy="250" r={R2 + 34} class="astro-rim" />
+            <circle cx="250" cy="250" r={R2} class="astro-ring" />
+            <circle cx="250" cy="250" r={R1} class="astro-ring astro-ring--in" />
+            {Array.from({ length: 72 }, (_, i) => (
+              <path d={`M250 ${250 - R2 - 34}v${i % 6 ? 7 : 14}`} class="astro-tick" transform={`rotate(${i * 5} 250 250)`} />
+            ))}
+            {ring.map((p) => (
+              <g>
+                <path d={`M250 250L${p.x.toFixed(1)} ${p.y.toFixed(1)}`} class="astro-ray" />
+                <circle cx={p.x.toFixed(1)} cy={p.y.toFixed(1)} r="5.5" class="astro-node" />
+              </g>
+            ))}
+          </g>
+          {ring.map((p) => {
+            const lx = 250 + (R2 + 58) * Math.cos((p.a * Math.PI) / 180);
+            const ly = 250 + (R2 + 58) * Math.sin((p.a * Math.PI) / 180);
+            return <text x={lx.toFixed(1)} y={(ly + 4).toFixed(1)} text-anchor="middle" class="astro-label">{p.t}</text>;
+          })}
+          <circle cx="250" cy="250" r="62" class="astro-hub" />
+          <text x="250" y="244" text-anchor="middle" class="astro-hub-t">Fabbrica</text>
+          <text x="250" y="264" text-anchor="middle" class="astro-hub-t astro-hub-t--sm">del Vapore</text>
+        </svg>
+      </figure>
+    </div>
+
+    <p class="placeholder rete-names">[NOMI DEI PARTNER CULTURALI E DELLE AZIENDE: DOPO LA CONFERMA DELLE COLLABORAZIONI]</p>
+
+    <!-- roadmap: the moon waxes -->
+    <div class="roadmap" data-roadmap>
+      <h3 class="roadmap-title" data-split>Sviluppo progressivo</h3>
+      <svg class="roadmap-line" viewBox="0 0 1000 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 5H1000" /></svg>
+      <ol role="list" class="roadmap-steps">
+        {stages.map((s) => (
+          <li class="roadmap-step">
+            <span class="roadmap-moon" aria-hidden="true"><Moon lit={s.lit} size="100%" color="var(--c-cream)" shadow="color-mix(in oklab, var(--c-cream) 12%, transparent)" /></span>
+            <h4>{s.when}</h4>
+            <p>{s.what}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="placeholder roadmap-dates">[CALENDARIO DA CONFERMARE: data della prima edizione, Call for Artists, partnership, produzione, comunicazione, apertura]</p>
+    </div>
+
+    <!-- the long view -->
+    <div class="lungo">
+      <p class="eyebrow">Visione di lungo periodo</p>
+      <p class="lungo-intro" data-rise>
+        La crescita del progetto sarà leggibile attraverso elementi concreti:
+      </p>
+      <ul role="list" class="lungo-list" data-growth>
+        {growth.map((g) => <li><Star size=".5em" color="var(--c-gold)" />{g}</li>)}
+      </ul>
+      <p class="statement lungo-statement" data-split>
+        Per i partner delle prime edizioni significa partecipare alla fase in cui questa struttura <em>viene costruita</em>, e accompagnarne lo sviluppo negli anni.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rete {
+    padding-block: var(--section-dense) var(--section-airy);
+    background: linear-gradient(to bottom,
+      color-mix(in oklab, var(--c-violet) 55%, var(--c-night-deep)) 0%,
+      var(--c-night) 22%,
+      var(--c-night-deep) 70%);
+  }
+  .rete-top { display: grid; grid-template-columns: 6fr 6fr; gap: var(--s-8); align-items: center; }
+  .rete-statement { max-width: 18ch; }
+  .rete-text .lead { margin-top: var(--s-5); color: color-mix(in oklab, var(--c-cream) 88%, var(--c-pink)); }
+  .rete-lists { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); margin-top: var(--s-7); }
+  .rete-lists .eyebrow { color: var(--c-gold); margin-bottom: var(--s-3); }
+  .dots { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.2em 0; font-family: var(--font-display); font-size: var(--step-1); }
+  .dots li:not(:last-child)::after { content: "·"; margin-inline: 0.45em; color: var(--c-gold); }
+  .rete-small { margin-top: var(--s-2); font-size: var(--step--1); color: var(--c-pink); }
+
+  .astrolabe { margin: 0; }
+  .astrolabe svg { width: 100%; max-width: 36rem; margin-inline: auto; overflow: visible; }
+  .astro-turn { transform-origin: 250px 250px; transform-box: view-box; }
+  .astro-rim { fill: none; stroke: var(--c-gold); stroke-width: 1.2; }
+  .astro-ring { fill: none; stroke: var(--c-cream); stroke-width: 0.8; opacity: 0.4; stroke-dasharray: 2 5; }
+  .astro-ring--in { stroke: var(--c-gold); opacity: 0.55; }
+  .astro-tick { stroke: var(--c-gold); stroke-width: 0.8; opacity: 0.7; }
+  .astro-ray { stroke: var(--c-gold); stroke-width: 0.6; opacity: 0.35; }
+  .astro-node { fill: var(--c-gold); }
+  .astro-label { fill: var(--c-cream); font-family: var(--font-display); font-size: 15px; font-weight: 600; letter-spacing: 0.04em; }
+  .astro-hub { fill: var(--c-gold); }
+  .astro-hub-t { fill: var(--c-night-deep); font-family: var(--font-display); font-size: 19px; font-weight: 600; }
+  .astro-hub-t--sm { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .rete-names { display: inline-block; margin-top: var(--s-7); color: var(--c-cream); font-size: var(--step--1); }
+
+  .roadmap { margin-top: var(--section-dense); position: relative; }
+  .roadmap-title { font-size: var(--step-4); }
+  .roadmap-line { width: 100%; height: 10px; margin-top: var(--s-7); overflow: visible; }
+  .roadmap-line path { stroke: var(--c-gold); stroke-width: 1; stroke-dasharray: 2 6; vector-effect: non-scaling-stroke; }
+  .roadmap-steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin-top: calc(-2.4rem - 5px); }
+  .roadmap-step { display: grid; gap: var(--s-3); align-content: start; }
+  .roadmap-moon { width: 4.8rem; height: 4.8rem; display: block; background: var(--c-night-deep); border-radius: 50%; padding: 0.3rem; }
+  .roadmap-step h4 { font-size: var(--step-2); color: var(--c-gold); margin-top: var(--s-3); }
+  .roadmap-step p { color: color-mix(in oklab, var(--c-cream) 88%, var(--c-pink)); font-size: var(--step--1); line-height: 1.6; }
+  .roadmap-dates { display: inline-block; margin-top: var(--s-7); color: var(--c-cream); font-size: var(--step--1); }
+
+  .lungo { margin-top: var(--section-dense); }
+  .lungo .eyebrow { color: var(--c-gold); }
+  .lungo-intro { margin-top: var(--s-4); font-family: var(--font-display); font-size: var(--step-2); }
+  .lungo-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-5); }
+  .lungo-list li {
+    display: inline-flex; align-items: center; gap: 0.55em;
+    padding: 0.45em 1em 0.4em;
+    border: 1px solid color-mix(in oklab, var(--c-gold) 55%, transparent);
+    border-radius: 999px 999px 0.3rem 0.3rem;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+  }
+  .lungo-statement { margin-top: var(--section-dense); max-width: 26ch; }
+  .lungo-statement :global(em) { color: var(--c-gold); }
+
+  @media (max-width: 900px) {
+    .rete-top { grid-template-columns: minmax(0, 1fr); }
+    .rete-statement, .lungo-statement { font-size: var(--step-4); }
+    .rete-lists { grid-template-columns: minmax(0, 1fr); }
+    .astro-label { font-size: 20px; }
+    .roadmap-line { display: none; }
+    .roadmap-steps { grid-template-columns: minmax(0, 1fr); margin-top: var(--s-6); gap: var(--s-7); border-left: 1px dashed var(--c-gold); padding-left: var(--s-5); }
+    .roadmap-moon { width: 3.6rem; height: 3.6rem; margin-left: calc(-1 * var(--s-5) - 1.8rem); margin-bottom: calc(-1 * var(--s-5)); }
+  }
+</style>

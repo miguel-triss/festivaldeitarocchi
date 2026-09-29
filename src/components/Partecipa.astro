@@ -1,0 +1,205 @@
+---
+// XI · Come partecipare. The page closes where it opened: the arch again,
+// now at night, with the moon inside instead of the rising sun. Beside it the
+// request for the masterplan or a meeting. The form is plain HTML and works
+// without JS (posts to FormSubmit); with JS it sends in place and thanks you.
+import Arch from "./art/Arch.astro";
+import Star from "./art/Star.astro";
+import { CONTACT_EMAIL, FORM_ENDPOINT, mailto } from "../data/sections";
+
+const kinds = [
+  "Partner del Festival",
+  "Partner di Dimora",
+  "Partner Experience",
+  "Technical Partner",
+  "Istituzione culturale",
+  "Stampa",
+  "Altro",
+];
+---
+
+<section class="section partecipa" id="partecipa" data-scene="night" aria-labelledby="h-partecipa">
+  <div class="wrap partecipa-grid">
+    <div class="partecipa-left">
+      <header class="sec-head">
+        <span class="sec-num" aria-hidden="true">XI</span>
+        <h2 class="sec-title" id="h-partecipa">Come partecipare</h2>
+      </header>
+      <p class="statement partecipa-statement" data-split>
+        Richiedi il <em>masterplan</em> o fissa un incontro.
+      </p>
+      <p class="lead" data-rise>
+        Un'azienda può partecipare come Partner del Festival, Partner di Dimora, Partner Experience o Technical Partner.
+        Ogni proposta viene costruita sulla base del progetto sostenuto, degli obiettivi del partner e delle modalità di
+        presenza previste.
+      </p>
+      <p data-rise="0.1" class="partecipa-meet">
+        Per ricevere il masterplan completo, approfondire le opportunità o valutare una collaborazione, è possibile
+        organizzare un incontro con Ècate Studio e la Direzione Artistica del Festival.
+      </p>
+
+      <div class="night-arch" aria-hidden="true" data-night-arch>
+        <div class="night-window">
+          <span class="night-moon"></span>
+          <span class="night-star"><Star size="100%" color="var(--c-cream)" /></span>
+        </div>
+        <Arch variant="portal" color="var(--c-gold)" lights={19} />
+      </div>
+    </div>
+
+    <form class="request" action={FORM_ENDPOINT} method="POST" data-request novalidate>
+      <input type="hidden" name="_subject" value="Festival dei Tarocchi · richiesta dal sito" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="text" name="_honey" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <p class="request-kicker"><Star size=".8em" color="var(--c-gold)" /> Richiesta</p>
+
+      <fieldset class="request-intent">
+        <legend class="sr-only">Che cosa desideri</legend>
+        <label><input type="radio" name="richiesta" value="Masterplan" checked /><span>Il masterplan</span></label>
+        <label><input type="radio" name="richiesta" value="Incontro" /><span>Un incontro</span></label>
+      </fieldset>
+
+      <div class="field">
+        <label for="f-nome">Nome e cognome</label>
+        <input id="f-nome" name="nome" type="text" autocomplete="name" required />
+      </div>
+      <div class="field">
+        <label for="f-org">Azienda o istituzione</label>
+        <input id="f-org" name="organizzazione" type="text" autocomplete="organization" required />
+      </div>
+      <div class="field">
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" required />
+      </div>
+      <div class="field">
+        <label for="f-tipo">Mi interessa</label>
+        <select id="f-tipo" name="interesse">
+          {kinds.map((k) => <option>{k}</option>)}
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-msg">Messaggio <span class="optional">(facoltativo)</span></label>
+        <textarea id="f-msg" name="messaggio" rows="3"></textarea>
+      </div>
+      <label class="consent">
+        <input type="checkbox" name="consenso" value="sì" required />
+        <span>Acconsento al trattamento dei dati per ricevere una risposta. <span class="placeholder">[INFORMATIVA PRIVACY DA INSERIRE]</span></span>
+      </label>
+
+      <button class="btn btn--gold request-send" type="submit" data-magnetic>
+        <span data-send-label>Invia la richiesta</span>
+      </button>
+      <p class="request-status" role="status" aria-live="polite" data-status></p>
+      <p class="request-alt">
+        Oppure scrivi a <a href={mailto("Richiesta · Festival dei Tarocchi")}>{CONTACT_EMAIL}</a>
+      </p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .partecipa {
+    padding-block: var(--section-airy) var(--section-dense);
+    background: var(--c-night-deep);
+  }
+  .partecipa-grid { display: grid; grid-template-columns: 6fr 5fr; gap: var(--s-8); align-items: start; }
+  .partecipa-statement { max-width: 15ch; }
+  .partecipa-statement :global(em) { color: var(--c-gold); }
+  .partecipa-left .lead { margin-top: var(--s-6); color: color-mix(in oklab, var(--c-cream) 88%, var(--c-pink)); }
+  .partecipa-meet { margin-top: var(--s-4); color: var(--c-pink); }
+
+  /* the arch from the hero, now at night */
+  .night-arch { position: relative; width: min(100%, 17rem); aspect-ratio: 200 / 260; margin-top: var(--s-8); }
+  .night-arch :global(.arch-portal) { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .night-window {
+    position: absolute;
+    left: 15%; right: 15%; top: 11.5%; bottom: 0;
+    border-radius: 999px 999px 0 0;
+    overflow: hidden;
+    background: linear-gradient(to top, var(--c-violet) 0%, var(--c-night) 45%, var(--c-night-deep) 100%);
+  }
+  .night-moon {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    width: 42%;
+    aspect-ratio: 1;
+    translate: -50% 0;
+    border-radius: 50%;
+    background: var(--c-gold);
+    -webkit-mask: radial-gradient(circle at 78% 36%, transparent 44%, #000 45%);
+    mask: radial-gradient(circle at 78% 36%, transparent 44%, #000 45%);
+  }
+  .night-star { position: absolute; right: 22%; top: 18%; width: 12%; aspect-ratio: 1; }
+
+  /* the form: a card of cream paper, arch-topped */
+  .request {
+    position: relative;
+    display: grid;
+    gap: var(--s-4);
+    padding: var(--s-8) var(--s-6) var(--s-6);
+    background:
+      url("/textures/paper-grain.webp") 0 0 / 220px,
+      var(--c-cream);
+    background-blend-mode: soft-light;
+    color: var(--c-night-deep);
+    border-radius: 14rem 14rem 0.6rem 0.6rem;
+    box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.5);
+    --accent: var(--c-magenta);
+  }
+  .request-kicker {
+    justify-self: center;
+    display: flex; align-items: center; gap: 0.5em;
+    font-family: var(--font-display); font-weight: 700; font-size: var(--step--1);
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--c-violet);
+  }
+  .request-intent { border: 0; padding: 0; margin: 0 0 var(--s-2); display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
+  .request-intent label { position: relative; cursor: pointer; }
+  .request-intent input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .request-intent span {
+    display: grid; place-items: center;
+    min-height: 3rem;
+    padding: 0.5em;
+    border: 1px solid var(--c-night-deep);
+    border-radius: 999px 999px 0.3rem 0.3rem;
+    font-family: var(--font-display); font-size: var(--step-1);
+    transition: background-color var(--dur-fast), color var(--dur-fast);
+  }
+  .request-intent input:checked + span { background: var(--c-night-deep); color: var(--c-cream); }
+  .request-intent input:focus-visible + span { outline: 2px solid var(--c-magenta); outline-offset: 3px; }
+
+  .field { display: grid; gap: 0.3rem; }
+  .field label { font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-night); }
+  .optional { font-weight: 500; text-transform: none; letter-spacing: 0; }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 0.55em 0.1em;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid color-mix(in oklab, var(--c-night-deep) 45%, transparent);
+    border-radius: 0;
+    font-size: var(--step-0);
+    color: var(--c-night-deep);
+    transition: border-color var(--dur-fast);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-bottom: 2px solid var(--c-magenta); }
+  .field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { box-shadow: 0 2px 0 var(--c-magenta); }
+  .field [aria-invalid="true"] { border-bottom-color: var(--c-magenta); }
+  .field textarea { resize: vertical; }
+  .consent { display: flex; gap: 0.7em; align-items: flex-start; font-size: var(--step--1); line-height: 1.5; }
+  .consent input { margin-top: 0.3em; accent-color: var(--c-magenta); width: 1.05rem; height: 1.05rem; flex: none; }
+  .request-send { justify-self: stretch; margin-top: var(--s-2); }
+  .request-status { min-height: 1.5em; font-family: var(--font-display); font-size: var(--step-1); text-align: center; color: var(--c-violet); }
+  .request-status.is-error { color: var(--c-magenta); }
+  .request-alt { text-align: center; font-size: var(--step--1); color: var(--c-night); }
+
+  @media (max-width: 900px) {
+    .partecipa { padding-top: var(--section-dense); }
+    .partecipa-grid { grid-template-columns: minmax(0, 1fr); }
+    .partecipa-statement { font-size: var(--step-4); }
+    .night-arch { display: none; }
+    .request { padding: var(--s-8) var(--s-5) var(--s-5); border-radius: 50vw 50vw 0.6rem 0.6rem / 30vw 30vw 0.6rem 0.6rem; }
+  }
+</style>

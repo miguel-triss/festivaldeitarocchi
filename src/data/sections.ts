@@ -27,5 +27,13 @@ export const sections: Section[] = [
 ];
 
 export const CONTACT_EMAIL = "ftvtarocchi@ecatestudio.org";
+
+// Where the contact form is delivered. FormSubmit relays to an inbox without
+// a backend: the first submission triggers an activation email to that inbox.
+// After activation, replace the address with the random alias FormSubmit
+// provides, so the inbox is not exposed in the page source.
+export const FORM_TO = "miguel@lunaria.agency";
+export const FORM_ENDPOINT = `https://formsubmit.co/${FORM_TO}`;
+export const FORM_AJAX = `https://formsubmit.co/ajax/${FORM_TO}`;
 export const mailto = (subject: string) =>
   `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}`;
