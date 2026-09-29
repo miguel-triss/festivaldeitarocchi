@@ -3,6 +3,8 @@ import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
 import Passport from "../components/Passport.astro";
+import Visione from "../components/Visione.astro";
+import Tarocchi from "../components/Tarocchi.astro";
 import Cursor from "../components/Cursor.astro";
 import { sections } from "../data/sections";
 ---
@@ -11,8 +13,10 @@ import { sections } from "../data/sections";
   <Nav />
   <main id="main">
     <Hero />
-    {/* Stage 2: the sections below are empty stubs, built one at a time next. */}
-    {sections.map((s) => (
+    {/* Sections not yet built are empty stubs, built one at a time next. */}
+    <Visione />
+    <Tarocchi />
+    {sections.slice(2).map((s) => (
       <section class="stub" id={s.id} data-scene={s.scene} aria-labelledby={`h-${s.id}`}>
         <div class="wrap">
           <p class="eyebrow">{s.numeral}</p>
@@ -29,7 +33,11 @@ import { sections } from "../data/sections";
 <script>
   import { startMotion } from "../scripts/motion";
   import { initHero } from "../scripts/hero";
+  import { initReveals } from "../scripts/reveal";
+  import { initProcession } from "../scripts/procession";
   startMotion();
+  initProcession();
+  initReveals();
   initHero();
 </script>
 

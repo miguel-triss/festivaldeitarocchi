@@ -191,3 +191,47 @@ p { text-wrap: pretty; max-width: var(--measure); }
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---- section furniture, shared by every chapter ----------------------- */
+.section {
+  position: relative;
+  background: var(--bg);
+  color: var(--fg);
+}
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  margin-bottom: var(--s-7);
+}
+.sec-num {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  aspect-ratio: 1;
+  border: 1px solid currentColor;
+  border-radius: 999px 999px 0.25rem 0.25rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+.sec-title {
+  font-family: var(--font-display);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.statement {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--step-5);
+  line-height: 1.04;
+  letter-spacing: -0.005em;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+.statement em { font-style: italic; color: var(--accent); }
+.lead { font-size: var(--step-1); line-height: 1.5; }

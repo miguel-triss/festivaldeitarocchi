@@ -7,6 +7,7 @@
 // the card's art window: x 40..180, y 70..320 (see Card.astro).
 
 import { SUN_DISC, sunMarkup } from "../lib/sun";
+import { art } from "./arcana-art";
 
 export interface Arcanum {
   n: number;
@@ -121,25 +122,25 @@ const matto = `
 
 export const arcana: Arcanum[] = [
   { n: 0, numeral: "0", name: "Il Matto", art: matto },
-  { n: 1, numeral: "I", name: "Il Bagatto" },
-  { n: 2, numeral: "II", name: "La Papessa" },
-  { n: 3, numeral: "III", name: "L'Imperatrice" },
-  { n: 4, numeral: "IV", name: "L'Imperatore" },
-  { n: 5, numeral: "V", name: "Il Papa" },
-  { n: 6, numeral: "VI", name: "Gli Amanti" },
-  { n: 7, numeral: "VII", name: "Il Carro" },
-  { n: 8, numeral: "VIII", name: "La Giustizia" },
-  { n: 9, numeral: "IX", name: "L'Eremita" },
-  { n: 10, numeral: "X", name: "La Ruota" },
-  { n: 11, numeral: "XI", name: "La Forza" },
-  { n: 12, numeral: "XII", name: "L'Appeso" },
-  { n: 13, numeral: "XIII", name: "La Morte" },
-  { n: 14, numeral: "XIV", name: "La Temperanza" },
-  { n: 15, numeral: "XV", name: "Il Diavolo" },
-  { n: 16, numeral: "XVI", name: "La Torre" },
+  { n: 1, numeral: "I", name: "Il Bagatto", art: art[1] },
+  { n: 2, numeral: "II", name: "La Papessa", art: art[2] },
+  { n: 3, numeral: "III", name: "L'Imperatrice", art: art[3] },
+  { n: 4, numeral: "IV", name: "L'Imperatore", art: art[4] },
+  { n: 5, numeral: "V", name: "Il Papa", art: art[5] },
+  { n: 6, numeral: "VI", name: "Gli Amanti", art: art[6] },
+  { n: 7, numeral: "VII", name: "Il Carro", art: art[7] },
+  { n: 8, numeral: "VIII", name: "La Giustizia", art: art[8] },
+  { n: 9, numeral: "IX", name: "L'Eremita", art: art[9] },
+  { n: 10, numeral: "X", name: "La Ruota", art: art[10] },
+  { n: 11, numeral: "XI", name: "La Forza", art: art[11] },
+  { n: 12, numeral: "XII", name: "L'Appeso", art: art[12] },
+  { n: 13, numeral: "XIII", name: "La Morte", art: art[13] },
+  { n: 14, numeral: "XIV", name: "La Temperanza", art: art[14] },
+  { n: 15, numeral: "XV", name: "Il Diavolo", art: art[15] },
+  { n: 16, numeral: "XVI", name: "La Torre", art: art[16] },
   { n: 17, numeral: "XVII", name: "La Stella", art: stella },
-  { n: 18, numeral: "XVIII", name: "La Luna" },
+  { n: 18, numeral: "XVIII", name: "La Luna", art: art[18] },
   { n: 19, numeral: "XIX", name: "Il Sole", art: sole },
-  { n: 20, numeral: "XX", name: "Il Giudizio" },
-  { n: 21, numeral: "XXI", name: "Il Mondo" },
+  { n: 20, numeral: "XX", name: "Il Giudizio", art: art[20] },
+  { n: 21, numeral: "XXI", name: "Il Mondo", art: art[21] },
 ];

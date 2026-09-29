@@ -1,0 +1,15 @@
+---
+// Review page for the 22 Arcana. Not linked, noindex, removed before launch.
+import Base from "../layouts/Base.astro";
+import Card from "../components/art/Card.astro";
+import { arcana } from "../data/arcana";
+---
+
+<Base title="Mazzo · Festival dei Tarocchi" noindex>
+  <main id="main" data-scene="dusk" style="background:var(--bg);padding:2rem">
+    <h1 class="eyebrow" style="color:var(--c-cream);margin-bottom:1.5rem">I ventidue Arcani Maggiori</h1>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1.5rem">
+      {arcana.map((a) => <Card n={a.n} />)}
+    </div>
+  </main>
+</Base>

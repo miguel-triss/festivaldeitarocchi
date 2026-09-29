@@ -1,0 +1,250 @@
+---
+// II · Perché i Tarocchi. Three movements:
+//  1. five centuries, and a paper ribbon of the arts that took the images in
+//  2. the procession: the 22 Arcana travel along a great arch, one at the
+//     apex at a time, starting from the Fool (desktop, pinned). On phones a
+//     deck to swipe; without JS or with reduced motion the whole deck laid out.
+//  3. what the festival does with this heritage, and why it matters to partners
+import Card from "./art/Card.astro";
+import Star from "./art/Star.astro";
+import Tape from "./art/Tape.astro";
+import { arcana } from "../data/arcana";
+
+const arts = [
+  "arti figurative", "letteratura", "teatro", "filosofia", "psicologia",
+  "cinema", "illustrazione", "cultura visiva contemporanea",
+];
+// verbatim from the source, split into its three parts
+const values = [
+  ["una storia precisa", ""],
+  ["una riconoscibilità internazionale", ""],
+  ["una grande capacità di generare", "opere, immagini, contenuti editoriali e progetti culturali"],
+];
+---
+
+<section class="section tarocchi" id="tarocchi" data-scene="day" aria-labelledby="h-tarocchi">
+  <div class="wrap tarocchi-intro">
+    <header class="sec-head">
+      <span class="sec-num" aria-hidden="true">II</span>
+      <h2 class="sec-title" id="h-tarocchi">Perché i Tarocchi</h2>
+    </header>
+    <p class="statement" data-split>
+      I Tarocchi nascono nell'Italia del <em>Quattrocento</em> e attraversano oltre <em>cinque secoli</em> di storia europea.
+    </p>
+  </div>
+
+  <div class="ribbon">
+    <p class="sr-only">
+      Le loro immagini compaiono e vengono reinterpretate nelle arti figurative, nella letteratura, nel teatro, nella
+      filosofia, nella psicologia, nel cinema, nell'illustrazione e nella cultura visiva contemporanea.
+    </p>
+    <div class="ribbon-strip" aria-hidden="true">
+      <Tape rotate={-8} width="5rem" style="top:-1.1rem;left:12%" />
+      <Tape rotate={6} width="4rem" style="bottom:-1rem;right:18%" />
+      <div class="ribbon-track">
+        {[0, 1].map(() => (
+          <span class="ribbon-set">
+            <span class="ribbon-lead">Le loro immagini compaiono nelle</span>
+            {arts.map((a) => <span class="ribbon-item"><Star size=".55em" color="var(--c-magenta)" />{a}</span>)}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="deck-stage" data-deck>
+    <div class="deck-head">
+      <h3 class="deck-title">I ventidue Arcani Maggiori</h3>
+      <p class="deck-sub">costituiscono un repertorio iconografico immediatamente riconoscibile.</p>
+    </div>
+    <div class="deck-counter" aria-hidden="true">
+      <span class="deck-num" data-deck-num>0</span>
+      <span class="deck-name" data-deck-name>Il Matto</span>
+    </div>
+    <div class="deck-orbit" aria-hidden="true"></div>
+    <ol class="deck" role="list" aria-label="I ventidue Arcani Maggiori">
+      {arcana.map((a) => <li><Card n={a.n} /></li>)}
+    </ol>
+    <p class="deck-hint" aria-hidden="true">Scorri il mazzo <span>→</span></p>
+  </div>
+
+  <div class="wrap tarocchi-outro">
+    <p class="statement tarocchi-hand" data-split>
+      Il Festival parte da questo patrimonio e lo affida <em>agli artisti e alla cultura contemporanea.</em>
+    </p>
+    <p class="lead tarocchi-aim" data-rise>
+      L'obiettivo è contribuire alla conoscenza della storia dei Tarocchi e, nello stesso tempo, produrre le
+      interpretazioni che entreranno nella loro storia futura.
+    </p>
+    <div class="tarocchi-partners" data-rise="0.1">
+      <p class="eyebrow">Per le aziende partner</p>
+      <p class="tarocchi-partners-lead">La forza del progetto risiede anche qui: un patrimonio visivo con</p>
+      <ul role="list">
+        {values.map(([t, d]) => (
+          <li><Star size="1rem" color="var(--c-gold)" /><strong>{t}</strong>{d && <span>{d}</span>}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tarocchi { padding-block: var(--section-dense) var(--section-airy); overflow-x: clip; }
+  .tarocchi-intro .statement { max-width: 17ch; }
+
+  /* ribbon of the arts: a strip of rose paper that slides with the scroll */
+  .ribbon { margin-block: var(--s-8); }
+  .ribbon-strip {
+    position: relative;
+    rotate: -2deg;
+    margin-inline: -2vw;
+    padding-block: var(--s-4);
+    background: var(--c-rose-paper);
+    box-shadow: 0 10px 24px rgb(24 27 46 / 0.08);
+    clip-path: polygon(0 6%, 20% 0, 50% 5%, 78% 0, 100% 4%, 100% 96%, 74% 100%, 48% 95%, 22% 100%, 0 94%);
+  }
+  .ribbon-track { display: flex; width: max-content; }
+  .ribbon-set { display: flex; align-items: center; gap: var(--s-6); padding-right: var(--s-6); }
+  .ribbon-lead, .ribbon-item {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    white-space: nowrap;
+  }
+  .ribbon-lead { font-style: italic; color: var(--c-violet); }
+  .ribbon-item { display: inline-flex; align-items: center; gap: var(--s-4); text-transform: lowercase; }
+
+  /* the deck: static by default (no JS, reduced motion) */
+  .deck-stage { position: relative; padding-block: var(--s-6); }
+  .deck-head { width: min(100% - 2 * var(--gutter), var(--max)); margin-inline: auto; }
+  .deck-title { font-size: var(--step-4); }
+  .deck-sub { font-family: var(--font-display); font-style: italic; font-size: var(--step-1); color: var(--fg-soft); }
+  .deck-counter, .deck-orbit { display: none; }
+  .deck {
+    list-style: none;
+    padding: var(--s-6) var(--gutter);
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    gap: clamp(0.5rem, 1.2vw, 1.25rem);
+    max-width: var(--max);
+    margin-inline: auto;
+  }
+  .deck-hint { display: none; }
+
+  /* phones: a deck to swipe through, one card and a half in view */
+  @media (max-width: 899px) {
+    .deck {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 62vw;
+      gap: var(--s-4);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--gutter);
+      scrollbar-width: none;
+      overscroll-behavior-x: contain;
+    }
+    .deck::-webkit-scrollbar { display: none; }
+    .deck li { scroll-snap-align: start; }
+    .deck-hint {
+      display: block;
+      padding-inline: var(--gutter);
+      font-family: var(--font-display);
+      font-size: var(--step--1);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-soft);
+    }
+  }
+
+  /* desktop with motion: the procession along the arch (see procession.ts) */
+  .deck-stage.is-procession {
+    height: 100svh;
+    padding: 0;
+    overflow: clip;
+  }
+  .is-procession .deck-head {
+    position: absolute;
+    top: calc(var(--nav-h) + var(--s-5));
+    left: var(--gutter);
+    width: min(32rem, 40vw);
+    margin: 0;
+    z-index: 200;
+  }
+  .is-procession .deck-counter {
+    display: grid;
+    justify-items: end;
+    text-align: right;
+    position: absolute;
+    right: calc(var(--gutter) + 3rem); /* clear of the Passport rail */
+    top: calc(var(--nav-h) + var(--s-5));
+    z-index: 200;
+  }
+  .deck-num {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 7vw, 7.5rem);
+    line-height: 0.85;
+    color: var(--c-magenta);
+    letter-spacing: 0.02em;
+  }
+  .deck-name { font-family: var(--font-display); font-style: italic; font-size: var(--step-3); }
+  .is-procession .deck-orbit {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: var(--apex);
+    width: calc(var(--R) * 2);
+    height: calc(var(--R) * 2);
+    translate: -50% 0;
+    border-radius: 50%;
+    border: 1px dashed color-mix(in oklab, var(--c-gold) 70%, transparent);
+    pointer-events: none;
+  }
+  .is-procession .deck {
+    position: absolute;
+    inset: 0;
+    display: block;
+    padding: 0;
+    max-width: none;
+  }
+  .is-procession .deck li {
+    position: absolute;
+    left: 50%;
+    top: var(--apex);
+    width: var(--card-w);
+    margin-left: calc(var(--card-w) / -2);
+    translate: 0 -50%;
+    transform-origin: 50% 50%;
+    will-change: transform;
+  }
+
+  /* outro */
+  .tarocchi-outro {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: var(--gutter);
+    row-gap: var(--s-7);
+    margin-top: var(--section-dense);
+  }
+  .tarocchi-hand { grid-column: 1 / span 10; max-width: 22ch; }
+  .tarocchi-aim { grid-column: 2 / span 5; }
+  .tarocchi-partners { grid-column: 8 / -1; }
+  .tarocchi-partners .eyebrow { color: var(--c-magenta); margin-bottom: var(--s-3); }
+  .tarocchi-partners-lead { margin-bottom: var(--s-5); color: var(--fg-soft); }
+  .tarocchi-partners ul { list-style: none; padding: 0; display: grid; gap: var(--s-4); }
+  .tarocchi-partners li {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    column-gap: var(--s-3);
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--line);
+  }
+  .tarocchi-partners li :global(.star) { grid-row: span 2; margin-top: 0.3em; }
+  .tarocchi-partners strong { font-family: var(--font-display); font-size: var(--step-2); font-weight: 600; line-height: 1.15; }
+  .tarocchi-partners span { color: var(--fg-soft); }
+
+  @media (max-width: 900px) {
+    .tarocchi-hand, .tarocchi-aim, .tarocchi-partners { grid-column: 1 / -1; }
+    .tarocchi-hand { font-size: var(--step-4); }
+    .ribbon-lead, .ribbon-item { font-size: var(--step-2); }
+  }
+</style>

@@ -21,21 +21,16 @@ page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
 await page.goto(url, { waitUntil: "networkidle0" });
 await new Promise((r) => setTimeout(r, 3600)); // let the opening rite finish
 for (const y of ys.split(",").map(Number)) {
-  // scroll in small wheel steps to the target, like a person would
-  let cur = await page.evaluate(() => window.scrollY);
+  // scroll in wheel steps like a person would; Lenis eases behind the input,
+  // so keep nudging until the page has really arrived
   await page.mouse.move(width / 2, height / 2);
-  while (Math.abs(y - cur) > 4) {
-    const step = Math.max(-240, Math.min(240, y - cur));
+  let cur = await page.evaluate(() => window.scrollY);
+  for (let i = 0; i < 600 && Math.abs(y - cur) > 6; i++) {
+    const step = Math.max(-300, Math.min(300, y - cur));
     if (mobile) await page.evaluate((s) => window.scrollBy(0, s), step);
     else await page.mouse.wheel({ deltaY: step });
-    await new Promise((r) => setTimeout(r, 60));
-    const next = await page.evaluate(() => window.scrollY);
-    if (next === cur && !mobile) { await new Promise((r) => setTimeout(r, 200)); }
+    await new Promise((r) => setTimeout(r, 90));
     cur = await page.evaluate(() => window.scrollY);
-    if (Math.abs(next - cur) < 1 && Math.abs(y - cur) > 4 && next === cur) {
-      const again = await page.evaluate(() => window.scrollY);
-      if (again === cur) break;
-    }
   }
   await new Promise((r) => setTimeout(r, 1400));
   const actual = await page.evaluate(() => Math.round(window.scrollY));

@@ -97,7 +97,7 @@ export function initHero() {
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
-        refreshPriority: 1, // measured before every trigger below it
+        refreshPriority: 2, // measured before every trigger below it
       },
     });
     // modest scale only: very large scaled layers stall the compositor

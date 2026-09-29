@@ -1,0 +1,148 @@
+---
+// I · Visione. The first page of daylight after the arch: airy, one large
+// sentence, the people who build the festival as paper tags on the wall,
+// and the growth of the project edition after edition, told by the moon.
+import Moon from "./art/Moon.astro";
+import Star from "./art/Star.astro";
+import Tape from "./art/Tape.astro";
+import Sun from "./art/Sun.astro";
+
+const who = [
+  ["Artisti", -6, 0.5],
+  ["Studiosi", 4, 0.6],
+  ["Curatori", -3, 0.4],
+  ["Istituzioni culturali", 5, 0.55],
+  ["Aziende", -5, 0.7],
+] as const;
+const grows = [
+  ["opere", "alla Collezione Permanente", 0.12],
+  ["materiali", "all'Archivio", 0.38],
+  ["nuovi contenuti", "", 0.62],
+  ["nuove collaborazioni", "", 1],
+] as const;
+---
+
+<section class="section visione" id="visione" data-scene="day" aria-labelledby="h-visione">
+  <div class="visione-sun" aria-hidden="true" data-speed="0.6"><Sun /></div>
+
+  <div class="wrap visione-grid">
+    <header class="sec-head visione-head">
+      <span class="sec-num" aria-hidden="true">I</span>
+      <h2 class="sec-title" id="h-visione">Visione</h2>
+    </header>
+
+    <p class="statement visione-statement" data-split>
+      Il Festival dei Tarocchi nasce con l'ambizione di diventare il principale appuntamento internazionale dedicato ai
+      Tarocchi come <em>patrimonio artistico, culturale e simbolico.</em>
+    </p>
+
+    <div class="visione-tags" aria-hidden="true">
+      {who.map(([w, r, s]) => (
+        <span class="tag" style={`--r:${r}deg`} data-speed={s}><Star size=".7em" color="var(--c-magenta)" />{w}</span>
+      ))}
+      <Tape rotate={-24} width="3.6rem" style="top:-0.9rem;left:-1.4rem" />
+    </div>
+
+    <div class="visione-body">
+      <p class="lead" data-rise>
+        Artisti, studiosi, curatori, istituzioni culturali e aziende partecipano alla costruzione di un progetto che parte
+        dalla storia dei Tarocchi per produrre nuove opere e nuove interpretazioni.
+      </p>
+    </div>
+
+    <div class="visione-grow" data-rise="0.1">
+      <p class="visione-grow-title">
+        Un progetto <span class="script">pluriennale</span>. Ogni edizione aggiunge:
+      </p>
+      <ul role="list">
+        {grows.map(([a, b, lit]) => (
+          <li>
+            <Moon lit={lit} size="1.6rem" color="var(--c-violet)" shadow="color-mix(in oklab, var(--c-violet) 16%, transparent)" />
+            <span><strong>{a}</strong> {b}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .visione {
+    padding-block: var(--section-airy) var(--section-dense);
+    overflow: clip;
+  }
+  .visione-sun {
+    position: absolute;
+    width: clamp(10rem, 24vw, 22rem);
+    right: -4vw;
+    top: 4vh;
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  :global(.motion) .visione-sun :global(.sun-rays) { transform-box: view-box; animation: turn 180s linear infinite; }
+  @keyframes turn { to { rotate: 360deg; } }
+
+  .visione-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: var(--gutter);
+    row-gap: var(--s-8);
+    position: relative;
+  }
+  .visione-head { grid-column: 1 / -1; margin-bottom: 0; }
+  .visione-statement { grid-column: 1 / span 9; max-width: 25ch; font-size: clamp(2.4rem, 1.6rem + 3vw, 4.4rem); }
+  .visione-tags {
+    grid-column: 10 / -1;
+    grid-row: 2;
+    align-self: end;
+    position: relative;
+    display: grid;
+    justify-items: start;
+    gap: var(--s-4);
+  }
+  .visione-tags .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.55em 1em 0.5em;
+    background: var(--c-paper);
+    box-shadow: 0 2px 0 rgb(24 27 46 / 0.06), 0 10px 22px rgb(24 27 46 / 0.1);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-0);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    rotate: var(--r);
+    clip-path: polygon(0 4%, 12% 0, 40% 3%, 70% 0, 100% 4%, 99% 50%, 100% 96%, 72% 100%, 38% 97%, 8% 100%, 0 94%, 1% 48%);
+  }
+  .visione-tags .tag:nth-child(even) { margin-left: 2.5rem; background: var(--c-rose-paper); }
+  .visione-body { grid-column: 2 / span 5; }
+  .visione-grow { grid-column: 8 / -1; }
+  .visione-grow-title { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.2; margin-bottom: var(--s-5); }
+  .visione-grow-title .script { color: var(--c-violet); }
+  .visione-grow ul { list-style: none; padding: 0; border-top: 1px solid var(--line); }
+  .visione-grow li {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    padding-block: var(--s-3);
+    border-bottom: 1px solid var(--line);
+  }
+  .visione-grow strong { font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .visione { padding-top: var(--section-dense); }
+    .visione-grid { row-gap: var(--s-7); }
+    .visione-statement { grid-column: 1 / -1; font-size: var(--step-4); }
+    .visione-tags {
+      grid-column: 1 / -1;
+      grid-row: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-3);
+    }
+    .visione-tags .tag:nth-child(even) { margin-left: 0; }
+    .visione-body, .visione-grow { grid-column: 1 / -1; }
+    .visione-sun { width: 9rem; right: -2.5rem; top: 1rem; opacity: 0.8; }
+  }
+</style>
