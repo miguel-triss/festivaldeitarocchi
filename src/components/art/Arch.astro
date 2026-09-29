@@ -1,0 +1,62 @@
+---
+// The arch, the leading shape of the identity.
+//  swatch: a filled arch, as the palette chips in the moodboard
+//  portal: a double outline with small lights, as the illuminated portal
+//  frame:  an arch window that crops its content (photos, scenes)
+interface Props {
+  variant?: "swatch" | "portal" | "frame";
+  color?: string;
+  lights?: number;
+  class?: string;
+  style?: string;
+}
+const { variant = "swatch", color = "var(--c-gold)", lights = 17, class: cls = "", style = "" } = Astro.props;
+
+// portal geometry, viewBox 0 0 200 260
+const outer = "M14 260V100A86 86 0 0 1 186 100V260";
+const inner = "M30 260V100A70 70 0 0 1 170 100V260";
+const dots = Array.from({ length: lights }, (_, i) => {
+  const a = Math.PI - (i / (lights - 1)) * Math.PI;
+  return { x: 100 + 78 * Math.cos(a), y: 100 - 78 * Math.sin(a) };
+});
+---
+
+{variant === "portal" ? (
+  <svg class:list={["arch-portal", cls]} viewBox="0 0 200 260" style={`--arch-c:${color};${style}`} aria-hidden="true" focusable="false">
+    <path class="arch-line arch-line--outer" d={outer} />
+    <path class="arch-line arch-line--inner" d={inner} />
+    {dots.map((d) => <circle class="arch-light" cx={d.x.toFixed(1)} cy={d.y.toFixed(1)} r="2.2" />)}
+    <path class="arch-eye" d="M84 36Q100 24 116 36Q100 48 84 36Z" />
+    <circle class="arch-pupil" cx="100" cy="36" r="4" />
+  </svg>
+) : (
+  <div class:list={["arch", `arch--${variant}`, cls]} style={`--arch-c:${color};${style}`}>
+    <slot />
+  </div>
+)}
+
+<style>
+  .arch {
+    border-radius: var(--arch);
+    overflow: hidden;
+    position: relative;
+  }
+  .arch--swatch {
+    background: var(--arch-c);
+    aspect-ratio: 5 / 6;
+  }
+  .arch--frame {
+    isolation: isolate;
+  }
+  .arch--frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .arch-portal { width: 100%; height: auto; overflow: visible; }
+  .arch-line { fill: none; stroke: var(--arch-c); stroke-width: 1.4; }
+  .arch-line--inner { stroke-width: 0.8; opacity: 0.7; }
+  .arch-light { fill: var(--arch-c); }
+  .arch-eye { fill: none; stroke: var(--arch-c); stroke-width: 1.2; }
+  .arch-pupil { fill: var(--arch-c); }
+</style>

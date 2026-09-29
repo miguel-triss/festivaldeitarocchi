@@ -1,0 +1,88 @@
+/* Festival dei Tarocchi: design tokens.
+   The only file with colour values. Palette sampled from design/moodboard.jpg
+   (see brief.md, section 4). Contrast pairs checked with tools/contrast.py:
+   text on cream  -> night-deep 13.1, night 9.5, violet 7.8, green 6.1, magenta 4.6
+   text on night  -> cream 13.1, pink 8.0, gold 5.9 (gold only >= 18px)
+   gold, terracotta, pink on cream fail AA: graphics and large type only. */
+
+:root {
+  /* palette */
+  --c-night-deep: #181b2e; /* notte profonda: fondo del logo */
+  --c-night: #3a2f4f;      /* notte: mistero */
+  --c-violet: #662573;     /* spiritualità, intuizione */
+  --c-magenta: #b23556;    /* creatività, passione */
+  --c-terra: #c4592f;      /* terra, radicamento */
+  --c-gold: #d8851d;       /* luce, energia */
+  --c-pink: #e2a2a2;       /* delicatezza, accoglienza */
+  --c-cream: #f3dfc6;      /* equilibrio, purezza */
+  --c-green: #3d574e;      /* natura, vitalità */
+
+  /* paper tones: mixes of the palette, no new hues */
+  --c-paper: color-mix(in oklab, var(--c-cream) 82%, white);
+  --c-paper-shade: color-mix(in oklab, var(--c-cream) 88%, var(--c-terra));
+  --c-rose-paper: color-mix(in oklab, var(--c-pink) 55%, var(--c-cream));
+  --c-tape: color-mix(in oklab, var(--c-cream) 70%, transparent);
+
+  /* semantic (overridden per scene) */
+  --bg: var(--c-cream);
+  --fg: var(--c-night-deep);
+  --fg-soft: var(--c-night);
+  --accent: var(--c-magenta);
+  --line: color-mix(in oklab, var(--fg) 22%, transparent);
+
+  /* type */
+  --font-display: "Cormorant", "Cormorant Fallback", Georgia, serif;
+  --font-text: "Newsreader", "Newsreader Fallback", Georgia, serif;
+
+  /* fluid scale: 1.25 at 390px -> 1.333 at 1440px */
+  --step--1: clamp(0.83rem, 0.8rem + 0.12vw, 0.9rem);
+  --step-0: clamp(1.05rem, 1rem + 0.2vw, 1.19rem);
+  --step-1: clamp(1.31rem, 1.22rem + 0.38vw, 1.58rem);
+  --step-2: clamp(1.64rem, 1.48rem + 0.66vw, 2.11rem);
+  --step-3: clamp(2.05rem, 1.78rem + 1.1vw, 2.81rem);
+  --step-4: clamp(2.56rem, 2.12rem + 1.8vw, 3.75rem);
+  --step-5: clamp(3.2rem, 2.5rem + 2.9vw, 5rem);
+  --step-6: clamp(4rem, 2.9rem + 4.5vw, 7.2rem);
+  --measure: 38rem;
+
+  /* space: 8pt base, fluid section rhythm */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 3rem);
+  --section-dense: clamp(4rem, 3rem + 5vw, 7rem);
+  --section-airy: clamp(6rem, 4rem + 10vw, 14rem);
+  --max: 90rem;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 0.3s;
+  --dur-base: 0.7s;
+  --dur-slow: 1.2s;
+  --dur-rite: 2s;
+
+  /* shape */
+  --arch: 999px 999px 0 0;
+  --radius: 3px;
+}
+
+/* scenes: the day moves towards night along the page */
+[data-scene="day"] {
+  --bg: var(--c-cream); --fg: var(--c-night-deep); --fg-soft: var(--c-night); --accent: var(--c-magenta);
+}
+[data-scene="rose"] {
+  --bg: var(--c-rose-paper); --fg: var(--c-night-deep); --fg-soft: var(--c-night); --accent: var(--c-violet);
+}
+[data-scene="dusk"] {
+  --bg: var(--c-violet); --fg: var(--c-cream); --fg-soft: var(--c-pink); --accent: var(--c-gold);
+}
+[data-scene="night"] {
+  --bg: var(--c-night-deep); --fg: var(--c-cream); --fg-soft: var(--c-pink); --accent: var(--c-gold);
+}

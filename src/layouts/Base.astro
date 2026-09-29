@@ -1,0 +1,35 @@
+---
+import "../styles/tokens.css";
+import "../styles/base.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+const {
+  title = "Festival dei Tarocchi · Arte, cultura, simbolo, immaginario",
+  description = "Tre giorni alla Fabbrica del Vapore di Milano intorno ai ventidue Arcani Maggiori. Opere d'arte contemporanea, installazioni, incontri, performance.",
+  noindex = false,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#181b2e" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/newsreader-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/cormorant-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Vai al contenuto</a>
+    <slot />
+  </body>
+</html>

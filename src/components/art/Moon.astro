@@ -1,0 +1,56 @@
+---
+// Moon in any phase. `lit` goes 0 (new) to 1 (full). `waning` mirrors it.
+// The crescents of the logo panel are lit≈0.22 rotated slightly.
+interface Props {
+  lit?: number;
+  waning?: boolean;
+  size?: string;
+  color?: string;
+  shadow?: string; // colour of the dark part, "none" to hide it
+  rotate?: number;
+  class?: string;
+  style?: string;
+}
+const {
+  lit = 0.22,
+  waning = false,
+  size = "2rem",
+  color = "var(--c-gold)",
+  shadow = "none",
+  rotate = 0,
+  class: cls = "",
+  style = "",
+} = Astro.props;
+
+const r = 48, c = 50;
+const k = Math.min(1, Math.max(0, lit));
+const rx = Math.abs(1 - 2 * k) * r;
+// right half always lit, terminator ellipse bulges out (k<.5) or in (k>.5)
+const sweep = k < 0.5 ? 0 : 1;
+const d =
+  k >= 0.999
+    ? `M${c} ${c - r}A${r} ${r} 0 1 1 ${c} ${c + r}A${r} ${r} 0 1 1 ${c} ${c - r}Z`
+    : `M${c} ${c - r}A${r} ${r} 0 0 1 ${c} ${c + r}A${rx.toFixed(2)} ${r} 0 0 ${sweep} ${c} ${c - r}Z`;
+const flip = waning ? "translate(100 0) scale(-1 1)" : "";
+---
+
+<svg
+  class:list={["moon", cls]}
+  viewBox="0 0 100 100"
+  width={size}
+  height={size}
+  style={style}
+  aria-hidden="true"
+  focusable="false"
+>
+  <g transform={`rotate(${rotate} 50 50)`}>
+    <g transform={flip}>
+      {shadow !== "none" && <circle cx={c} cy={c} r={r} fill={shadow} />}
+      {k > 0.001 && <path d={d} fill={color} />}
+    </g>
+  </g>
+</svg>
+
+<style>
+  .moon { display: inline-block; flex: none; overflow: visible; }
+</style>

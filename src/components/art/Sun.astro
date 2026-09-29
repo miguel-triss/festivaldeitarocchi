@@ -1,0 +1,24 @@
+---
+// The sun with a face (see src/lib/sun.ts for where it comes from).
+// Rays and disc are separate groups so the rays can turn behind the face.
+import { SUN_VIEWBOX, sunMarkup } from "../../lib/sun";
+interface Props {
+  class?: string;
+  label?: string;
+}
+const { class: cls = "", label } = Astro.props;
+---
+
+<svg
+  class:list={["sun", cls]}
+  viewBox={SUN_VIEWBOX}
+  role={label ? "img" : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}
+  focusable="false"
+  set:html={sunMarkup()}
+/>
+
+<style>
+  .sun { display: block; width: 100%; height: auto; overflow: visible; }
+</style>

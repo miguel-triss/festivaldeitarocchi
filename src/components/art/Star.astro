@@ -1,0 +1,41 @@
+---
+// Stars as drawn in the moodboard: a four point sparkle with fine diagonal
+// glints (logo panel), and the eight point compass star (infographic index).
+interface Props {
+  variant?: "sparkle" | "compass";
+  size?: string;
+  color?: string;
+  class?: string;
+  style?: string;
+}
+const { variant = "sparkle", size = "1.5rem", color = "var(--c-gold)", class: cls = "", style = "" } = Astro.props;
+const point = "M50 0C51.6 36 58 45.5 100 50C58 54.5 51.6 64 50 100C48.4 64 42 54.5 0 50C42 45.5 48.4 36 50 0Z";
+---
+
+<svg
+  class:list={["star", `star--${variant}`, cls]}
+  viewBox="0 0 100 100"
+  width={size}
+  height={size}
+  style={`--star:${color};${style}`}
+  aria-hidden="true"
+  focusable="false"
+>
+  {variant === "sparkle" && (
+    <>
+      <path d={point} fill="var(--star)" />
+      <path d={point} fill="var(--star)" transform="rotate(45 50 50) translate(29 29) scale(.42)" opacity=".8" />
+    </>
+  )}
+  {variant === "compass" && (
+    <>
+      <path d={point} fill="var(--star)" transform="rotate(45 50 50) translate(19 19) scale(.62)" />
+      <path d="M50 0 L55 45 L50 50Z M100 50 L55 55 L50 50Z M50 100 L45 55 L50 50Z M0 50 L45 45 L50 50Z" fill="var(--star)" />
+      <path d="M50 0 L45 45 L50 50Z M100 50 L55 45 L50 50Z M50 100 L55 55 L50 50Z M0 50 L45 55 L50 50Z" fill="var(--star)" opacity=".55" />
+    </>
+  )}
+</svg>
+
+<style>
+  .star { display: inline-block; flex: none; overflow: visible; }
+</style>

@@ -1,0 +1,82 @@
+---
+// Torn paper edge. Profiles are measured from real tears in the design files
+// (tools/extract-paper.py -> src/data/torn-edges.json). Put it at the top or
+// bottom of a block; it is filled with that block's colour and shows a pale
+// fibrous rim, like the torn edges in the moodboard.
+import edges from "../../data/torn-edges.json";
+interface Props {
+  profile?: keyof typeof edges;
+  side?: "top" | "bottom";
+  color?: string;
+  rim?: string | false;
+  depth?: string;
+  mirror?: boolean;
+  class?: string;
+}
+const {
+  profile = "moodboard-bottom",
+  side = "bottom",
+  color = "var(--c-night-deep)",
+  rim = "var(--c-paper)",
+  depth = "clamp(14px, 2.4vw, 34px)",
+  mirror = false,
+  class: cls = "",
+} = Astro.props;
+
+const pts = edges[profile] as number[];
+const W = 1000, H = 100;
+// the measured shape, resampled, plus a fine paper tooth (deterministic)
+const N = 320;
+const tooth = (i: number) => {
+  const s = Math.sin(i * 12.9898 + 78.233) * 43758.5453;
+  return s - Math.floor(s) - 0.5;
+};
+const line: string[] = [];
+for (let i = 0; i <= N; i++) {
+  const f = (i / N) * (pts.length - 1);
+  const k = Math.floor(f), t = f - k;
+  const v = pts[k] * (1 - t) + (pts[Math.min(k + 1, pts.length - 1)] ?? 0) * t;
+  const y = 10 + v * (H - 26) + tooth(i) * 5;
+  line.push(`${((i / N) * W).toFixed(1)} ${y.toFixed(1)}`);
+}
+// block on top, tear below it
+const body = `M0 0H${W}V${line.at(-1)!.split(" ")[1]}L${line.slice().reverse().join("L")}Z`;
+const rimPath = `M0 0H${W}V${(+line.at(-1)!.split(" ")[1] + 8).toFixed(1)}L${line
+  .slice()
+  .reverse()
+  .map((p) => {
+    const [x, y] = p.split(" ").map(Number);
+    return `${x} ${(y + 7 + Math.sin(x * 0.37) * 3).toFixed(1)}`;
+  })
+  .join("L")}Z`;
+const t = [side === "top" ? "scale(1 -1) translate(0 -100)" : "", mirror ? "scale(-1 1) translate(-1000 0)" : ""]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<svg
+  class:list={["torn", `torn--${side}`, cls]}
+  viewBox={`0 0 ${W} ${H}`}
+  preserveAspectRatio="none"
+  style={`--depth:${depth}`}
+  aria-hidden="true"
+  focusable="false"
+>
+  <g transform={t}>
+    {rim && <path d={rimPath} fill={rim} opacity=".85" />}
+    <path d={body} fill={color} />
+  </g>
+</svg>
+
+<style>
+  .torn {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: var(--depth);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .torn--bottom { top: calc(100% - 1px); }
+  .torn--top { bottom: calc(100% - 1px); }
+</style>

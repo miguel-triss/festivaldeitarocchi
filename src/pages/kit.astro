@@ -1,0 +1,243 @@
+---
+// Stage 1: the visual kit, for approval against design/moodboard.jpg.
+// Not linked from the site, noindex. Removed before launch.
+import { Picture } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import Sun from "../components/art/Sun.astro";
+import Wordmark from "../components/art/Wordmark.astro";
+import Star from "../components/art/Star.astro";
+import Moon from "../components/art/Moon.astro";
+import Arch from "../components/art/Arch.astro";
+import Stamp from "../components/art/Stamp.astro";
+import Tape from "../components/art/Tape.astro";
+import TornEdge from "../components/art/TornEdge.astro";
+import Card from "../components/art/Card.astro";
+import fabbrica from "../assets/photos/fabbrica-del-vapore.avif";
+
+const palette = [
+  ["var(--c-night)", "Notte", "Mistero", "#3A2F4F"],
+  ["var(--c-violet)", "Spiritualità", "Intuizione", "#662573"],
+  ["var(--c-magenta)", "Creatività", "Passione", "#B23556"],
+  ["var(--c-terra)", "Terra", "Radicamento", "#C4592F"],
+  ["var(--c-gold)", "Luce", "Energia", "#D8851D"],
+  ["var(--c-pink)", "Delicatezza", "Accoglienza", "#E2A2A2"],
+  ["var(--c-cream)", "Equilibrio", "Purezza", "#F3DFC6"],
+  ["var(--c-green)", "Natura", "Vitalità", "#3D574E"],
+];
+const sky = [
+  [6, 12, 0.9], [14, 58, 0.6], [22, 30, 1.2], [9, 84, 0.7], [31, 76, 0.5], [70, 14, 0.8], [83, 40, 1.1],
+  [92, 70, 0.7], [77, 86, 0.5], [60, 8, 0.5], [40, 90, 0.6], [95, 18, 0.6], [3, 44, 0.5], [88, 92, 0.8],
+];
+---
+
+<Base title="Kit visivo · Festival dei Tarocchi" noindex>
+  <main id="main">
+    <!-- 1. logo panel ---------------------------------------------------- -->
+    <section class="panel" data-scene="night">
+      <div class="panel-sky" aria-hidden="true">
+        {sky.map(([x, y, s]) => <Star size={`${s}rem`} style={`position:absolute;left:${x}%;top:${y}%`} />)}
+        <div class="dust"></div>
+      </div>
+      <div class="panel-inner">
+        <div class="panel-celestial">
+          <span class="crescent"><Moon lit={0.24} size="100%" rotate={-18} waning /></span>
+          <span class="panel-sun"><Sun /></span>
+          <span class="crescent"><Moon lit={0.24} size="100%" rotate={18} /></span>
+        </div>
+        <div class="panel-wordmark"><Wordmark as="h1" /></div>
+        <p class="panel-payoff eyebrow">
+          Arte <Star size=".55em" /> Cultura <Star size=".55em" /> Simbolo <Star size=".55em" /> Immaginario
+        </p>
+      </div>
+      <TornEdge profile="moodboard-bottom" color="var(--c-night-deep)" />
+    </section>
+
+    <!-- 2. palette ------------------------------------------------------ -->
+    <section class="block" data-scene="day">
+      <div class="wrap">
+        <h2 class="eyebrow">Palette colori</h2>
+        <ul class="swatches" role="list">
+          {palette.map(([c, a, b, hex]) => (
+            <li>
+              <Arch variant="swatch" color={c} />
+              <span class="caps">{a}<br />{b}</span>
+              <code>{hex}</code>
+            </li>
+          ))}
+        </ul>
+        <p class="note">Il fondo più profondo, <code>#181B2E</code>, è la notte del pannello del logo. Nessun colore fuori palette: i toni carta sono miscele di crema, rosa e terracotta.</p>
+      </div>
+    </section>
+
+    <!-- 3. type --------------------------------------------------------- -->
+    <section class="block type" data-scene="day">
+      <div class="wrap type-grid">
+        <div>
+          <h2 class="eyebrow">Tipografia</h2>
+          <p class="t-display">Il Festival<br />in breve</p>
+          <p class="t-h2 caps">Come funziona una Dimora</p>
+          <p class="t-script">Arte, cultura, simbolo, immaginario</p>
+        </div>
+        <div>
+          <p class="t-lead">Per tre giorni la Fabbrica del Vapore di Milano ospita un programma costruito intorno ai ventidue Arcani Maggiori.</p>
+          <p>Opere d'arte contemporanea, installazioni, incontri, performance, attività di ricerca ed esperienze aperte al pubblico. Artisti, studiosi, curatori, istituzioni culturali e aziende partecipano alla costruzione del progetto.</p>
+          <p class="t-meta">Titoli: Cormorant · Testo: Newsreader · Corsivo: Cormorant Italic · Logo: tracciato dall'infografica</p>
+          <p>Segnaposto: <span class="placeholder">[DATE DA CONFERMARE]</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. symbols ------------------------------------------------------- -->
+    <section class="block symbols" data-scene="rose">
+      <div class="wrap symbols-grid">
+        <div class="sym">
+          <h2 class="eyebrow">Fasi lunari</h2>
+          <div class="phases">
+            <Moon lit={0.25} waning size="3rem" color="var(--c-night)" />
+            <Moon lit={0.5} waning size="3rem" color="var(--c-night)" />
+            <Moon lit={1} size="3rem" color="var(--c-night)" />
+            <Moon lit={0.5} size="3rem" color="var(--c-night)" />
+            <Moon lit={0.25} size="3rem" color="var(--c-night)" />
+          </div>
+        </div>
+        <div class="sym">
+          <h2 class="eyebrow">Stelle</h2>
+          <div class="stars-row">
+            <Star size="3.5rem" color="var(--c-night)" />
+            <Star variant="compass" size="4.5rem" color="var(--c-terra)" />
+            <Star size="2rem" color="var(--c-gold)" />
+          </div>
+        </div>
+        <div class="sym sym--portal">
+          <h2 class="eyebrow">Il portale</h2>
+          <div class="portal-demo" data-scene="night">
+            <Arch variant="portal" color="var(--c-gold)" />
+          </div>
+        </div>
+        <div class="sym">
+          <h2 class="eyebrow">Timbri del Passaporto</h2>
+          <div class="stamps">
+            <Stamp symbol="sun" numeral="XIX" rotate={-10} />
+            <Stamp symbol="moon" numeral="XVIII" ink="var(--c-violet)" rotate={6} />
+            <Stamp symbol="star" numeral="XVII" ink="var(--c-green)" rotate={-3} />
+            <Stamp symbol="eye" ink="var(--c-terra)" rotate={12} />
+          </div>
+        </div>
+      </div>
+      <TornEdge profile="header-bottom" color="var(--c-rose-paper)" rim={false} mirror />
+    </section>
+
+    <!-- 5. collage ------------------------------------------------------- -->
+    <section class="block collage-block" data-scene="day">
+      <div class="wrap collage">
+        <div class="collage-photo">
+          <Arch variant="frame">
+            <Picture src={fabbrica} alt="La Fabbrica del Vapore a Milano: il lungo edificio in mattoni con le grandi finestre ad arco" widths={[480, 800, 1200]} sizes="(max-width: 700px) 90vw, 45vw" formats={["avif", "webp"]} loading="lazy" />
+          </Arch>
+          <Tape rotate={-7} style="top:-0.8rem;left:18%" />
+          <Tape rotate={9} width="5rem" style="bottom:1.2rem;right:-1.2rem" />
+        </div>
+        <div class="collage-note">
+          <p class="t-script">La Fabbrica può diventare un luogo riconoscibile al quale associare l'appuntamento annuale.</p>
+          <Star size="2.2rem" color="var(--c-night)" />
+          <Tape rotate={3} width="6rem" style="top:-1rem;right:22%" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. cards --------------------------------------------------------- -->
+    <section class="block cards-block" data-scene="dusk">
+      <div class="wrap">
+        <h2 class="eyebrow">Arcani: tre campioni dello stile</h2>
+        <div class="cards">
+          <Card n={0} style="--r:-5deg" />
+          <Card n={17} style="--r:2deg" />
+          <Card n={19} style="--r:-2deg" />
+          <Card n={21} style="--r:5deg" />
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<script>
+  import { startMotion } from "../scripts/motion";
+  startMotion();
+</script>
+
+<style>
+  section { position: relative; background: var(--bg); color: var(--fg); }
+  .block { padding-block: var(--section-dense); }
+
+  /* 1. panel */
+  .panel { padding: clamp(4rem, 10vw, 8rem) var(--gutter) clamp(3.5rem, 8vw, 7rem); overflow: visible; }
+  .panel-sky { position: absolute; inset: 0; overflow: hidden; }
+  .dust {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(1px 1px at 12% 20%, var(--c-gold) 50%, transparent 51%),
+      radial-gradient(1px 1px at 34% 64%, var(--c-gold) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 58% 28%, var(--c-terra) 50%, transparent 51%),
+      radial-gradient(1px 1px at 81% 62%, var(--c-gold) 50%, transparent 51%),
+      radial-gradient(1px 1px at 91% 34%, var(--c-gold) 50%, transparent 51%);
+    background-size: 340px 260px;
+    opacity: 0.8;
+  }
+  .panel-inner { position: relative; max-width: 58rem; margin-inline: auto; text-align: center; }
+  .panel-celestial { display: flex; align-items: center; justify-content: center; gap: clamp(0.5rem, 3vw, 2.5rem); }
+  .panel-sun { width: clamp(9rem, 24vw, 17rem); }
+  .crescent { width: clamp(2.6rem, 6vw, 5rem); }
+  .panel-wordmark { width: min(100%, 42rem); margin: clamp(1rem, 3vw, 2rem) auto 0; }
+  .panel-payoff { letter-spacing: clamp(0.08em, 0.05em + 0.5vw, 0.22em); margin: var(--s-6) auto 0; max-width: none; color: var(--c-cream); display: flex; gap: 0.8em; align-items: center; justify-content: center; flex-wrap: wrap; font-size: clamp(0.72rem, 0.6rem + 0.6vw, 1.1rem); }
+
+  /* 2. palette */
+  .swatches { list-style: none; padding: 0; margin-top: var(--s-6); display: grid; grid-template-columns: repeat(8, 1fr); gap: clamp(0.5rem, 1.5vw, 1.25rem); }
+  .swatches li { display: grid; gap: var(--s-2); align-content: start; text-align: center; }
+  .swatches :global(.arch) { width: 100%; box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--c-night) 18%, transparent); }
+  .swatches .caps { font-size: 0.72rem; line-height: 1.3; letter-spacing: 0.1em; }
+  .swatches code { font-size: 0.7rem; opacity: 0.75; }
+  .note { margin-top: var(--s-6); font-size: var(--step--1); }
+  @media (max-width: 700px) { .swatches { grid-template-columns: repeat(4, 1fr); row-gap: var(--s-6); } }
+
+  /* 3. type */
+  .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-8); align-items: end; }
+  .t-display { font-family: var(--font-display); font-size: var(--step-6); line-height: 0.95; font-weight: 500; margin-top: var(--s-5); text-transform: uppercase; }
+  .t-h2 { font-size: var(--step-3); margin-top: var(--s-5); }
+  .t-script { font-size: var(--step-3); line-height: 1.2; margin-top: var(--s-5); color: var(--c-violet); }
+  .t-lead { font-size: var(--step-1); line-height: 1.45; margin-bottom: var(--s-4); }
+  .t-meta { margin-top: var(--s-5); font-size: var(--step--1); color: var(--fg-soft); }
+  .type-grid p + p { margin-top: var(--s-4); }
+  @media (max-width: 800px) { .type-grid { grid-template-columns: 1fr; gap: var(--s-6); } }
+
+  /* 4. symbols */
+  .symbols-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-7); align-items: start; }
+  .sym .eyebrow { margin-bottom: var(--s-5); }
+  .phases { display: flex; gap: var(--s-2); }
+  .stars-row { display: flex; gap: var(--s-4); align-items: center; }
+  .portal-demo { background: var(--c-night-deep); padding: var(--s-5) var(--s-6) 0; border-radius: var(--arch); max-width: 13rem; }
+  .stamps { display: grid; grid-template-columns: repeat(2, 5.5rem); gap: var(--s-3); }
+  .stamps :global(.stamp) { --size: 5.5rem !important; }
+  @media (max-width: 900px) { .symbols-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .symbols-grid { grid-template-columns: 1fr; } }
+
+  /* 5. collage */
+  .collage-block { padding-top: calc(var(--section-dense) + 2rem); }
+  .collage { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--s-8); align-items: center; }
+  .collage-photo { position: relative; transform: rotate(-1.2deg); }
+  .collage-photo :global(img) { filter: sepia(0.28) saturate(0.92) contrast(1.02) brightness(1.02); }
+  .collage-photo :global(.arch) { aspect-ratio: 4 / 5; box-shadow: 0 0 0 10px var(--c-paper), 0 18px 34px rgb(24 27 46 / 0.25); }
+  .collage-note {
+    position: relative;
+    background: var(--c-rose-paper);
+    padding: var(--s-7) var(--s-6);
+    transform: rotate(1.8deg);
+    clip-path: polygon(0 2%, 8% 0, 22% 3%, 41% 0, 63% 2%, 80% 0, 100% 3%, 98% 36%, 100% 70%, 99% 100%, 70% 97%, 44% 100%, 20% 97%, 0 100%, 2% 60%);
+  }
+  .collage-note .t-script { color: var(--c-night-deep); margin: 0 0 var(--s-5); }
+  @media (max-width: 800px) { .collage { grid-template-columns: 1fr; gap: var(--s-7); } }
+
+  /* 6. cards */
+  .cards { margin-top: var(--s-7); display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1rem, 3vw, 3rem); }
+  .cards :global(.card) { transform: rotate(var(--r)); }
+  @media (max-width: 700px) { .cards { grid-template-columns: 1fr 1fr; } }
+</style>

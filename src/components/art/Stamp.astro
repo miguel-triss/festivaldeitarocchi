@@ -1,0 +1,88 @@
+---
+// A stamp of the Passaporto degli Arcani. Ink is broken up with the paper
+// grain from the moodboard, so it reads as pressed, not printed.
+import Star from "./Star.astro";
+import Moon from "./Moon.astro";
+interface Props {
+  symbol?: "sun" | "moon" | "star" | "arch" | "eye";
+  numeral?: string;
+  label?: string;
+  ink?: string;
+  rotate?: number;
+  size?: string;
+  class?: string;
+}
+const {
+  symbol = "star",
+  numeral,
+  label = "Passaporto degli Arcani",
+  ink = "var(--c-magenta)",
+  rotate = -8,
+  size = "6rem",
+  class: cls = "",
+} = Astro.props;
+const id = `stamp-${Math.random().toString(36).slice(2, 8)}`;
+const ring = `${label.toUpperCase()} · FESTIVAL DEI TAROCCHI · `;
+---
+
+<div class:list={["stamp", cls]} style={`--ink:${ink};--size:${size};--rot:${rotate}deg`} aria-hidden="true">
+  <svg viewBox="0 0 120 120" focusable="false">
+    <defs>
+      <path id={id} d="M60 60m-45 0a45 45 0 1 1 90 0a45 45 0 1 1 -90 0" />
+    </defs>
+    <circle cx="60" cy="60" r="56" class="stamp-ring" />
+    <circle cx="60" cy="60" r="34" class="stamp-ring stamp-ring--thin" />
+    <text class="stamp-text"><textPath href={`#${id}`} textLength="282">{ring}</textPath></text>
+    {numeral && <text x="60" y="84" class="stamp-num" text-anchor="middle">{numeral}</text>}
+  </svg>
+  <span class="stamp-symbol">
+    {symbol === "star" && <Star size="100%" color="var(--ink)" />}
+    {symbol === "moon" && <Moon size="100%" color="var(--ink)" lit={0.25} rotate={-25} />}
+    {symbol === "sun" && (
+      <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" fill="var(--ink)" />{Array.from({ length: 12 }, (_, i) => <path d="M50 4L54 24H46Z" fill="var(--ink)" transform={`rotate(${i * 30} 50 50)`} />)}</svg>
+    )}
+    {symbol === "arch" && (
+      <svg viewBox="0 0 100 100"><path d="M22 92V48A28 28 0 0 1 78 48V92" fill="none" stroke="var(--ink)" stroke-width="7" /></svg>
+    )}
+    {symbol === "eye" && (
+      <svg viewBox="0 0 100 100"><path d="M8 50Q50 12 92 50Q50 88 8 50Z" fill="none" stroke="var(--ink)" stroke-width="6" /><circle cx="50" cy="50" r="13" fill="var(--ink)" /></svg>
+    )}
+  </span>
+</div>
+
+<style>
+  .stamp {
+    position: relative;
+    width: var(--size);
+    aspect-ratio: 1;
+    color: var(--ink);
+    transform: rotate(var(--rot));
+    /* pressed ink: the grain eats into the print */
+    -webkit-mask: url("/textures/ink-mask.webp") 0 0 / 160px;
+    mask: url("/textures/ink-mask.webp") 0 0 / 160px;
+    opacity: 0.9;
+  }
+  .stamp svg { width: 100%; height: 100%; overflow: visible; }
+  .stamp-ring { fill: none; stroke: var(--ink); stroke-width: 3; }
+  .stamp-ring--thin { stroke-width: 1.2; }
+  .stamp-text {
+    fill: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+  }
+  .stamp-num {
+    fill: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+  .stamp-symbol {
+    position: absolute;
+    inset: 36%;
+    display: grid;
+  }
+  .stamp-symbol :global(svg) { width: 100%; height: 100%; }
+</style>

@@ -1,0 +1,25 @@
+---
+// "FESTIVAL DEI TAROCCHI" with the star in the O, traced from the header of
+// design/presentazione-infografica.jpg. Two paths (.wm-line-1, .wm-line-2)
+// so each line can be revealed separately. The real text is always in the
+// DOM for screen readers and search engines.
+import raw from "../../assets/brand/wordmark.svg?raw";
+interface Props {
+  as?: "h1" | "p" | "div";
+  color?: string;
+  class?: string;
+}
+const { as: Tag = "p", color = "var(--c-cream)", class: cls = "" } = Astro.props;
+const inner = raw.replace(/<svg[^>]*>/, "").replace("</svg>", "");
+const viewBox = raw.match(/viewBox="([^"]+)"/)![1];
+---
+
+<Tag class:list={["wordmark", cls]} style={`color:${color}`}>
+  <span class="sr-only">Festival dei Tarocchi</span>
+  <svg viewBox={viewBox} aria-hidden="true" focusable="false" fill="currentColor" set:html={inner} />
+</Tag>
+
+<style>
+  .wordmark { margin: 0; line-height: 0; }
+  .wordmark svg { width: 100%; height: auto; overflow: visible; }
+</style>
