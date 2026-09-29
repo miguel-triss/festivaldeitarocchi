@@ -1,0 +1,226 @@
+---
+// Top bar and full menu. The bar is a strip of paper so it reads on every
+// scene. The menu opens as a night sky under an arch, one line per section,
+// numbered like the Arcana. Native <dialog>: focus trap and Esc for free.
+import Star from "./art/Star.astro";
+import Moon from "./art/Moon.astro";
+import Arch from "./art/Arch.astro";
+import { sections, CONTACT_EMAIL, mailto } from "../data/sections";
+---
+
+<header class="nav" data-nav>
+  <a class="nav-brand" href="#top" aria-label="Festival dei Tarocchi, torna all'inizio">
+    <Star size="1.1rem" color="var(--c-magenta)" />
+    <span class="nav-brand-text">Festival dei Tarocchi</span>
+  </a>
+  <div class="nav-actions">
+    <a class="nav-cta" href="#partecipa" data-magnetic>Richiedi il masterplan</a>
+    <button class="nav-menu" type="button" aria-haspopup="dialog" aria-controls="menu" data-magnetic>
+      <span class="nav-menu-label">Menu</span>
+      <span class="nav-menu-icon" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+</header>
+
+<dialog class="menu" id="menu" aria-label="Menu">
+  <div class="menu-sky" aria-hidden="true">
+    <Moon lit={0.24} size="3rem" rotate={-18} waning class="menu-moon" />
+    <div class="menu-portal"><Arch variant="portal" color="var(--c-gold)" lights={25} /></div>
+    <Star size="1.2rem" style="position:absolute;left:8%;top:18%" />
+    <Star size=".7rem" style="position:absolute;left:44%;top:9%" />
+    <Star size=".9rem" style="position:absolute;left:18%;bottom:14%" />
+  </div>
+  <div class="menu-inner">
+    <button class="menu-close" type="button">Chiudi</button>
+    <nav aria-label="Sezioni">
+      <ol class="menu-list" role="list">
+        {sections.map((s) => (
+          <li>
+            <a href={`#${s.id}`}>
+              <span class="menu-num">{s.numeral}</span>
+              <span class="menu-title">{s.title}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+    <div class="menu-foot">
+      <a class="btn btn--gold" href={mailto("Masterplan · Festival dei Tarocchi")}>Richiedi il masterplan</a>
+      <a class="menu-mail" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: var(--s-3) var(--s-3) auto;
+    z-index: 50;
+    height: calc(var(--nav-h) - var(--s-4));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding: 0 var(--s-2) 0 var(--s-5);
+    background: color-mix(in oklab, var(--c-paper) 94%, transparent);
+    color: var(--c-night-deep);
+    border-radius: 999px 999px 0.5rem 0.5rem;
+    box-shadow: 0 6px 20px rgb(24 27 46 / 0.14);
+    transition: translate var(--dur-base) var(--ease-out);
+  }
+  .nav.is-hidden { translate: 0 calc(-100% - var(--s-4)); }
+  .nav-brand {
+    display: flex; align-items: center; gap: 0.6em;
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step--1);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .nav-actions { display: flex; align-items: center; gap: var(--s-2); height: 100%; padding-block: var(--s-2); }
+  .nav-cta, .nav-menu {
+    height: 100%;
+    display: inline-flex; align-items: center; gap: 0.7em;
+    padding: 0 1.3em;
+    border-radius: 999px 999px 0.3rem 0.3rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step--1);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--c-night-deep);
+    background: none;
+    cursor: pointer;
+    transition: background-color var(--dur-fast), color var(--dur-fast);
+  }
+  .nav-cta { background: var(--c-night-deep); color: var(--c-cream); }
+  .nav-cta:hover { background: var(--c-magenta); border-color: var(--c-magenta); }
+  .nav-menu:hover { background: var(--c-night-deep); color: var(--c-cream); }
+  .nav-menu-icon { display: grid; gap: 4px; width: 16px; }
+  .nav-menu-icon i { display: block; height: 1.5px; background: currentColor; }
+  .nav-menu-icon i:last-child { width: 60%; justify-self: end; }
+  :global(html:not(.js)) .nav-menu { display: none; }
+
+  /* menu */
+  .menu {
+    position: fixed;
+    inset: 0;
+    width: 100%; height: 100%;
+    max-width: none; max-height: none;
+    margin: 0; padding: 0;
+    border: 0;
+    background: var(--c-night-deep);
+    color: var(--c-cream);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .menu::backdrop { background: transparent; }
+  .menu-sky { position: absolute; inset: 0; pointer-events: none; }
+  .menu-sky :global(.menu-moon) { position: absolute; top: 14%; right: 12%; }
+  .menu-portal { position: absolute; right: -6vw; bottom: 0; height: 88%; aspect-ratio: 200 / 260; opacity: 0.22; }
+  .menu-portal :global(svg) { width: 100%; height: 100%; }
+  @media (max-width: 700px) { .menu-portal { right: -30vw; height: 60%; } }
+  .menu-inner {
+    position: relative;
+    min-height: 100%;
+    display: grid;
+    align-content: center;
+    gap: var(--s-7);
+    width: min(100% - 2 * var(--gutter), 60rem);
+    margin-inline: auto;
+    padding-block: var(--s-9) var(--s-7);
+  }
+  .menu-close {
+    position: absolute;
+    top: var(--s-5); right: 0;
+    background: none; border: 1px solid currentColor; color: inherit;
+    border-radius: 999px 999px 0.3rem 0.3rem;
+    padding: 0.7em 1.3em;
+    font-family: var(--font-display); font-weight: 700;
+    font-size: var(--step--1); letter-spacing: 0.16em; text-transform: uppercase;
+    cursor: pointer;
+  }
+  .menu-list { list-style: none; padding: 0; columns: 2; column-gap: var(--s-8); }
+  .menu-list li { break-inside: avoid; }
+  .menu-list a {
+    display: grid;
+    grid-template-columns: 3.2em 1fr;
+    align-items: baseline;
+    padding: 0.35em 0;
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in oklab, var(--c-cream) 16%, transparent);
+  }
+  .menu-num { font-family: var(--font-display); font-size: var(--step--1); letter-spacing: 0.14em; color: var(--c-gold); }
+  .menu-title { font-family: var(--font-display); font-size: var(--step-3); line-height: 1.15; transition: color var(--dur-fast); }
+  .menu-list a:hover .menu-title, .menu-list a:focus-visible .menu-title { color: var(--c-pink); font-style: italic; }
+  .menu-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-5); }
+  .menu-mail { color: var(--c-pink); }
+
+  @media (max-width: 700px) {
+    .nav { padding-left: var(--s-4); }
+    .nav-cta { display: none; }
+    .nav-brand-text { font-size: 0.72rem; letter-spacing: 0.14em; }
+    .menu-list { columns: 1; }
+    .menu-title { font-size: var(--step-2); }
+  }
+</style>
+
+<script>
+  import { gsap, reduced, getLenis } from "../scripts/motion";
+
+  const nav = document.querySelector<HTMLElement>("[data-nav]")!;
+  const menu = document.querySelector<HTMLDialogElement>("#menu")!;
+  const openBtn = nav.querySelector<HTMLButtonElement>(".nav-menu")!;
+  const closeBtn = menu.querySelector<HTMLButtonElement>(".menu-close")!;
+  const items = menu.querySelectorAll(".menu-list li, .menu-foot");
+
+  function open() {
+    menu.showModal();
+    openBtn.setAttribute("aria-expanded", "true");
+    getLenis()?.stop();
+    if (!reduced) {
+      gsap.fromTo(menu, { clipPath: "inset(0 0 100% 0 round 0 0 50% 50%)" }, { clipPath: "inset(0 0 0% 0 round 0 0 0% 0%)", duration: 0.8, ease: "expo.out" });
+      gsap.fromTo(items, { y: 24, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.035, duration: 0.7, delay: 0.15, ease: "expo.out" });
+    }
+  }
+  function close(then?: () => void) {
+    const done = () => {
+      menu.close();
+      openBtn.setAttribute("aria-expanded", "false");
+      getLenis()?.start();
+      then?.();
+    };
+    if (reduced) return done();
+    gsap.to(menu, { clipPath: "inset(0 0 100% 0 round 0 0 50% 50%)", duration: 0.5, ease: "power3.in", onComplete: done });
+  }
+
+  openBtn.setAttribute("aria-expanded", "false");
+  openBtn.addEventListener("click", open);
+  closeBtn.addEventListener("click", () => close());
+  menu.addEventListener("cancel", (e) => { e.preventDefault(); close(); });
+  menu.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) =>
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const target = a.getAttribute("href")!;
+      close(() => {
+        const lenis = getLenis();
+        const el = document.querySelector<HTMLElement>(target);
+        if (lenis && el) lenis.scrollTo(el, { duration: 1.4 });
+        else el?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+        el?.setAttribute("tabindex", "-1");
+        el?.focus({ preventScroll: true });
+      });
+    }),
+  );
+
+  // hide the bar while reading down, bring it back on the way up
+  let last = window.scrollY;
+  window.addEventListener("scroll", () => {
+    const y = window.scrollY;
+    const down = y > last && y > window.innerHeight * 0.6;
+    nav.classList.toggle("is-hidden", down && !nav.contains(document.activeElement));
+    last = y;
+  }, { passive: true });
+</script>

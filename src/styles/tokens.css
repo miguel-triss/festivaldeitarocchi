@@ -68,6 +68,8 @@
   --dur-slow: 1.2s;
   --dur-rite: 2s;
 
+  --nav-h: clamp(3.75rem, 3rem + 2vw, 4.75rem);
+
   /* shape */
   --arch: 999px 999px 0 0;
   --radius: 3px;

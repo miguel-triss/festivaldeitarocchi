@@ -1,12 +1,44 @@
 ---
-// The landing page. Built section by section after the kit is approved.
 import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import Passport from "../components/Passport.astro";
+import Cursor from "../components/Cursor.astro";
+import { sections } from "../data/sections";
 ---
 
 <Base>
-  <main id="main" class="wrap" style="padding-block: 20vh">
-    <h1>Festival dei Tarocchi</h1>
-    <p class="script" style="font-size: var(--step-2)">Arte, cultura, simbolo, immaginario</p>
-    <p>In costruzione. Kit visivo: <a href="/kit">/kit</a></p>
+  <Nav />
+  <main id="main">
+    <Hero />
+    {/* Stage 2: the sections below are empty stubs, built one at a time next. */}
+    {sections.map((s) => (
+      <section class="stub" id={s.id} data-scene={s.scene} aria-labelledby={`h-${s.id}`}>
+        <div class="wrap">
+          <p class="eyebrow">{s.numeral}</p>
+          <h2 id={`h-${s.id}`}>{s.title}</h2>
+          <p class="placeholder">[SEZIONE IN COSTRUZIONE]</p>
+        </div>
+      </section>
+    ))}
   </main>
+  <Passport />
+  <Cursor />
 </Base>
+
+<script>
+  import { startMotion } from "../scripts/motion";
+  import { initHero } from "../scripts/hero";
+  startMotion();
+  initHero();
+</script>
+
+<style>
+  .stub {
+    min-height: 90svh;
+    padding-block: var(--section-dense);
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .stub h2 { font-size: var(--step-5); margin-block: var(--s-3) var(--s-5); }
+</style>

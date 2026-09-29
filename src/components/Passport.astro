@@ -1,0 +1,147 @@
+---
+// Passaporto degli Arcani: the page's progress indicator. "Ogni Dimora
+// lascia un segno sul Passaporto": here every section does. One empty ring
+// per section; at the end of a section its stamp is pressed in. The rings
+// are also links, so the rail doubles as a quiet table of contents.
+import { sections } from "../data/sections";
+
+const glyph: Record<string, string> = {
+  sun: `<circle cx="12" cy="12" r="4.2"/>${Array.from({ length: 8 }, (_, i) => `<path d="M12 3.2l1 3.2h-2z" transform="rotate(${i * 45} 12 12)"/>`).join("")}`,
+  moon: `<path d="M14.5 5.2a7 7 0 1 0 0 13.6a5.6 5.6 0 0 1 0-13.6z"/>`,
+  star: `<path d="M12 4c.3 5 .9 7.3 8 8c-7.1.7-7.7 3-8 8c-.3-5-.9-7.3-8-8c7.1-.7 7.7-3 8-8z"/>`,
+  arch: `<path d="M7 19v-7a5 5 0 0 1 10 0v7" fill="none" stroke="currentColor" stroke-width="2"/>`,
+  eye: `<path d="M3.5 12q8.5-7.5 17 0q-8.5 7.5-17 0z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.6"/>`,
+};
+---
+
+<nav class="passport" aria-label="Passaporto degli Arcani" data-passport>
+  <p class="passport-title" aria-hidden="true">Passaporto</p>
+  <ol role="list">
+    {sections.map((s, i) => (
+      <li>
+        <a href={`#${s.id}`} data-stamp={s.id} style={`--tilt:${((i * 37) % 23) - 11}deg`}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle class="ring" cx="12" cy="12" r="11" />
+            <g class="ink" set:html={glyph[s.symbol]} />
+          </svg>
+          <span class="passport-label"><span class="passport-num">{s.numeral}</span> {s.title}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .passport {
+    position: fixed;
+    right: var(--s-4);
+    top: 50%;
+    translate: 0 -50%;
+    z-index: 40;
+    display: grid;
+    justify-items: center;
+    gap: var(--s-3);
+    padding: var(--s-4) var(--s-2);
+    background: color-mix(in oklab, var(--c-paper) 92%, transparent);
+    color: var(--c-night-deep);
+    border-radius: 999px;
+    box-shadow: 0 6px 18px rgb(24 27 46 / 0.12);
+    transition: opacity var(--dur-base) var(--ease-out), translate var(--dur-base) var(--ease-out);
+  }
+  .passport.is-away { opacity: 0; translate: 150% -50%; pointer-events: none; }
+  .passport-title {
+    writing-mode: vertical-rl;
+    rotate: 180deg;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--c-night);
+  }
+  ol { list-style: none; padding: 0; display: grid; gap: 0.4rem; }
+  a {
+    position: relative;
+    display: block;
+    width: 1.6rem;
+    height: 1.6rem;
+    color: var(--c-magenta);
+    border-radius: 50%;
+  }
+  svg { width: 100%; height: 100%; overflow: visible; }
+  .ring { fill: none; stroke: var(--c-night); stroke-width: 1; stroke-dasharray: 2 2.4; opacity: 0.55; }
+  .ink { fill: currentColor; opacity: 0; transform-origin: 12px 12px; }
+  a.is-stamped .ring { stroke: currentColor; stroke-dasharray: none; stroke-width: 1.6; opacity: 0.9; }
+  a.is-stamped .ink { opacity: 0.92; }
+  a.is-stamped svg { rotate: var(--tilt); }
+  a[aria-current="true"] .ring { stroke: var(--c-night-deep); stroke-dasharray: none; opacity: 1; stroke-width: 1.6; }
+
+  .passport-label {
+    position: absolute;
+    right: calc(100% + var(--s-4));
+    top: 50%;
+    translate: 0.5rem -50%;
+    white-space: nowrap;
+    padding: 0.35em 0.8em;
+    background: var(--c-night-deep);
+    color: var(--c-cream);
+    border-radius: 999px 999px 0.25rem 0.25rem;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-fast), translate var(--dur-fast) var(--ease-out);
+  }
+  .passport-num { color: var(--c-gold); letter-spacing: 0.1em; margin-right: 0.3em; }
+  a:hover .passport-label, a:focus-visible .passport-label { opacity: 1; translate: 0 -50%; }
+
+  /* the rail is a desktop companion; on phones the stamps live in the sections */
+  @media (max-width: 900px), (max-height: 560px) {
+    .passport { display: none; }
+  }
+</style>
+
+<script>
+  import { gsap, ScrollTrigger, reduced } from "../scripts/motion";
+
+  const rail = document.querySelector<HTMLElement>("[data-passport]");
+  if (rail) {
+    const links = [...rail.querySelectorAll<HTMLAnchorElement>("[data-stamp]")];
+    const hero = document.querySelector<HTMLElement>(".hero");
+
+    // out of the way during the hero: the journey has not started yet
+    if (hero) {
+      rail.classList.add("is-away");
+      ScrollTrigger.create({
+        trigger: hero,
+        start: "top top",
+        end: "bottom 70%",
+        onLeave: () => rail.classList.remove("is-away"),
+        onEnterBack: () => rail.classList.add("is-away"),
+      });
+    }
+
+    links.forEach((a) => {
+      const section = document.getElementById(a.dataset.stamp!);
+      if (!section) return;
+      const ink = a.querySelector(".ink");
+      // pressed at the end of the section, lifted if you scroll back above it
+      ScrollTrigger.create({
+        trigger: section,
+        start: "bottom 65%",
+        onEnter: () => {
+          a.classList.add("is-stamped");
+          if (!reduced) gsap.fromTo(ink, { scale: 1.9, opacity: 0 }, { scale: 1, opacity: 0.92, duration: 0.45, ease: "back.out(2.2)" });
+        },
+        onLeaveBack: () => a.classList.remove("is-stamped"),
+      });
+      // current section
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 50%",
+        end: "bottom 50%",
+        onToggle: (self) => a.setAttribute("aria-current", String(self.isActive)),
+      });
+    });
+  }
+</script>

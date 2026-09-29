@@ -1,0 +1,87 @@
+---
+// A small star that follows the pointer, desktop with a fine pointer only.
+// Over links and buttons it turns and opens into a ring, like a lens.
+// Magnetic elements ([data-magnetic]) lean towards it.
+---
+
+<div class="cursor" aria-hidden="true">
+  <svg class="cursor-star" viewBox="0 0 100 100">
+    <path d="M50 0C51.6 36 58 45.5 100 50C58 54.5 51.6 64 50 100C48.4 64 42 54.5 0 50C42 45.5 48.4 36 50 0Z" />
+  </svg>
+  <span class="cursor-ring"></span>
+</div>
+
+<style>
+  .cursor {
+    position: fixed;
+    left: 0; top: 0;
+    z-index: 300;
+    width: 0; height: 0;
+    pointer-events: none;
+    display: none;
+  }
+  :global(html.has-cursor) .cursor { display: block; }
+  :global(html.has-cursor),
+  :global(html.has-cursor a),
+  :global(html.has-cursor button) { cursor: none; }
+  .cursor-star {
+    position: absolute;
+    width: 20px; height: 20px;
+    translate: -50% -50%;
+    fill: var(--c-magenta);
+    stroke: var(--c-cream);
+    stroke-width: 5;
+    paint-order: stroke;
+    transition: scale var(--dur-fast) var(--ease-out), rotate var(--dur-base) var(--ease-out), opacity var(--dur-fast);
+  }
+  .cursor-ring {
+    position: absolute;
+    width: 46px; height: 46px;
+    translate: -50% -50%;
+    border: 1.2px solid var(--c-magenta);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--c-cream) 60%, transparent);
+    scale: 0.3;
+    opacity: 0;
+    transition: scale var(--dur-base) var(--ease-out), opacity var(--dur-fast);
+  }
+  .cursor.is-link .cursor-star { rotate: 45deg; scale: 0.7; }
+  .cursor.is-link .cursor-ring { scale: 1; opacity: 1; }
+  .cursor.is-down .cursor-star { scale: 0.6; }
+  .cursor.is-out { opacity: 0; }
+</style>
+
+<script>
+  import { gsap, reduced, finePointer } from "../scripts/motion";
+
+  if (finePointer && !reduced) {
+    const el = document.querySelector<HTMLElement>(".cursor")!;
+    document.documentElement.classList.add("has-cursor");
+    const x = gsap.quickTo(el, "x", { duration: 0.35, ease: "power3.out" });
+    const y = gsap.quickTo(el, "y", { duration: 0.35, ease: "power3.out" });
+    const interactive = "a, button, [role='button'], summary, label, input, textarea, select";
+
+    window.addEventListener("pointermove", (e) => {
+      x(e.clientX); y(e.clientY);
+      el.classList.remove("is-out");
+      el.classList.toggle("is-link", !!(e.target as Element).closest?.(interactive));
+    }, { passive: true });
+    document.addEventListener("pointerleave", () => el.classList.add("is-out"));
+    window.addEventListener("pointerdown", () => el.classList.add("is-down"));
+    window.addEventListener("pointerup", () => el.classList.remove("is-down"));
+
+    // magnetic: the element leans a third of the way towards the pointer
+    document.querySelectorAll<HTMLElement>("[data-magnetic]").forEach((m) => {
+      const mx = gsap.quickTo(m, "x", { duration: 0.5, ease: "power3.out" });
+      const my = gsap.quickTo(m, "y", { duration: 0.5, ease: "power3.out" });
+      m.addEventListener("pointermove", (e) => {
+        const r = m.getBoundingClientRect();
+        mx((e.clientX - (r.left + r.width / 2)) * 0.3);
+        my((e.clientY - (r.top + r.height / 2)) * 0.35);
+      });
+      m.addEventListener("pointerleave", () => {
+        gsap.to(m, { x: 0, y: 0, duration: 0.9, ease: "elastic.out(1, 0.45)", overwrite: true });
+      });
+    });
+  }
+</script>
