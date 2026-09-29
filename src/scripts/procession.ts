@@ -34,7 +34,8 @@ export function initProcession() {
       x: gsap.quickSetter(c, "x", "px"),
       y: gsap.quickSetter(c, "y", "px"),
       r: gsap.quickSetter(c, "rotation", "deg"),
-      s: gsap.quickSetter(c, "scale"),
+      sx: gsap.quickSetter(c, "scaleX"), // the "scale" shorthand is not settable
+      sy: gsap.quickSetter(c, "scaleY"),
       o: gsap.quickSetter(c, "opacity"),
     }));
 
@@ -49,7 +50,9 @@ export function initProcession() {
         set.x(R * Math.sin(a));
         set.y(R * (1 - Math.cos(a)) - lift * 28);
         set.r(d * STEP);
-        set.s(0.8 + lift * 0.3 - Math.min(ad, 6) * 0.02);
+        const sc = 0.8 + lift * 0.3 - Math.min(ad, 6) * 0.02;
+        set.sx(sc);
+        set.sy(sc);
         set.o(ad > 6 ? 0 : Math.min(1, 6.2 - ad));
         c.style.zIndex = String(100 - Math.round(ad * 4));
       });

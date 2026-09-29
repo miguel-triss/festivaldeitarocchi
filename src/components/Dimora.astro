@@ -1,0 +1,176 @@
+---
+// V · Come funziona una Dimora. Five rooms, one behind the other.
+// Desktop with motion: pinned, you walk through the doorways one by one while
+// the text beside them changes (enfilade.ts). Elsewhere: the five doors side by
+// side as in the infographic (phones: one under the other).
+import Door from "./art/Door.astro";
+import Stamp from "./art/Stamp.astro";
+
+const rooms = [
+  {
+    key: "intro", title: "Introduzione", room: "var(--c-violet)",
+    text: "Una prima sezione presenta l'Arcano, la sua storia, la sua iconografia e alcune delle interpretazioni che lo hanno accompagnato nel tempo.",
+  },
+  {
+    key: "opera", title: "Sala dell'Opera", room: "var(--c-night-deep)",
+    text: "È il centro della Dimora. Qui viene presentata l'opera dell'artista chiamato a lavorare sull'Arcano.",
+  },
+  {
+    key: "installazione", title: "Installazione", room: "var(--c-magenta)",
+    text: "L'allestimento viene progettato a partire dall'opera e può utilizzare luce, suono, immagini, materiali, video o tecnologie digitali.",
+  },
+  {
+    key: "programma", title: "Programma culturale", room: "var(--c-terra)",
+    text: "La Dimora può ospitare incontri, conversazioni, performance, laboratori e altre attività legate all'Arcano.",
+  },
+  {
+    key: "passaporto", title: "Passaporto", room: "var(--c-green)",
+    text: "All'uscita viene apposto sul Passaporto il segno corrispondente alla Dimora visitata.",
+  },
+] as const;
+const EXIT = "var(--c-gold)";
+const nextOf = (i: number) => (i < rooms.length - 1 ? rooms[i + 1].room : EXIT);
+const numerals = ["I", "II", "III", "IV", "V"];
+---
+
+<section class="section dimora" id="dimore" data-scene="rose" aria-labelledby="h-dimore">
+  <div class="wrap">
+    <header class="sec-head">
+      <span class="sec-num" aria-hidden="true">V</span>
+      <h2 class="sec-title" id="h-dimore">Come funziona una Dimora</h2>
+    </header>
+    <p class="statement dimora-statement" data-split>
+      Ogni Dimora è dedicata a uno dei ventidue Arcani Maggiori. La sua struttura prevede <em>cinque elementi.</em>
+    </p>
+  </div>
+
+  <div class="dimora-stage" data-enfilade>
+    <ol class="rooms" role="list">
+      {rooms.map((r, i) => (
+        <li class="room" data-room={i}>
+          <Door room={r.room} next={nextOf(i)} emblem={r.key} class="room-door" />
+          <div class="room-text">
+            <p class="room-num" aria-hidden="true">{numerals[i]}<span> / V</span></p>
+            <h3>{r.title}</h3>
+            <p>{r.text}</p>
+            {r.key === "passaporto" && (
+              <div class="room-stamp" data-room-stamp>
+                <Stamp symbol="arch" numeral="V" ink="var(--c-green)" rotate={-10} size="6.5rem" label="Dimora" />
+              </div>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <div class="enfilade" aria-hidden="true">
+      {rooms.map((r, i) => <Door room={r.room} next={nextOf(i)} emblem={r.key} class="layer" />)}
+      <Door room={EXIT} next={EXIT} emblem="exit" class="layer" />
+    </div>
+    <div class="enfilade-steps" aria-hidden="true">
+      {rooms.map((r) => <span class="step" title={r.title}></span>)}
+    </div>
+  </div>
+
+  <div class="wrap">
+    <p class="dimora-same lead" data-rise>
+      La stessa struttura viene applicata alle diverse Dimore, mentre <em>contenuti, artisti e allestimenti</em> cambiano
+      in relazione all'Arcano.
+    </p>
+  </div>
+</section>
+
+<style>
+  .dimora { padding-block: var(--section-dense); }
+  .dimora-statement { max-width: 24ch; }
+
+  /* static: five doors in a row, text under each (the infographic panels) */
+  .dimora-stage { position: relative; margin-block: var(--s-8); }
+  .rooms {
+    list-style: none;
+    width: min(100% - 2 * var(--gutter), var(--max));
+    margin-inline: auto;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--gutter);
+  }
+  .room { display: grid; gap: var(--s-4); align-content: start; }
+  .room :global(.room-door) { width: 100%; }
+  .room-num { font-family: var(--font-display); font-weight: 700; font-size: var(--step--1); letter-spacing: 0.16em; color: var(--c-violet); }
+  .room-num span { opacity: 0.5; }
+  .room h3 { font-size: var(--step-2); margin-block: var(--s-1) var(--s-2); }
+  .room-text > p:not(.room-num) { font-size: var(--step--1); line-height: 1.55; }
+  .room-stamp { margin-top: var(--s-4); }
+  .enfilade, .enfilade-steps { display: none; }
+
+  .dimora-same { max-width: 40rem; margin-left: auto; padding-left: var(--s-5); border-left: 2px solid var(--c-violet); }
+  .dimora-same em { font-family: var(--font-display); font-size: 1.15em; color: var(--c-violet); }
+
+  @media (max-width: 900px) {
+    .dimora-statement { font-size: var(--step-4); }
+    .rooms { grid-template-columns: minmax(0, 1fr); gap: var(--s-8); }
+    .room { grid-template-columns: 7.5rem minmax(0, 1fr); gap: var(--s-5); align-items: start; }
+    .room h3 { font-size: var(--step-2); }
+    .room-text > p:not(.room-num) { font-size: var(--step-0); }
+  }
+
+  /* desktop with motion: the walk (enfilade.ts adds .is-enfilade) */
+  .dimora-stage.is-enfilade {
+    height: 100svh;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    overflow: clip;
+  }
+  .is-enfilade .rooms {
+    position: relative;
+    width: auto;
+    margin: 0;
+    padding-left: var(--gutter);
+    display: block;
+    align-self: center;
+    height: 60%;
+  }
+  .is-enfilade .room {
+    position: absolute;
+    inset: 0 var(--s-7) 0 var(--gutter);
+    align-content: center;
+  }
+  .is-enfilade :global(.room-door) { display: none; }
+  .is-enfilade .room h3 { font-size: var(--step-5); line-height: 1; }
+  .is-enfilade .room-text > p:not(.room-num) { font-size: var(--step-1); max-width: 28rem; }
+  .is-enfilade .room-num { font-size: var(--step-0); }
+  .is-enfilade .enfilade {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    margin: var(--nav-h) var(--gutter) 0 0;
+    border-radius: 999px 999px 0 0; /* the room you stand in is an arch too */
+    background: color-mix(in oklab, var(--c-rose-paper) 80%, var(--c-pink));
+  }
+  .is-enfilade :global(.layer) {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    height: 92%;
+    translate: -50% 0;
+    transform-origin: 50% 100%;
+    will-change: transform;
+  }
+  .is-enfilade .enfilade-steps {
+    display: flex;
+    gap: var(--s-2);
+    position: absolute;
+    left: var(--gutter);
+    bottom: var(--s-7);
+  }
+  .step {
+    width: 1.1rem;
+    aspect-ratio: 1 / 1.3;
+    border-radius: 999px 999px 0 0;
+    border: 1px solid var(--c-violet);
+    transition: background-color var(--dur-base);
+  }
+  .step.is-on { background: var(--c-violet); }
+</style>
