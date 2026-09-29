@@ -9,6 +9,7 @@ import Festival from "../components/Festival.astro";
 import Fabbrica from "../components/Fabbrica.astro";
 import Dimora from "../components/Dimora.astro";
 import Contenuti from "../components/Contenuti.astro";
+import Partner from "../components/Partner.astro";
 import Cursor from "../components/Cursor.astro";
 import { sections } from "../data/sections";
 ---
@@ -24,7 +25,8 @@ import { sections } from "../data/sections";
     <Fabbrica />
     <Dimora />
     <Contenuti />
-    {sections.slice(6).map((s) => (
+    <Partner />
+    {sections.slice(7).map((s) => (
       <section class="stub" id={s.id} data-scene={s.scene} aria-labelledby={`h-${s.id}`}>
         <div class="wrap">
           <p class="eyebrow">{s.numeral}</p>
@@ -46,11 +48,13 @@ import { sections } from "../data/sections";
   import { initFestival } from "../scripts/festival";
   import { initEnfilade } from "../scripts/enfilade";
   import { initContenuti } from "../scripts/contenuti";
+  import { initPartner } from "../scripts/partner";
   startMotion();
   initProcession();
   initFestival();
   initEnfilade();
   initContenuti();
+  initPartner();
   initReveals();
   initHero();
 </script>

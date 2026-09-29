@@ -1,0 +1,429 @@
+---
+// VII · Diventare partner. Dusk: the day turns violet and the first stars
+// come out. Three movements:
+//  1. why: three reasons are three stars, joined into a constellation
+//  2. the four levels: four arches (violet, magenta, gold, green, as in the
+//     infographic) rise on a torn cream sheet and open their doors
+//  3. Partner Experience: the formats hang as banners on a string, swaying
+//     with the speed of the scroll
+import Star from "./art/Star.astro";
+import Moon from "./art/Moon.astro";
+import Sun from "./art/Sun.astro";
+import TornEdge from "./art/TornEdge.astro";
+import { mailto } from "../data/sections";
+
+const reasons = [
+  {
+    t: "Un solo luogo",
+    d: "La Fabbrica del Vapore concentra pubblico, programma, opere, performance e attività nei tre giorni: il partner è presente dentro la manifestazione, senza frammentare l'intervento in sedi differenti.",
+    x: 10, y: 16,
+  },
+  {
+    t: "Una struttura precisa",
+    d: "I ventidue Arcani offrono una struttura narrativa e visiva. Un partner può sostenere l'intero Festival oppure legarsi a una Dimora, a un'opera, a un'attività o a un progetto commissionato.",
+    x: 47, y: 58,
+  },
+  {
+    t: "Oltre i tre giorni",
+    d: "La collaborazione può continuare con contenuti editoriali, documentazione, pubblicazioni, Collezione Permanente e progetti sviluppati insieme al Festival.",
+    x: 84, y: 20,
+  },
+];
+
+const levels = [
+  {
+    n: "I", title: "Partner del Festival", tone: "violet", emblem: "sun",
+    lead: "Sostiene la manifestazione nel suo complesso.",
+    text: "Il brand è associato alla comunicazione generale del Festival, ai principali materiali e alle attività istituzionali.",
+  },
+  {
+    n: "II", title: "Partner di Dimora", tone: "magenta", emblem: "arch",
+    lead: "Sostiene una specifica Dimora degli Arcani.",
+    text: "Produzione dell'opera, allestimento, attività culturali o l'intero progetto della Dimora. L'associazione a un Arcano permette di sviluppare contenuti dedicati.",
+  },
+  {
+    n: "III", title: "Partner Experience", tone: "gold", emblem: "moon",
+    lead: "Sostiene o sviluppa insieme al Festival un progetto specifico destinato al pubblico.",
+    text: "La forma viene definita sulla base della natura dell'azienda e del contesto nel quale il progetto viene inserito.",
+  },
+  {
+    n: "IV", title: "Technical Partner", tone: "green", emblem: "leaf",
+    lead: "Fornisce tecnologie, prodotti, materiali o servizi.",
+    text: "Gli ambiti possono comprendere illuminazione, audio, video, tecnologia, allestimenti, mobilità, hospitality, stampa e produzione.",
+  },
+];
+
+const formats = [
+  ["una commissione artistica", "sostenuta dal partner"],
+  ["un'installazione", "per una Dimora o per l'Hub"],
+  ["un talk o una conversazione", "inseriti nel programma"],
+  ["un workshop", "o una masterclass"],
+  ["un laboratorio", "aperto al pubblico"],
+  ["un progetto editoriale", ""],
+  ["una performance", ""],
+  ["un progetto educational", ""],
+  ["un intervento", "per la Notte degli Arcani"],
+];
+const flagTones = ["magenta", "gold", "cream", "terra", "pink", "violet", "gold", "magenta", "night"];
+const flagSymbols = ["star", "sun", "moon", "star", "eye", "arch", "star", "moon", "sun"];
+const sky: [number, number, number][] = [[4, 10, 0.6], [22, 40, 0.4], [34, 8, 0.5], [63, 12, 0.7], [72, 44, 0.4], [93, 60, 0.5], [58, 88, 0.4], [16, 80, 0.5]];
+---
+
+<section class="section partner" id="partner" data-scene="dusk" aria-labelledby="h-partner">
+  <!-- 1 · why -->
+  <div class="dusk-sky" aria-hidden="true">
+    {sky.map(([x, y, s]) => <span style={`left:${x}%;top:${y}%`}><Star size={`${s}rem`} color="var(--c-pink)" /></span>)}
+  </div>
+  <div class="wrap">
+    <header class="sec-head">
+      <span class="sec-num" aria-hidden="true">VII</span>
+      <h2 class="sec-title" id="h-partner">Diventare partner</h2>
+    </header>
+    <p class="statement partner-statement" data-split>
+      Il Festival offre ai partner diversi livelli di <em>presenza e partecipazione.</em>
+    </p>
+
+    <div class="constellation" data-constellation>
+      <svg class="constellation-lines" aria-hidden="true">
+        {reasons.slice(1).map((r, i) => (
+          <line x1={`${reasons[i].x}%`} y1={`${reasons[i].y}%`} x2={`${r.x}%`} y2={`${r.y}%`} />
+        ))}
+      </svg>
+      <ol class="reasons" role="list">
+        {reasons.map((r, i) => (
+          <li class="reason" style={`--x:${r.x}%;--y:${r.y}%`}>
+            <span class="reason-star" aria-hidden="true"><Star size="100%" color="var(--c-gold)" /></span>
+            <h3><span class="reason-num" aria-hidden="true">{["I", "II", "III"][i]}</span>{r.t}</h3>
+            <p>{r.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+
+  <!-- 2 · the four levels, on a sheet of cream paper -->
+  <div class="sheet" data-scene="day">
+    <TornEdge profile="moodboard-bottom" side="top" color="var(--c-cream)" rim="var(--c-paper)" />
+    <div class="wrap">
+      <div class="levels-head">
+        <h3 class="levels-title" data-split>I livelli di partnership</h3>
+        <p class="levels-sub">Quattro principali modalità di collaborazione.</p>
+      </div>
+
+      <ol class="levels" role="list" data-levels>
+        {levels.map((l) => (
+          <li class:list={["level", `level--${l.tone}`]}>
+            <div class="level-arch">
+              <div class="level-inside">
+                <span class="level-emblem" aria-hidden="true">
+                  {l.emblem === "sun" && <span class="level-sun"><Sun /></span>}
+                  {l.emblem === "moon" && <Moon lit={0.3} size="100%" rotate={-20} color="var(--c-night-deep)" />}
+                  {l.emblem === "arch" && (
+                    <svg viewBox="0 0 60 60"><path d="M14 56V30A16 16 0 0 1 46 30V56" fill="none" stroke="currentColor" stroke-width="3" /><path d="M21 56V32A9 9 0 0 1 39 32V56" fill="none" stroke="currentColor" stroke-width="1.4" /><circle cx="30" cy="12" r="2.6" fill="currentColor" /></svg>
+                  )}
+                  {l.emblem === "leaf" && (
+                    <svg viewBox="0 0 60 60"><path d="M30 58C30 40 31 26 34 8" fill="none" stroke="currentColor" stroke-width="2" />{[[31, 44, -40], [32, 34, 40], [33, 24, -44], [34, 15, 38]].map(([x, y, d]) => <path d="M0 0Q8 -5 16 0Q8 5 0 0Z" fill="currentColor" transform={`translate(${x} ${y}) rotate(${d > 0 ? d - 180 : d})`} />)}</svg>
+                  )}
+                </span>
+                <p class="level-n" aria-hidden="true">{l.n}</p>
+                <h4 class="level-title">{l.title}</h4>
+                <p class="level-lead">{l.lead}</p>
+                <p class="level-text">{l.text}</p>
+              </div>
+              <div class="level-doors" aria-hidden="true">
+                <span class="leaf leaf--l"><span class="leaf-num">{l.n}</span></span>
+                <span class="leaf leaf--r"><span class="leaf-star"><Star size="100%" color="var(--c-gold)" /></span></span>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div class="levels-foot">
+        <p class="levels-built" data-rise>
+          La partnership viene costruita in relazione agli <em>obiettivi dell'azienda</em> e alle caratteristiche concrete
+          del progetto sostenuto.
+        </p>
+        <div class="levels-cta" data-rise="0.1">
+          <p class="levels-note">Quote, benefit e condizioni economiche sono definiti nella proposta commerciale.</p>
+          <a class="btn btn--ink" href="#partecipa" data-magnetic>Richiedi il masterplan</a>
+          <a class="levels-mail" href={mailto("Partnership · Festival dei Tarocchi")}>oppure scrivici</a>
+        </div>
+      </div>
+    </div>
+    <TornEdge profile="header-bottom" side="bottom" color="var(--c-cream)" rim={false} />
+  </div>
+
+  <!-- 3 · Partner Experience: banners on a string -->
+  <div class="experience">
+    <div class="wrap">
+      <h3 class="experience-title" data-split>Partner Experience: <em>alcuni formati possibili</em></h3>
+      <p class="experience-sub">Le Partner Experience vengono progettate caso per caso. Possono comprendere:</p>
+    </div>
+
+    <div class="bunting" data-bunting>
+      <svg class="bunting-string" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M-10 6Q500 70 1010 6" />
+      </svg>
+      <ul class="flags" role="list">
+        {formats.map(([a, b], i) => {
+          const t = (i + 0.5) / formats.length;
+          const sag = 4 * t * (1 - t); // the string sags in the middle
+          return (
+            <li class:list={["flag", `flag--${flagTones[i]}`]} style={`--sag:${sag.toFixed(3)};--d:${(i * 0.37).toFixed(2)}s`}>
+              <span class="flag-cloth">
+                <span class="flag-symbol" aria-hidden="true">
+                  {flagSymbols[i] === "star" && <Star size="100%" color="currentColor" />}
+                  {flagSymbols[i] === "moon" && <Moon lit={0.28} size="100%" rotate={-20} color="currentColor" />}
+                  {flagSymbols[i] === "sun" && <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="7" fill="currentColor" />{Array.from({ length: 12 }, (_, k) => <path d="M20 4L21.5 10H18.5Z" fill="currentColor" transform={`rotate(${k * 30} 20 20)`} />)}</svg>}
+                  {flagSymbols[i] === "eye" && <svg viewBox="0 0 40 40"><path d="M4 20Q20 6 36 20Q20 34 4 20Z" fill="none" stroke="currentColor" stroke-width="2.4" /><circle cx="20" cy="20" r="5" fill="currentColor" /></svg>}
+                  {flagSymbols[i] === "arch" && <svg viewBox="0 0 40 40"><path d="M10 36V18A10 10 0 0 1 30 18V36" fill="none" stroke="currentColor" stroke-width="3" /></svg>}
+                </span>
+                <span class="flag-text"><strong>{a}</strong>{b && <span> {b}</span>}</span>
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+
+    <div class="wrap experience-close">
+      <p class="statement experience-statement" data-split>Il punto di partenza è <em>il contenuto.</em></p>
+      <p class="lead" data-rise>
+        La presenza del partner viene costruita intorno al progetto sostenuto, evitando inserimenti estranei alla natura
+        culturale del Festival.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .partner {
+    padding-block: var(--section-dense) 0;
+    background: linear-gradient(to bottom, var(--c-violet) 0%, var(--c-violet) 60%, color-mix(in oklab, var(--c-violet) 55%, var(--c-night-deep)) 100%);
+    overflow-x: clip;
+  }
+  .dusk-sky { position: absolute; inset: 0 0 auto; height: 110svh; pointer-events: none; }
+  .dusk-sky span { position: absolute; }
+  :global(.motion) .dusk-sky :global(svg) { animation: twinkle-d 4.5s ease-in-out infinite; }
+  .dusk-sky span:nth-child(2n) :global(svg) { animation-delay: -1.7s; }
+  .dusk-sky span:nth-child(3n) :global(svg) { animation-delay: -3.1s; }
+  @keyframes twinkle-d { 50% { opacity: 0.3; } }
+  .partner-statement { max-width: 20ch; }
+  .partner-statement :global(em) { color: var(--c-gold); }
+
+  /* 1 · constellation */
+  .constellation { position: relative; height: clamp(30rem, 44vw, 38rem); margin-top: var(--s-8); }
+  .constellation-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .constellation-lines line { stroke: var(--c-gold); stroke-width: 1; stroke-dasharray: 2 6; opacity: 0.8; }
+  .reasons { list-style: none; padding: 0; margin: 0; }
+  .reason {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: min(22rem, 30%);
+    translate: -1.2rem -1.2rem;
+    display: grid;
+    gap: var(--s-2);
+  }
+  .reason:nth-child(3) { translate: calc(-100% + 1.2rem) -1.2rem; text-align: right; justify-items: end; }
+  .reason-star { width: 2.4rem; height: 2.4rem; display: block; filter: drop-shadow(0 0 10px color-mix(in oklab, var(--c-gold) 70%, transparent)); }
+  .reason h3 { font-size: var(--step-3); display: flex; gap: 0.5em; align-items: baseline; }
+  .reason:nth-child(3) h3 { flex-direction: row-reverse; }
+  .reason-num { font-size: var(--step--1); letter-spacing: 0.14em; color: var(--c-gold); }
+  .reason p { color: color-mix(in oklab, var(--c-cream) 88%, var(--c-pink)); font-size: var(--step--1); line-height: 1.6; }
+
+  /* 2 · the sheet and the levels */
+  .sheet {
+    position: relative;
+    margin-top: var(--section-dense);
+    padding-block: var(--section-dense);
+    background: var(--c-cream);
+    color: var(--c-night-deep);
+  }
+  .levels-head { display: flex; justify-content: space-between; align-items: end; gap: var(--s-6); flex-wrap: wrap; }
+  .levels-title { font-size: var(--step-5); line-height: 1; }
+  .levels-sub { font-family: var(--font-display); font-style: italic; font-size: var(--step-1); color: var(--c-night); }
+
+  .levels {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--s-8);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(0.75rem, 1.6vw, 1.75rem);
+    align-items: end;
+  }
+  .level { --tone: var(--c-violet); --ink: var(--c-cream); }
+  .level--magenta { --tone: var(--c-magenta); }
+  .level--gold { --tone: var(--c-gold); --ink: var(--c-night-deep); }
+  .level--green { --tone: var(--c-green); }
+  .level-arch {
+    position: relative;
+    min-height: clamp(30rem, 40vw, 36rem);
+    border-radius: 999px 999px 0.4rem 0.4rem;
+    background:
+      url("/textures/paper-grain.webp") 0 0 / 200px,
+      var(--tone);
+    background-blend-mode: soft-light;
+    color: var(--ink);
+    overflow: hidden;
+    perspective: 900px;
+    box-shadow: 0 24px 40px -18px rgb(24 27 46 / 0.45), inset 0 0 0 1px color-mix(in oklab, var(--c-gold) 60%, transparent);
+    transition: translate var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+  }
+  .level-arch:hover { translate: 0 -8px; box-shadow: 0 34px 50px -18px rgb(24 27 46 / 0.5), inset 0 0 0 1px var(--c-gold); }
+  .level-inside {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--s-2);
+    padding: 32% var(--s-5) var(--s-6);
+    min-height: inherit;
+  }
+  .level-emblem {
+    position: absolute;
+    top: 9%;
+    left: 50%;
+    width: 30%;
+    translate: -50% 0;
+    color: var(--ink);
+    display: block;
+  }
+  .level-emblem :global(svg) { width: 100%; height: auto; display: block; }
+  .level-sun { display: block; --sun-gold: var(--c-gold); }
+  .level-sun :global(.sun) { width: 140%; margin-left: -20%; }
+  .level-n { font-family: var(--font-display); font-weight: 700; letter-spacing: 0.18em; font-size: var(--step--1); opacity: 0.75; margin-top: var(--s-4); }
+  .level-title { font-size: var(--step-3); line-height: 1.05; }
+  .level-lead { font-family: var(--font-display); font-style: italic; font-size: var(--step-1); line-height: 1.25; margin-top: var(--s-2); }
+  .level-text { font-size: var(--step--1); line-height: 1.55; opacity: 0.92; }
+
+  /* the doors: two leaves that swing open (motion only) */
+  .level-doors { display: none; }
+  :global(.motion) .level-doors {
+    display: block;
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    pointer-events: none;
+  }
+  .leaf {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background:
+      url("/textures/paper-grain.webp") 0 0 / 200px,
+      color-mix(in oklab, var(--tone) 78%, var(--c-night-deep));
+    background-blend-mode: soft-light;
+    backface-visibility: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .leaf--l { left: 0; transform-origin: 0% 50%; box-shadow: inset -1px 0 0 color-mix(in oklab, var(--c-gold) 70%, transparent); }
+  .leaf--r { right: 0; transform-origin: 100% 50%; box-shadow: inset 1px 0 0 color-mix(in oklab, var(--c-gold) 70%, transparent); }
+  .leaf-num {
+    justify-self: end;
+    margin-right: 18%;
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    color: var(--c-gold);
+  }
+  .leaf-star { justify-self: start; margin-left: 18%; width: 1.4rem; height: 1.4rem; display: block; }
+
+  .levels-foot {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: var(--s-8);
+    align-items: end;
+    margin-top: var(--section-dense);
+  }
+  .levels-built { font-family: var(--font-display); font-size: var(--step-3); line-height: 1.2; }
+  .levels-built em { color: var(--c-magenta); }
+  .levels-cta { display: grid; gap: var(--s-4); justify-items: start; }
+  .levels-note { font-family: var(--font-display); font-style: italic; color: var(--c-night); }
+  .levels-mail { font-size: var(--step--1); color: var(--c-violet); }
+
+  /* 3 · Partner Experience */
+  .experience { padding-block: var(--section-dense) var(--section-airy); }
+  .experience-title { font-size: var(--step-4); line-height: 1.05; max-width: 22ch; }
+  .experience-title :global(em) { color: var(--c-gold); }
+  .experience-sub { margin-top: var(--s-4); color: var(--c-pink); }
+
+  .bunting { position: relative; margin-top: var(--s-8); padding-inline: var(--gutter); }
+  @media (min-width: 901px) and (min-height: 561px) { .bunting { padding-inline: calc(var(--gutter) + 2.5rem); } }
+  .bunting-string { position: absolute; left: 0; top: 0; width: 100%; height: 4.5rem; overflow: visible; }
+  .bunting-string path { fill: none; stroke: var(--c-cream); stroke-width: 1.3; opacity: 0.7; vector-effect: non-scaling-stroke; }
+  .flags {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: clamp(0.4rem, 1vw, 1rem);
+    max-width: 92rem;
+    margin-inline: auto;
+  }
+  .flag {
+    --cloth: var(--c-magenta);
+    --text: var(--c-cream);
+    padding-top: calc(0.6rem + var(--sag) * 3.1rem);
+    transform-origin: 50% 0;
+  }
+  .flag--gold { --cloth: var(--c-gold); --text: var(--c-night-deep); }
+  .flag--cream { --cloth: var(--c-cream); --text: var(--c-night-deep); }
+  .flag--terra { --cloth: var(--c-terra); --text: var(--c-night-deep); }
+  .flag--pink { --cloth: var(--c-pink); --text: var(--c-night-deep); }
+  .flag--violet { --cloth: color-mix(in oklab, var(--c-violet) 60%, var(--c-night-deep)); }
+  .flag--night { --cloth: var(--c-night-deep); }
+  .flag-cloth {
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: var(--s-3);
+    min-height: 17rem;
+    padding: var(--s-5) var(--s-3) var(--s-8);
+    background:
+      url("/textures/paper-grain.webp") 0 0 / 160px,
+      var(--cloth);
+    background-blend-mode: soft-light;
+    color: var(--text);
+    text-align: center;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
+    transform-origin: 50% 0;
+    box-shadow: inset 0 3px 0 color-mix(in oklab, var(--c-night-deep) 25%, transparent);
+  }
+  :global(.motion) .flag-cloth { animation: sway 5.5s ease-in-out var(--d) infinite; }
+  @keyframes sway { 0%, 100% { rotate: -1.6deg; } 50% { rotate: 1.6deg; } }
+  .flag-symbol { width: 1.9rem; height: 1.9rem; display: block; }
+  .flag-symbol :global(svg) { width: 100%; height: 100%; }
+  .flag-text { font-size: 0.92rem; line-height: 1.35; }
+  .flag-text strong { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(1rem, 0.7rem + 0.5vw, 1.2rem); line-height: 1.15; margin-bottom: 0.2em; }
+
+  .experience-close { display: grid; grid-template-columns: 7fr 5fr; gap: var(--s-8); align-items: end; margin-top: var(--section-dense); }
+  .experience-statement :global(em) { color: var(--c-gold); }
+
+  @media (max-width: 1100px) {
+    .levels { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--s-6); }
+    .flags { grid-template-columns: repeat(9, 9.5rem); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-inline: var(--gutter); }
+    .flags::-webkit-scrollbar { display: none; }
+    .flag { scroll-snap-align: start; }
+  }
+  @media (max-width: 900px) {
+    .partner-statement, .experience-statement { font-size: var(--step-4); }
+    .constellation { height: auto; margin-top: var(--s-7); }
+    .constellation-lines { display: none; }
+    .reasons { display: grid; gap: var(--s-7); border-left: 1px dashed var(--c-gold); padding-left: var(--s-5); }
+    .reason, .reason:nth-child(3) { position: static; width: auto; translate: none; text-align: left; justify-items: start; }
+    .reason:nth-child(3) h3 { flex-direction: row; }
+    .reason-star { margin-left: calc(-1 * var(--s-5) - 1.2rem); margin-bottom: calc(-1 * var(--s-6)); width: 2.2rem; height: 2.2rem; }
+    .reason p { font-size: var(--step-0); }
+    .levels-title { font-size: var(--step-4); }
+    .levels-foot, .experience-close { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+  }
+  @media (max-width: 600px) {
+    .levels { grid-template-columns: minmax(0, 1fr); }
+    .level-arch { min-height: 0; }
+    .level-inside { padding-top: 40%; }
+    .level-emblem { width: 22%; top: 8%; }
+  }
+</style>
