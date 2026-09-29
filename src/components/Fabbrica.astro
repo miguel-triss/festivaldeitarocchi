@@ -1,0 +1,220 @@
+---
+// IV · Fabbrica del Vapore. The place. Its long brick hall already has arched
+// windows, so the photo opens inside an arch that widens as you arrive. Then a
+// schematic of how the festival sits in it (Hub at the centre, the Dimore and
+// the other spaces around), and why one venue matters.
+import { Picture } from "astro:assets";
+import Star from "./art/Star.astro";
+import Tape from "./art/Tape.astro";
+import TornEdge from "./art/TornEdge.astro";
+import fabbrica from "../assets/photos/fabbrica-del-vapore.avif";
+
+const spaces = ["incontri", "attività", "performance", "bookshop", "aree partner"];
+const reasons = [
+  ["Una sede unica", "Il programma si concentra in un solo luogo: il pubblico può dedicare diverse ore al Festival senza spostamenti in città."],
+  ["Ambienti distinti", "Le Dimore possono avere allestimenti, opere e atmosfere differenti pur appartenendo allo stesso Festival."],
+  ["Un luogo riconoscibile", "La Fabbrica può diventare un elemento stabile dell'identità della manifestazione, associato all'appuntamento annuale."],
+];
+// schematic geometry: 22 small arches on a ring around the Hub
+const R = 118;
+const arches = Array.from({ length: 22 }, (_, i) => {
+  const a = (i / 22) * Math.PI * 2 - Math.PI / 2;
+  return { x: 200 + R * Math.cos(a), y: 200 + R * Math.sin(a), deg: (a * 180) / Math.PI + 90 };
+});
+const outer = spaces.map((s, i) => {
+  const a = (i / spaces.length) * Math.PI * 2 - Math.PI / 2 + 0.35;
+  return { s, x: 200 + 176 * Math.cos(a), y: 200 + 176 * Math.sin(a) };
+});
+---
+
+<section class="section fabbrica" id="fabbrica" data-scene="day" aria-labelledby="h-fabbrica">
+  <TornEdge profile="header-bottom" side="top" color="var(--c-cream)" rim={false} />
+  <div class="wrap">
+    <header class="sec-head">
+      <span class="sec-num" aria-hidden="true">IV</span>
+      <h2 class="sec-title" id="h-fabbrica">Fabbrica del Vapore</h2>
+    </header>
+    <p class="statement fabbrica-statement" data-split>
+      La Fabbrica del Vapore di Milano è la <em>sede ideale</em> del Festival.
+    </p>
+  </div>
+
+  <div class="fabbrica-photo" data-fabbrica-photo>
+    <div class="fabbrica-frame">
+      <Picture
+        src={fabbrica}
+        alt="La Fabbrica del Vapore a Milano: il lungo edificio in mattoni con le grandi finestre ad arco, le panchine e il totem d'ingresso"
+        widths={[640, 1000, 1363]}
+        sizes="(max-width: 900px) 100vw, 90vw"
+        formats={["avif", "webp"]}
+        fallbackFormat="webp"
+        loading="lazy"
+        decoding="async"
+        class="fabbrica-img"
+      />
+    </div>
+    <p class="fabbrica-caption" aria-hidden="true"><Star size=".7em" color="var(--c-gold)" /> Milano</p>
+  </div>
+
+  <div class="wrap fabbrica-plan">
+    <div class="plan-text">
+      <p class="lead" data-rise>
+        La struttura del complesso permette di riunire le diverse componenti della manifestazione mantenendo una forte
+        distinzione tra gli ambienti.
+      </p>
+      <p data-rise="0.1">
+        L'Hub Principale organizza l'ingresso e i servizi comuni; intorno si distribuiscono le Dimore, gli spazi per gli
+        incontri, le attività, le performance, il bookshop e le aree dedicate ai partner.
+      </p>
+    </div>
+
+    <figure class="plan" data-plan>
+      <svg viewBox="-10 -10 420 420" role="img" aria-labelledby="plan-cap">
+        <circle class="plan-orbit" cx="200" cy="200" r="176" />
+        <circle class="plan-orbit plan-orbit--in" cx="200" cy="200" r={R} />
+        {arches.map((a) => (
+          <path class="plan-arch" d="M-8 10V-1A8 8 0 0 1 8 -1V10Z" transform={`translate(${a.x.toFixed(1)} ${a.y.toFixed(1)}) rotate(${a.deg.toFixed(1)})`} />
+        ))}
+        {outer.map((o) => (
+          <g class="plan-space" transform={`translate(${o.x.toFixed(1)} ${o.y.toFixed(1)})`}>
+            <circle r="5" />
+            <text y="-11" text-anchor="middle">{o.s}</text>
+          </g>
+        ))}
+        <circle class="plan-hub" cx="200" cy="200" r="54" />
+        <text class="plan-hub-label" x="200" y="196" text-anchor="middle">Hub</text>
+        <text class="plan-hub-label plan-hub-label--sm" x="200" y="214" text-anchor="middle">Principale</text>
+        <text class="plan-dimore" x="200" y={200 - R + 26} text-anchor="middle">Dimore</text>
+      </svg>
+      <figcaption id="plan-cap">
+        Schema indicativo: l'Hub al centro, intorno le Dimore (ventidue nella configurazione completa) e gli spazi per
+        incontri, attività, performance, bookshop e partner.
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <ul class="reasons" role="list">
+      {reasons.map(([t, d], i) => (
+        <li data-rise={i * 0.08}>
+          <span class="reason-mark" aria-hidden="true"><Star size="1.1rem" color="var(--c-magenta)" /></span>
+          <h3>{t}</h3>
+          <p>{d}</p>
+        </li>
+      ))}
+    </ul>
+
+    <aside class="opencity" data-rise>
+      <Tape rotate={-5} width="5rem" style="top:-1rem;left:8%" />
+      <p class="eyebrow">In futuro</p>
+      <p>
+        Singoli progetti potranno essere realizzati anche con musei, fondazioni, università, gallerie, biblioteche e altri
+        luoghi culturali di Milano, fino a un programma <strong class="script">Milano Open City</strong>, mantenendo la
+        Fabbrica del Vapore come sede principale.
+      </p>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .fabbrica { padding-block: var(--section-dense) var(--section-airy); }
+  .fabbrica-statement { max-width: 18ch; }
+
+  /* photo inside an arch; with motion the arch widens (see festival.ts) */
+  .fabbrica-photo { position: relative; margin-block: var(--s-8); padding-inline: var(--gutter); }
+  .fabbrica-frame {
+    position: relative;
+    height: clamp(26rem, 78svh, 52rem);
+    max-width: var(--max);
+    margin-inline: auto;
+    overflow: hidden;
+    border-radius: 45vw 45vw 0.5rem 0.5rem / 38vw 38vw 0.5rem 0.5rem;
+  }
+  .fabbrica-frame :global(picture), .fabbrica-frame :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .fabbrica-frame :global(img) {
+    object-fit: cover;
+    object-position: 38% 50%;
+    /* warm, analog, as the moodboard photography */
+    filter: sepia(0.3) saturate(0.88) contrast(1.03) brightness(1.02);
+  }
+  :global(.motion) .fabbrica-frame :global(img) { height: 116%; margin-top: -8%; }
+  .fabbrica-caption {
+    position: absolute;
+    right: calc(var(--gutter) + var(--s-5));
+    bottom: var(--s-5);
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    padding: 0.4em 0.9em;
+    background: var(--c-paper);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    rotate: 2deg;
+  }
+
+  .fabbrica-plan {
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    gap: var(--s-8);
+    align-items: center;
+  }
+  .plan-text { display: grid; gap: var(--s-5); }
+  .plan { margin: 0; }
+  .plan svg { width: 100%; max-width: 32rem; margin-inline: auto; overflow: visible; }
+  .plan-orbit { fill: none; stroke: var(--c-night); stroke-width: 1; stroke-dasharray: 3 5; opacity: 0.5; }
+  .plan-orbit--in { stroke: var(--c-magenta); opacity: 0.6; }
+  .plan-arch { fill: var(--c-magenta); }
+  .plan-space circle { fill: var(--c-violet); }
+  .plan-space text, .plan-dimore {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    fill: var(--c-night-deep);
+  }
+  .plan-dimore { fill: var(--c-magenta); font-style: italic; letter-spacing: 0.04em; font-size: 15px; }
+  .plan-hub { fill: var(--c-gold); }
+  .plan-hub-label { font-family: var(--font-display); font-size: 22px; font-weight: 600; fill: var(--c-night-deep); }
+  .plan-hub-label--sm { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
+  .plan figcaption { margin-top: var(--s-4); font-size: var(--step--1); color: var(--fg-soft); text-align: center; max-width: 30rem; margin-inline: auto; }
+
+  .reasons {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gutter);
+    margin-top: var(--section-dense);
+  }
+  .reasons li { border-top: 1px solid var(--line); padding-top: var(--s-5); display: grid; gap: var(--s-3); align-content: start; }
+  .reasons h3 { font-size: var(--step-3); }
+  .reasons p { color: var(--fg-soft); }
+
+  .opencity {
+    position: relative;
+    margin-top: var(--section-dense);
+    margin-left: auto;
+    max-width: 40rem;
+    padding: var(--s-7) var(--s-6) var(--s-6);
+    background: var(--c-rose-paper);
+    rotate: -1deg;
+    clip-path: polygon(0 3%, 14% 0, 44% 3%, 76% 0, 100% 2%, 99% 50%, 100% 98%, 70% 100%, 36% 97%, 6% 100%, 0 96%, 1% 50%);
+  }
+  .opencity .eyebrow { color: var(--c-violet); margin-bottom: var(--s-3); }
+  .opencity .script { font-size: 1.2em; color: var(--c-violet); font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .fabbrica-statement { font-size: var(--step-4); }
+    .fabbrica-frame { height: 62svh; border-radius: 50vw 50vw 0.5rem 0.5rem / 44vw 44vw 0.5rem 0.5rem; }
+    .fabbrica-plan { grid-template-columns: 1fr; }
+    .reasons { grid-template-columns: 1fr; gap: var(--s-6); }
+    .opencity { rotate: 0deg; }
+  }
+</style>
