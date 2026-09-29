@@ -5,11 +5,9 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import { Flip } from "gsap/Flip";
 import Lenis from "lenis";
 
-gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, MotionPathPlugin, Flip);
+gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin);
 
 export const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 export const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -44,4 +42,4 @@ export function getLenis() {
   return lenis;
 }
 
-export { gsap, ScrollTrigger, SplitText, DrawSVGPlugin, MotionPathPlugin, Flip };
+export { gsap, ScrollTrigger, SplitText, DrawSVGPlugin };

@@ -64,7 +64,7 @@ const formats = [
   ["un progetto educational", ""],
   ["un intervento", "per la Notte degli Arcani"],
 ];
-const flagTones = ["magenta", "gold", "cream", "terra", "pink", "violet", "gold", "magenta", "night"];
+const flagTones = ["magenta", "gold", "cream", "terra", "pink", "green", "gold", "magenta", "night"];
 const flagSymbols = ["star", "sun", "moon", "star", "eye", "arch", "star", "moon", "sun"];
 const sky: [number, number, number][] = [[4, 10, 0.6], [22, 40, 0.4], [34, 8, 0.5], [63, 12, 0.7], [72, 44, 0.4], [93, 60, 0.5], [58, 88, 0.4], [16, 80, 0.5]];
 ---
@@ -165,7 +165,7 @@ const sky: [number, number, number][] = [[4, 10, 0.6], [22, 40, 0.4], [34, 8, 0.
       <svg class="bunting-string" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
         <path d="M-10 6Q500 70 1010 6" />
       </svg>
-      <ul class="flags" role="list">
+      <ul class="flags" role="list" aria-label="Formati possibili delle Partner Experience" tabindex="0">
         {formats.map(([a, b], i) => {
           const t = (i + 0.5) / formats.length;
           const sag = 4 * t * (1 - t); // the string sags in the middle
@@ -373,7 +373,7 @@ const sky: [number, number, number][] = [[4, 10, 0.6], [22, 40, 0.4], [34, 8, 0.
   .flag--cream { --cloth: var(--c-cream); --text: var(--c-night-deep); }
   .flag--terra { --cloth: var(--c-terra); --text: var(--c-night-deep); }
   .flag--pink { --cloth: var(--c-pink); --text: var(--c-night-deep); }
-  .flag--violet { --cloth: color-mix(in oklab, var(--c-violet) 60%, var(--c-night-deep)); }
+  .flag--green { --cloth: var(--c-green); }
   .flag--night { --cloth: var(--c-night-deep); }
   .flag-cloth {
     display: grid;

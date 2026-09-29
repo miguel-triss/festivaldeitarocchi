@@ -146,7 +146,7 @@ const frames = ["I", "II", "III", "IV", "V"];
   .formats-star { width: 0.7em; display: inline-grid; place-items: center; opacity: 0; transition: opacity var(--dur-fast); }
   .formats li:hover .formats-star { opacity: 1; }
   .esperienze { margin-top: var(--s-6); padding-top: var(--s-4); border-top: 1px solid color-mix(in oklab, var(--c-night) 22%, transparent); font-size: var(--step--1); }
-  .esperienze strong { font-family: var(--font-display); font-size: 1.3em; font-weight: 600; color: var(--c-magenta); }
+  .esperienze strong { font-family: var(--font-display); font-size: 1.3em; font-weight: 600; color: var(--c-violet); }
   .programma :global(.programma-star) { position: absolute; right: var(--s-6); bottom: var(--s-6); }
 
   /* call notice */
@@ -158,7 +158,10 @@ const frames = ["I", "II", "III", "IV", "V"];
     gap: var(--s-4);
     justify-items: start;
     padding: var(--s-7) var(--s-6) var(--s-6);
-    background: var(--c-paper);
+    background:
+      url("/textures/paper-grain.webp") 0 0 / 220px,
+      var(--c-paper);
+    background-blend-mode: soft-light;
     rotate: 1.4deg;
     box-shadow: 0 16px 34px rgb(24 27 46 / 0.12);
     clip-path: polygon(0 2%, 10% 0, 30% 2%, 56% 0, 80% 2%, 100% 0, 100% 100%, 0 100%);
@@ -172,6 +175,7 @@ const frames = ["I", "II", "III", "IV", "V"];
     bottom: var(--s-6);
     padding: 0.4em 0.8em;
     border: 3px double var(--c-magenta);
+    background: var(--c-paper); /* its own paper: contrast holds wherever it lands */
     color: var(--c-magenta);
     font-family: var(--font-display);
     font-weight: 700;

@@ -47,7 +47,7 @@ t = (t - t.mean()) / (t.std() + 1e-6)
 tile = Image.fromarray(np.clip(128 + t * 24, 0, 255).astype(np.uint8))
 tile = tile.resize((512, 512), Image.BICUBIC)
 os.makedirs(os.path.join(ROOT, "public/textures"), exist_ok=True)
-tile.save(os.path.join(ROOT, "public/textures/paper-grain.webp"), quality=70)
+tile.save(os.path.join(ROOT, "public/textures/paper-grain.webp"), quality=62, method=6)
 print("grain", tile.size)
 
 # ---- torn edge profiles ---------------------------------------------------
@@ -87,6 +87,8 @@ print({k: len(v) for k, v in edges.items()})
 # ---- ink mask: same fibres, thresholded, for stamps and printed ink --------
 g = np.asarray(tile, float)
 alpha = np.clip((g - 88) * 6, 0, 255).astype(np.uint8)  # ~12% of the ink drops out
-ink = Image.merge("RGBA", [Image.new("L", tile.size, 0)] * 3 + [Image.fromarray(alpha)])
-ink.save(os.path.join(ROOT, "public/textures/ink-mask.webp"), quality=80)
+# the mask is tiled at 140-180px: 256px and a lossy alpha channel are plenty
+a_img = Image.fromarray(alpha).resize((256, 256), Image.LANCZOS)
+ink = Image.merge("RGBA", [Image.new("L", a_img.size, 0)] * 3 + [a_img])
+ink.save(os.path.join(ROOT, "public/textures/ink-mask.webp"), quality=60, alpha_quality=55, method=6)
 print("ink coverage", round((alpha > 128).mean(), 2))

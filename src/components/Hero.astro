@@ -58,7 +58,7 @@ const sky: [number, number, number, number][] = [
     <p class="hero-payoff" data-intro="late">
       <span>Arte</span><Star size=".5em" /><span>Cultura</span><span class="hero-payoff-mid"><Star size=".5em" /></span><span>Simbolo</span><Star size=".5em" /><span>Immaginario</span>
     </p>
-    <p class="hero-lede" data-intro="late">
+    <p class="hero-lede" data-intro="lede">
       Per tre giorni la Fabbrica del Vapore di Milano ospita un programma costruito intorno ai ventidue Arcani Maggiori.
     </p>
     <p class="hero-when" data-intro="late">Prima edizione <span aria-hidden="true">·</span> <span class="placeholder">date in arrivo</span></p>
@@ -190,7 +190,11 @@ const sky: [number, number, number, number][] = [
   }
 
   /* intro: hidden only until the timeline has taken over (see Base.astro) */
-  :global(.motion-pending) [data-intro] { visibility: hidden; animation: failsafe 0s 4s forwards; }
+  :global(.motion-pending) [data-intro]:not([data-intro="lede"]) { visibility: hidden; animation: failsafe 0s 4s forwards; }
+  /* the lede is the largest text on a phone: it paints from the first frame
+     (no wait for JS) and fades in slowly, arriving together with the title */
+  :global(.motion-pending) .hero-lede, :global(.motion) .hero-lede { animation: lede-in 2.6s cubic-bezier(0.7, 0, 0.3, 1) both; }
+  @keyframes lede-in { from { opacity: 0.03; translate: 0 10px; } to { opacity: 1; translate: 0 0; } }
   @keyframes failsafe { to { visibility: visible; } }
 
   /* mobile: a composition of its own, not a shrunk desktop */

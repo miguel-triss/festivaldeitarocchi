@@ -11,6 +11,7 @@ export async function initReveals() {
     SplitText.create(el, {
       type: "lines",
       mask: "lines",
+      aria: "none", // words stay whole in the DOM; an aria-label is not allowed on <p>
       autoSplit: true,
       onSplit: (self) =>
         gsap.from(self.lines, {
