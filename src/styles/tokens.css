@@ -45,6 +45,16 @@
   --step-6: clamp(4rem, 2.9rem + 4.5vw, 7.2rem);
   --measure: 38rem;
 
+  /* text roles: one size per role, everywhere on the page */
+  --fs-title: clamp(2.7rem, 1.2rem + 5.4vw, 6.4rem);     /* section title, capitals */
+  --fs-statement: clamp(1.9rem, 1.3rem + 2.4vw, 3.5rem); /* the guiding sentence */
+  --fs-h3: clamp(1.75rem, 1.3rem + 1.8vw, 2.9rem);       /* sub-section */
+  --fs-h4: clamp(1.3rem, 1.1rem + 0.75vw, 1.8rem);       /* item: card, level, room */
+  --fs-lead: var(--step-1);
+  --fs-body: var(--step-0);
+  --fs-small: var(--step--1);                             /* captions, notes */
+  --fs-kicker: 0.78rem;                                   /* eyebrows, labels */
+
   /* space: 8pt base, fluid section rhythm */
   --s-1: 0.25rem;
   --s-2: 0.5rem;

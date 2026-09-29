@@ -27,7 +27,7 @@ const grows = [
 
   <div class="wrap visione-grid">
     <header class="sec-head visione-head">
-      <span class="sec-num" aria-hidden="true">I</span>
+      <span class="sec-num" aria-hidden="true">01</span>
       <h2 class="sec-title" id="h-visione">Visione</h2>
     </header>
 
@@ -90,7 +90,7 @@ const grows = [
     position: relative;
   }
   .visione-head { grid-column: 1 / -1; margin-bottom: 0; }
-  .visione-statement { grid-column: 1 / span 9; max-width: 25ch; font-size: clamp(2.4rem, 1.6rem + 3vw, 4.4rem); }
+  .visione-statement { grid-column: 1 / span 9; max-width: 26ch; }
   .visione-tags {
     grid-column: 10 / -1;
     grid-row: 2;
@@ -118,7 +118,7 @@ const grows = [
   .visione-tags .tag:nth-child(even) { margin-left: 2.5rem; background: var(--c-rose-paper); }
   .visione-body { grid-column: 2 / span 5; }
   .visione-grow { grid-column: 8 / -1; }
-  .visione-grow-title { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.2; margin-bottom: var(--s-5); }
+  .visione-grow-title { font-family: var(--font-display); font-size: var(--fs-h4); line-height: 1.25; margin-bottom: var(--s-5); }
   .visione-grow-title .script { color: var(--c-violet); }
   .visione-grow ul { list-style: none; padding: 0; border-top: 1px solid var(--line); }
   .visione-grow li {
@@ -133,7 +133,7 @@ const grows = [
   @media (max-width: 900px) {
     .visione { padding-top: var(--section-dense); }
     .visione-grid { row-gap: var(--s-7); }
-    .visione-statement { grid-column: 1 / -1; font-size: var(--step-4); }
+    .visione-statement { grid-column: 1 / -1; }
     .visione-tags {
       grid-column: 1 / -1;
       grid-row: auto;

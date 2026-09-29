@@ -25,7 +25,7 @@ const ring = institutions.map((t, i) => {
 <section class="section rete" id="rete" data-scene="night" aria-labelledby="h-rete">
   <div class="wrap">
     <header class="sec-head">
-      <span class="sec-num" aria-hidden="true">VIII</span>
+      <span class="sec-num" aria-hidden="true">08</span>
       <h2 class="sec-title" id="h-rete">Una rete culturale in costruzione</h2>
     </header>
 
@@ -147,19 +147,19 @@ const ring = institutions.map((t, i) => {
   .rete-names { display: inline-block; margin-top: var(--s-7); color: var(--c-cream); font-size: var(--step--1); }
 
   .roadmap { margin-top: var(--section-dense); position: relative; }
-  .roadmap-title { font-size: var(--step-4); }
+  .roadmap-title { font-size: var(--fs-h3); }
   .roadmap-line { width: 100%; height: 10px; margin-top: var(--s-7); overflow: visible; }
   .roadmap-line path { stroke: var(--c-gold); stroke-width: 1; stroke-dasharray: 2 6; vector-effect: non-scaling-stroke; }
   .roadmap-steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); margin-top: calc(-2.4rem - 5px); }
   .roadmap-step { display: grid; gap: var(--s-3); align-content: start; }
   .roadmap-moon { width: 4.8rem; height: 4.8rem; display: block; background: var(--c-night-deep); border-radius: 50%; padding: 0.3rem; }
-  .roadmap-step h4 { font-size: var(--step-2); color: var(--c-gold); margin-top: var(--s-3); }
-  .roadmap-step p { color: color-mix(in oklab, var(--c-cream) 88%, var(--c-pink)); font-size: var(--step--1); line-height: 1.6; }
+  .roadmap-step h4 { font-size: var(--fs-h4); color: var(--c-gold); margin-top: var(--s-3); }
+  .roadmap-step p { color: color-mix(in oklab, var(--c-cream) 88%, var(--c-pink)); font-size: var(--fs-body); line-height: 1.6; }
   .roadmap-dates { display: inline-block; margin-top: var(--s-7); color: var(--c-cream); font-size: var(--step--1); }
 
   .lungo { margin-top: var(--section-dense); }
   .lungo .eyebrow { color: var(--c-gold); }
-  .lungo-intro { margin-top: var(--s-4); font-family: var(--font-display); font-size: var(--step-2); }
+  .lungo-intro { margin-top: var(--s-4); font-family: var(--font-display); font-size: var(--fs-h4); }
   .lungo-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-5); }
   .lungo-list li {
     display: inline-flex; align-items: center; gap: 0.55em;
@@ -174,7 +174,6 @@ const ring = institutions.map((t, i) => {
 
   @media (max-width: 900px) {
     .rete-top { grid-template-columns: minmax(0, 1fr); }
-    .rete-statement, .lungo-statement { font-size: var(--step-4); }
     .rete-lists { grid-template-columns: minmax(0, 1fr); }
     .astro-label { font-size: 20px; }
     .roadmap-line { display: none; }

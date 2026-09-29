@@ -31,7 +31,7 @@ const stamps = [
 <section class="section festival" id="festival" data-scene="rose" aria-labelledby="h-festival">
   <div class="wrap">
     <header class="sec-head">
-      <span class="sec-num" aria-hidden="true">III</span>
+      <span class="sec-num" aria-hidden="true">03</span>
       <h2 class="sec-title" id="h-festival">Il Festival in breve</h2>
     </header>
 
@@ -247,7 +247,7 @@ const stamps = [
   .part { min-height: 62svh; display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: var(--s-4); }
   .part > p { max-width: 36rem; }
   .part-sign { display: none; justify-self: start; }
-  .part-lead { font-family: var(--font-display); font-size: var(--step-3); line-height: 1.12; }
+  .part-lead { font-family: var(--font-display); font-size: var(--fs-h3); line-height: 1.1; }
 
   .hub-tags { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-3); max-width: 36rem; }
   .hub-tags li {
@@ -329,12 +329,10 @@ const stamps = [
 
   @media (max-width: 900px) {
     .festival-top { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
-    .festival-statement { font-size: var(--step-4); }
     .festival-way { grid-template-columns: minmax(0, 1fr); }
     .signpost { display: none; }
     .part { min-height: 0; }
     .part-sign { display: inline-flex; font-size: 0.8rem; }
-    .part-lead { font-size: var(--step-2); }
     .booklet { max-width: none; }
     .booklet-page { padding: var(--s-4); }
   }

@@ -25,7 +25,7 @@ const values = [
 <section class="section tarocchi" id="tarocchi" data-scene="day" aria-labelledby="h-tarocchi">
   <div class="wrap tarocchi-intro">
     <header class="sec-head">
-      <span class="sec-num" aria-hidden="true">II</span>
+      <span class="sec-num" aria-hidden="true">02</span>
       <h2 class="sec-title" id="h-tarocchi">Perché i Tarocchi</h2>
     </header>
     <p class="statement" data-split>
@@ -116,7 +116,7 @@ const values = [
   /* the deck: static by default (no JS, reduced motion) */
   .deck-stage { position: relative; padding-block: var(--s-6); }
   .deck-head { width: min(100% - 2 * var(--gutter), var(--max)); margin-inline: auto; }
-  .deck-title { font-size: var(--step-4); }
+  .deck-title { font-size: var(--fs-h3); }
   .deck-sub { font-family: var(--font-display); font-style: italic; font-size: var(--step-1); color: var(--fg-soft); }
   .deck-counter, .deck-orbit { display: none; }
   .deck {
@@ -239,12 +239,11 @@ const values = [
     border-bottom: 1px solid var(--line);
   }
   .tarocchi-partners li :global(.star) { grid-row: span 2; margin-top: 0.3em; }
-  .tarocchi-partners strong { font-family: var(--font-display); font-size: var(--step-2); font-weight: 600; line-height: 1.15; }
+  .tarocchi-partners strong { font-family: var(--font-display); font-size: var(--fs-h4); font-weight: 600; line-height: 1.15; }
   .tarocchi-partners span { color: var(--fg-soft); }
 
   @media (max-width: 900px) {
     .tarocchi-hand, .tarocchi-aim, .tarocchi-partners { grid-column: 1 / -1; }
-    .tarocchi-hand { font-size: var(--step-4); }
     .ribbon-lead, .ribbon-item { font-size: var(--step-2); }
   }
 </style>

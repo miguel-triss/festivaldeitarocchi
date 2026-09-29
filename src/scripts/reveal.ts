@@ -7,6 +7,26 @@ export async function initReveals() {
   if (reduced) return;
   await document.fonts.ready; // split on final metrics, or lines break wrong
 
+  // section titles: the capitals rise letter by letter, the number slides in,
+  // the rule with its star is drawn from the left
+  document.querySelectorAll<HTMLElement>(".sec-head").forEach((head) => {
+    const title = head.querySelector<HTMLElement>(".sec-title");
+    const num = head.querySelector<HTMLElement>(".sec-num");
+    if (!title) return;
+    SplitText.create(title, {
+      type: "words,chars",
+      mask: "words",
+      autoSplit: true,
+      onSplit: (self) => {
+        const tl = gsap.timeline({ scrollTrigger: { trigger: head, start: "top 86%", once: true } });
+        tl.from(self.chars, { yPercent: 115, rotation: 6, duration: 1.1, stagger: 0.028, ease: "expo.out" }, 0);
+        if (num) tl.from(num, { xPercent: -40, opacity: 0, duration: 1, ease: "expo.out" }, 0.1);
+        tl.from(head, { "--rule": 0, duration: 1.4, ease: "power3.inOut" }, 0.15);
+        return tl;
+      },
+    });
+  });
+
   document.querySelectorAll<HTMLElement>("[data-split]").forEach((el) => {
     SplitText.create(el, {
       type: "lines",

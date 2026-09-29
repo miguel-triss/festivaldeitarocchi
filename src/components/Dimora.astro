@@ -36,7 +36,7 @@ const numerals = ["I", "II", "III", "IV", "V"];
 <section class="section dimora" id="dimore" data-scene="rose" aria-labelledby="h-dimore">
   <div class="wrap">
     <header class="sec-head">
-      <span class="sec-num" aria-hidden="true">V</span>
+      <span class="sec-num" aria-hidden="true">05</span>
       <h2 class="sec-title" id="h-dimore">Come funziona una Dimora</h2>
     </header>
     <p class="statement dimora-statement" data-split>
@@ -97,10 +97,10 @@ const numerals = ["I", "II", "III", "IV", "V"];
   }
   .room { display: grid; gap: var(--s-4); align-content: start; }
   .room :global(.room-door) { width: 100%; }
-  .room-num { font-family: var(--font-display); font-weight: 700; font-size: var(--step--1); letter-spacing: 0.16em; color: var(--c-violet); }
+  .room-num { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-kicker); letter-spacing: 0.16em; color: var(--c-violet); }
   .room-num span { color: var(--c-night); }
-  .room h3 { font-size: var(--step-2); margin-block: var(--s-1) var(--s-2); }
-  .room-text > p:not(.room-num) { font-size: var(--step--1); line-height: 1.55; }
+  .room h3 { font-size: var(--fs-h4); margin-block: var(--s-1) var(--s-2); }
+  .room-text > p:not(.room-num) { font-size: var(--fs-body); line-height: 1.55; }
   .room-stamp { margin-top: var(--s-4); }
   .enfilade, .enfilade-steps { display: none; }
 
@@ -108,11 +108,8 @@ const numerals = ["I", "II", "III", "IV", "V"];
   .dimora-same em { font-family: var(--font-display); font-size: 1.15em; color: var(--c-violet); }
 
   @media (max-width: 900px) {
-    .dimora-statement { font-size: var(--step-4); }
     .rooms { grid-template-columns: minmax(0, 1fr); gap: var(--s-8); }
     .room { grid-template-columns: 7.5rem minmax(0, 1fr); gap: var(--s-5); align-items: start; }
-    .room h3 { font-size: var(--step-2); }
-    .room-text > p:not(.room-num) { font-size: var(--step-0); }
   }
 
   /* desktop with motion: the walk (enfilade.ts adds .is-enfilade) */
@@ -138,8 +135,8 @@ const numerals = ["I", "II", "III", "IV", "V"];
     align-content: center;
   }
   .is-enfilade :global(.room-door) { display: none; }
-  .is-enfilade .room h3 { font-size: var(--step-5); line-height: 1; }
-  .is-enfilade .room-text > p:not(.room-num) { font-size: var(--step-1); max-width: 28rem; }
+  .is-enfilade .room h3 { font-size: var(--fs-statement); line-height: 1.05; }
+  .is-enfilade .room-text > p:not(.room-num) { font-size: var(--fs-lead); max-width: 28rem; }
   .is-enfilade .room-num { font-size: var(--step-0); }
   .is-enfilade .enfilade {
     display: block;

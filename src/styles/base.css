@@ -96,7 +96,7 @@ p { text-wrap: pretty; max-width: var(--measure); }
 
 .eyebrow {
   font-family: var(--font-display);
-  font-size: var(--step--1);
+  font-size: var(--fs-kicker);
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -202,40 +202,50 @@ p { text-wrap: pretty; max-width: var(--measure); }
   background: var(--bg);
   color: var(--fg);
 }
+/* section title: number, capitals, a rule with a star (as in the infographic) */
 .sec-head {
-  display: flex;
-  align-items: center;
-  gap: var(--s-4);
-  margin-bottom: var(--s-7);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  column-gap: clamp(0.8rem, 0.4rem + 1.4vw, 1.8rem);
+  margin-bottom: clamp(2rem, 1.4rem + 2.4vw, 3.6rem);
 }
 .sec-num {
-  display: grid;
-  place-items: center;
-  width: 2.6rem;
-  aspect-ratio: 1;
-  border: 1px solid currentColor;
-  border-radius: 999px 999px 0.25rem 0.25rem;
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
+  font-weight: 400;
+  font-size: calc(var(--fs-title) * 0.86);
+  font-variant-numeric: lining-nums; /* Cormorant defaults to old-style figures */
+  line-height: 0.88;
   color: var(--accent);
 }
 .sec-title {
   font-family: var(--font-display);
-  font-size: var(--step--1);
-  font-weight: 700;
-  letter-spacing: 0.24em;
+  font-size: var(--fs-title);
+  font-weight: 500;
+  line-height: 0.88;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
+  text-wrap: balance;
 }
+.sec-head::after {
+  content: "";
+  grid-column: 1 / -1;
+  margin-top: clamp(1rem, 0.7rem + 1vw, 1.6rem);
+  background:
+    radial-gradient(circle, var(--accent) 0 3px, transparent 3.5px) 0 50% / 8px 8px no-repeat,
+    linear-gradient(to right, color-mix(in oklab, var(--fg) 30%, transparent), transparent 85%) 14px 50% / calc((100% - 14px) * var(--rule, 1)) 1px no-repeat;
+  height: 8px;
+}
+@property --rule { syntax: "<number>"; inherits: true; initial-value: 1; }
 .statement {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: var(--step-5);
-  line-height: 1.04;
-  letter-spacing: -0.005em;
-  max-width: 20ch;
+  font-size: var(--fs-statement);
+  line-height: 1.1;
+  max-width: 24ch;
   text-wrap: balance;
 }
 .statement em { font-style: italic; color: var(--accent); }
-.lead { font-size: var(--step-1); line-height: 1.5; }
+.lead { font-size: var(--fs-lead); line-height: 1.5; }
+.t-h3 { font-family: var(--font-display); font-weight: 500; font-size: var(--fs-h3); line-height: 1.05; text-wrap: balance; }
+.t-h4 { font-family: var(--font-display); font-weight: 500; font-size: var(--fs-h4); line-height: 1.15; text-wrap: balance; }
