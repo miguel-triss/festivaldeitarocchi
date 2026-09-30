@@ -2,9 +2,9 @@
 //
 // Opening (about 2.7 s, 1.1 s on later visits in the same session):
 //   the arch is drawn from the keystone down, its lights come on, the stars
-//   appear, dawn fills the window and the sun rises at the top of the stairs,
+//   appear, dawn fills the window and the sun rises to the centre of the arch,
 //   then the name and the invitation. Any click, key, wheel or touch skips it.
-// Scroll: the hero is pinned; the copy lifts away and you move up the stairs
+// Scroll: the hero is pinned; the copy lifts away and you move
 //   towards the sun until the arch fills the screen and daylight takes over.
 import { gsap, ScrollTrigger, reduced, getLenis } from "./motion";
 
@@ -35,7 +35,9 @@ export function initHero() {
     .from(q(".arch-eye, .arch-pupil"), { opacity: 0, scale: 0.4, transformOrigin: "50% 50%", duration: 0.9 }, 0.5)
     .from(q(".hero-star"), { opacity: 0, scale: 0.2, duration: 0.9, stagger: { each: 0.04, from: "random" } }, 0.25)
     .from(win, { opacity: 0, duration: 1.1, ease: "power1.inOut" }, 0.95)
-    .from(sun, { yPercent: 55, duration: 2.1, ease: "power3.out" }, 0.95)
+    .from(sun, { yPercent: 38, scale: 0.7, duration: 2.1, ease: "power3.out" }, 0.95)
+    .from(q(".hero-halo, .hero-rings"), { scale: 0.4, opacity: 0, duration: 2, ease: "power3.out" }, 1.2)
+    .from(q(".hero-window-stars span"), { opacity: 0, scale: 0.3, duration: 0.8, stagger: 0.08 }, 1.6)
     .from(q(".wm-line"), { yPercent: 35, opacity: 0, duration: 1.3, stagger: 0.16 }, 1.35)
     .from(crescents, { opacity: 0, x: (i) => (i ? -24 : 24), duration: 1.4 }, 1.5)
     .from(q("[data-intro='late']"), { y: 14, opacity: 0, duration: 0.9, stagger: 0.07 }, 1.85);
@@ -78,7 +80,7 @@ export function initHero() {
       const p = portal.getBoundingClientRect();
       const r = w.getBoundingClientRect();
       const k = S / (Number(gsap.getProperty(portal, "scale")) || 1);
-      const ox = p.left + p.width * 0.5, oy = p.top + p.height * 0.64;
+      const ox = p.left + p.width * 0.5, oy = p.top + p.height * 0.56; // = transform-origin of .hero-portal
       const L = ox + (r.left - ox) * k - h.left, T = oy + (r.top - oy) * k - h.top;
       const W = r.width * k, H = r.height * k;
       return `inset(${T}px ${h.width - L - W}px ${h.height - T - H}px ${L}px round ${W / 2}px ${W / 2}px 0px 0px)`;
@@ -106,7 +108,7 @@ export function initHero() {
       .to(crescents, { opacity: 0, x: (i) => (i ? 50 : -50), duration: 0.3 }, 0)
       .to(q(".hero-sky"), { yPercent: 10, opacity: 0.4, duration: 1 }, 0)
       .to(portal, { scale: S, ease: "power2.in", duration: 0.55 }, 0.05)
-      .to(sun, { yPercent: 6, scale: 1.2, duration: 0.55 }, 0.05)
+      .to(sun, { scale: 1.15, duration: 0.55 }, 0.05)
       // light through gold, never through grey: the window glows, then turns to day
       .fromTo(q(".hero-window-day"), { opacity: 0, backgroundColor: token("--c-gold") },
         { opacity: 1, backgroundColor: token("--c-cream"), ease: "power1.in", duration: 0.22 }, 0.38)
