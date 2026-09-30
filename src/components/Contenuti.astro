@@ -6,6 +6,7 @@
 import Star from "./art/Star.astro";
 import Tape from "./art/Tape.astro";
 import Sun from "./art/Sun.astro";
+import Flora from "./art/Flora.astro";
 import { mailto } from "../data/sections";
 
 const formats = [
@@ -40,6 +41,7 @@ const frames = ["I", "II", "III", "IV", "V"];
           <strong>Esperienze del Festival</strong>.
         </p>
         <Star size="1.6rem" color="var(--c-night)" class="programma-star" />
+        <Flora seed={6} stems={[["lavanda", 70, 200, -6, -10], ["cosmo", 140, 250, 8]]} style="left:-6.5rem;bottom:-5.5rem;width:clamp(11.9rem, 17.6vw, 17.0rem)" />
       </article>
 
       <!-- the call: a notice on the wall -->
@@ -164,15 +166,13 @@ const frames = ["I", "II", "III", "IV", "V"];
     background-blend-mode: soft-light;
     rotate: 1.4deg;
     box-shadow: 0 16px 34px rgb(24 27 46 / 0.12);
-    clip-path: polygon(0 2%, 10% 0, 30% 2%, 56% 0, 80% 2%, 100% 0, 100% 100%, 0 100%);
   }
   .call-title { font-size: var(--fs-h3); line-height: 1.05; }
   .call .btn { margin-top: var(--s-3); }
-  @media (max-width: 520px) { .call-stamp { position: static; justify-self: end; margin-top: calc(-1 * var(--s-3)); } }
   .call-stamp {
     position: absolute;
-    right: var(--s-5);
-    bottom: var(--s-6);
+    right: -1.2rem;
+    top: -1.6rem;
     padding: 0.4em 0.8em;
     border: 3px double var(--c-magenta);
     background: var(--c-paper); /* its own paper: contrast holds wherever it lands */
@@ -186,6 +186,8 @@ const frames = ["I", "II", "III", "IV", "V"];
     -webkit-mask: url("/textures/ink-mask.webp") 0 0 / 140px;
     mask: url("/textures/ink-mask.webp") 0 0 / 140px;
   }
+
+  @media (max-width: 520px) { .call-stamp { position: static; order: 5; justify-self: end; margin-top: var(--s-2); rotate: -6deg; } }
 
   /* prize */
   .premio {

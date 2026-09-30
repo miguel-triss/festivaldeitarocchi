@@ -16,6 +16,8 @@ export function initProcession() {
     const cards = gsap.utils.toArray<HTMLElement>(".deck > li", stage);
     const numEl = stage.querySelector<HTMLElement>("[data-deck-num]")!;
     const nameEl = stage.querySelector<HTMLElement>("[data-deck-name]")!;
+    const aspectEl = stage.querySelector<HTMLElement>("[data-deck-aspect]");
+    const aspects = cards.map((li) => li.querySelector(".card-aspect")?.lastChild?.textContent ?? "");
     const labels = cards.map((li) => li.querySelector("svg")?.getAttribute("aria-label")?.split(", ") ?? ["", ""]);
     const last = cards.length - 1;
     stage.classList.add("is-procession");
@@ -63,6 +65,10 @@ export function initProcession() {
         numEl.textContent = num.replace("Arcano ", "");
         nameEl.textContent = name;
         gsap.fromTo([numEl, nameEl], { yPercent: 18, opacity: 0.2 }, { yPercent: 0, opacity: 1, duration: 0.5, ease: "expo.out", stagger: 0.04, overwrite: true });
+        if (aspectEl) {
+          aspectEl.textContent = aspects[k];
+          gsap.fromTo(aspectEl, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "expo.out", overwrite: true });
+        }
       }
     };
 

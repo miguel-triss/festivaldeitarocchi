@@ -44,6 +44,21 @@ export async function initReveals() {
     });
   });
 
+  // plants grow in from the ground, stem after stem (the hero's come with the rite)
+  gsap.utils.toArray<HTMLElement>("[data-flora]").forEach((fl) => {
+    if (fl.closest(".hero")) return;
+    gsap.from(fl.querySelectorAll(".flora-stem"), {
+      scaleY: 0.05,
+      scaleX: 0.6,
+      opacity: 0,
+      transformOrigin: "50% 100%",
+      duration: 1.6,
+      stagger: 0.14,
+      ease: "expo.out",
+      scrollTrigger: { trigger: fl, start: "top 92%", once: true },
+    });
+  });
+
   gsap.utils.toArray<HTMLElement>("[data-rise]").forEach((el) => {
     gsap.from(el, {
       y: 36,

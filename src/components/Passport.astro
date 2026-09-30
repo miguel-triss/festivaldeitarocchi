@@ -135,12 +135,20 @@ const glyph: Record<string, string> = {
         },
         onLeaveBack: () => a.classList.remove("is-stamped"),
       });
-      // current section
+      // current section, also named in the header
+      const where = document.querySelector<HTMLElement>("[data-nav-where]");
+      const label = a.querySelector(".passport-label");
       ScrollTrigger.create({
         trigger: section,
         start: "top 50%",
         end: "bottom 50%",
-        onToggle: (self) => a.setAttribute("aria-current", String(self.isActive)),
+        onToggle: (self) => {
+          a.setAttribute("aria-current", String(self.isActive));
+          if (where && self.isActive && label) {
+            where.innerHTML = label.innerHTML;
+            where.classList.add("is-on");
+          } else if (where && !document.querySelector('[data-stamp][aria-current="true"]')) where.classList.remove("is-on");
+        },
       });
     });
   }

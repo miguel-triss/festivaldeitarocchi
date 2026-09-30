@@ -9,6 +9,7 @@ import Star from "./art/Star.astro";
 import Moon from "./art/Moon.astro";
 import Sun from "./art/Sun.astro";
 import Tape from "./art/Tape.astro";
+import Flora from "./art/Flora.astro";
 
 const parts = [
   { id: "hub", sign: "Hub Principale", tone: "violet", dir: "r" },
@@ -128,6 +129,7 @@ const stamps = [
       </div>
     </div>
   </div>
+  <Flora seed={4} flip stems={[["spiga", 70, 240, 10, -4], ["secco", 130, 190, -8], ["spiga", 190, 210, -14, 8], ["ramo", 250, 170, -20, 14]]} style="right:0;bottom:-3rem;width:clamp(13.6rem, 25.6vw, 25.5rem)" />
 </section>
 
 <style>
@@ -277,11 +279,13 @@ const stamps = [
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     max-width: 30rem;
+    aspect-ratio: 3 / 2;
+    align-items: stretch;
     margin-top: var(--s-5);
     rotate: -1.5deg;
     box-shadow: 0 18px 36px rgb(24 27 46 / 0.18);
   }
-  .booklet-page { aspect-ratio: 3 / 4; padding: var(--s-5); min-width: 0; }
+  .booklet-page { min-height: 100%; padding: var(--s-5); min-width: 0; }
   .booklet-page--cover {
     display: grid;
     align-content: center;

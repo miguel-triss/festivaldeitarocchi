@@ -10,25 +10,39 @@ import Star from "./art/Star.astro";
 import Moon from "./art/Moon.astro";
 import Sun from "./art/Sun.astro";
 import TornEdge from "./art/TornEdge.astro";
+import Flora from "./art/Flora.astro";
 import { mailto } from "../data/sections";
 
+// three reasons, each with the five things it gathers (all from the source)
 const reasons = [
   {
     t: "Un solo luogo",
     d: "La Fabbrica del Vapore concentra pubblico, programma, opere, performance e attività nei tre giorni: il partner è presente dentro la manifestazione, senza frammentare l'intervento in sedi differenti.",
-    x: 10, y: 16,
+    x: 190, y: 360, sats: ["pubblico", "programma culturale", "opere", "performance", "attività"], angles: [100, 140, 180, 220, 260],
   },
   {
     t: "Una struttura precisa",
     d: "I ventidue Arcani offrono una struttura narrativa e visiva. Un partner può sostenere l'intero Festival oppure legarsi a una Dimora, a un'opera, a un'attività o a un progetto commissionato.",
-    x: 47, y: 58,
+    x: 600, y: 230, sats: ["l'intero Festival", "una Dimora", "un'opera", "un'attività", "un progetto commissionato"], angles: [205, 240, 270, 300, 335],
   },
   {
     t: "Oltre i tre giorni",
     d: "La collaborazione può continuare con contenuti editoriali, documentazione, pubblicazioni, Collezione Permanente e progetti sviluppati insieme al Festival.",
-    x: 84, y: 20,
+    x: 1010, y: 380, sats: ["contenuti editoriali", "documentazione", "pubblicazioni", "Collezione Permanente", "progetti comuni"], angles: [280, 320, 0, 40, 80],
   },
 ];
+const chart = reasons.map((r) => ({
+  ...r,
+  pts: r.sats.map((label, i) => {
+    const a = (r.angles[i] * Math.PI) / 180, R = i % 2 ? 128 : 160;
+    const x = r.x + R * Math.cos(a), y = r.y + R * Math.sin(a);
+    const c = Math.cos(a), sn = Math.sin(a);
+    return { label, x, y, lx: x + c * 14, ly: y + sn * 14 + 4, anchor: c > 0.35 ? "start" : c < -0.35 ? "end" : "middle" };
+  }),
+}));
+const dust: [number, number, number][] = Array.from({ length: 46 }, (_, i) => [
+  ((i * 263) % 1180) + 10, ((i * 149) % 540) + 10, (i % 3) + 0.6,
+]);
 
 const levels = [
   {
@@ -84,17 +98,41 @@ const sky: [number, number, number][] = [[4, 10, 0.6], [22, 40, 0.4], [34, 8, 0.
     </p>
 
     <div class="constellation" data-constellation>
-      <svg class="constellation-lines" aria-hidden="true">
-        {reasons.slice(1).map((r, i) => (
-          <line x1={`${reasons[i].x}%`} y1={`${reasons[i].y}%`} x2={`${r.x}%`} y2={`${r.y}%`} />
+      <svg class="chart" viewBox="0 0 1200 560" aria-hidden="true">
+        {dust.map(([x, y, r]) => <circle class="chart-dust" cx={x} cy={y} r={r * 0.7} />)}
+        <circle class="chart-ring" cx="600" cy="300" r="260" />
+        <circle class="chart-ring" cx="600" cy="300" r="420" />
+        <g class="chart-main">
+          <line class="chart-line chart-line--main" x1={reasons[0].x} y1={reasons[0].y} x2={reasons[1].x} y2={reasons[1].y} />
+          <line class="chart-line chart-line--main" x1={reasons[1].x} y1={reasons[1].y} x2={reasons[2].x} y2={reasons[2].y} />
+          <line class="chart-line chart-line--faint" x1={reasons[0].x} y1={reasons[0].y} x2={reasons[2].x} y2={reasons[2].y} />
+        </g>
+        {chart.map((r, gi) => (
+          <g class="chart-group" data-group={gi}>
+            {r.pts.map((p) => <line class="chart-line chart-line--sat" x1={r.x} y1={r.y} x2={p.x.toFixed(1)} y2={p.y.toFixed(1)} />)}
+            {r.pts.map((p, i) => i > 0 && <line class="chart-line chart-line--rim" x1={r.pts[i - 1].x.toFixed(1)} y1={r.pts[i - 1].y.toFixed(1)} x2={p.x.toFixed(1)} y2={p.y.toFixed(1)} />)}
+            {r.pts.map((p) => (
+              <g class="chart-sat">
+                <circle cx={p.x.toFixed(1)} cy={p.y.toFixed(1)} r="4.2" />
+                <text x={p.lx.toFixed(1)} y={p.ly.toFixed(1)} text-anchor={p.anchor}>{p.label}</text>
+              </g>
+            ))}
+            <g class="chart-star" transform={`translate(${r.x} ${r.y})`}>
+              <circle r="30" class="chart-halo" />
+              <path d="M0 -26C1.2 -7 3 -3 26 0C3 3 1.2 7 0 26C-1.2 7 -3 3 -26 0C-3 -3 -1.2 -7 0 -26Z" />
+              <text class="chart-num" y="-40" text-anchor="middle">{["I", "II", "III"][gi]}</text>
+              <text class="chart-title" y="56" text-anchor="middle">{r.t}</text>
+            </g>
+          </g>
         ))}
       </svg>
       <ol class="reasons" role="list">
         {reasons.map((r, i) => (
-          <li class="reason" style={`--x:${r.x}%;--y:${r.y}%`}>
+          <li class="reason" data-reason={i}>
             <span class="reason-star" aria-hidden="true"><Star size="100%" color="var(--c-gold)" /></span>
             <h3><span class="reason-num" aria-hidden="true">{["I", "II", "III"][i]}</span>{r.t}</h3>
             <p>{r.d}</p>
+            <ul class="reason-tags" role="list">{r.sats.map((t) => <li>{t}</li>)}</ul>
           </li>
         ))}
       </ol>
@@ -151,6 +189,8 @@ const sky: [number, number, number][] = [[4, 10, 0.6], [22, 40, 0.4], [34, 8, 0.
         </div>
       </div>
     </div>
+    <Flora seed={7} stems={[["felce", 70, 210, -12, -6], ["cosmo", 140, 240, 10], ["ramo", 210, 180, 22, 12]]} style="left:-1rem;bottom:-1rem;width:clamp(11.9rem, 20.8vw, 20.4rem)" />
+    <Flora seed={8} flip stems={[["spiga", 90, 230, 8], ["secco", 160, 180, -10, 10]]} style="right:0;bottom:-1rem;width:clamp(10.2rem, 16.0vw, 15.3rem)" />
     <TornEdge profile="header-bottom" side="bottom" color="var(--c-cream)" rim={false} />
   </div>
 
@@ -201,7 +241,6 @@ const sky: [number, number, number][] = [[4, 10, 0.6], [22, 40, 0.4], [34, 8, 0.
   .partner {
     padding-block: var(--section-dense) 0;
     background: linear-gradient(to bottom, var(--c-violet) 0%, var(--c-violet) 60%, color-mix(in oklab, var(--c-violet) 55%, var(--c-night-deep)) 100%);
-    overflow-x: clip;
   }
   .dusk-sky { position: absolute; inset: 0 0 auto; height: 110svh; pointer-events: none; }
   .dusk-sky span { position: absolute; }
@@ -212,26 +251,56 @@ const sky: [number, number, number][] = [[4, 10, 0.6], [22, 40, 0.4], [34, 8, 0.
   .partner-statement { max-width: 20ch; }
   .partner-statement :global(em) { color: var(--c-gold); }
 
-  /* 1 · constellation */
-  .constellation { position: relative; height: clamp(30rem, 44vw, 38rem); margin-top: var(--s-8); }
-  .constellation-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-  .constellation-lines line { stroke: var(--c-gold); stroke-width: 1; stroke-dasharray: 2 6; opacity: 0.8; }
-  .reasons { list-style: none; padding: 0; margin: 0; }
-  .reason {
-    position: absolute;
-    left: var(--x);
-    top: var(--y);
-    width: min(22rem, 30%);
-    translate: -1.2rem -1.2rem;
+  /* 1 · constellation: a star chart, the three reasons and what each gathers */
+  .constellation { margin-top: var(--s-8); }
+  .chart { width: 100%; height: auto; overflow: visible; }
+  .chart-dust { fill: var(--c-cream); opacity: 0.35; }
+  .chart-ring { fill: none; stroke: var(--c-pink); stroke-width: 0.8; stroke-dasharray: 2 7; opacity: 0.35; }
+  .chart-line { stroke: var(--c-gold); vector-effect: non-scaling-stroke; }
+  .chart-line--main { stroke-width: 1.4; opacity: 0.9; }
+  .chart-line--faint { stroke-width: 1; stroke-dasharray: 3 8; opacity: 0.45; }
+  .chart-line--sat { stroke-width: 0.9; opacity: 0.55; }
+  .chart-line--rim { stroke: var(--c-pink); stroke-width: 0.8; stroke-dasharray: 2 5; opacity: 0.45; }
+  .chart-sat circle { fill: var(--c-cream); }
+  .chart-sat text { fill: var(--c-cream); font-family: var(--font-display); font-size: 17px; font-style: italic; }
+  .chart-star path { fill: var(--c-gold); }
+  .chart-halo { fill: color-mix(in oklab, var(--c-gold) 22%, transparent); }
+  .chart-num { fill: var(--c-gold); font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: 0.2em; }
+  .chart-title { fill: var(--c-cream); font-family: var(--font-display); font-size: 25px; font-weight: 600; }
+  .chart-group { transition: opacity var(--dur-base) var(--ease-out); }
+  .constellation[data-active] .chart-group:not(.is-active) { opacity: 0.25; }
+
+  .reasons {
+    list-style: none;
+    padding: 0;
+    margin: var(--s-7) 0 0;
     display: grid;
-    gap: var(--s-2);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gutter);
   }
-  .reason:nth-child(3) { translate: calc(-100% + 1.2rem) -1.2rem; text-align: right; justify-items: end; }
-  .reason-star { width: 2.4rem; height: 2.4rem; display: block; filter: drop-shadow(0 0 10px color-mix(in oklab, var(--c-gold) 70%, transparent)); }
-  .reason h3 { font-size: var(--fs-h4); display: flex; gap: 0.5em; align-items: baseline; }
-  .reason:nth-child(3) h3 { flex-direction: row-reverse; }
-  .reason-num { font-size: var(--fs-kicker); letter-spacing: 0.14em; color: var(--c-gold); }
+  .reason {
+    display: grid;
+    align-content: start;
+    gap: var(--s-3);
+    padding-top: var(--s-5);
+    border-top: 1px solid color-mix(in oklab, var(--c-gold) 45%, transparent);
+    transition: border-color var(--dur-base);
+  }
+  .reason:hover, .reason:focus-within { border-top-color: var(--c-gold); }
+  .reason-star { display: none; }
+  .reason h3 { font-size: var(--fs-h4); display: flex; gap: 0.6em; align-items: baseline; }
+  .reason-num { font-size: var(--fs-kicker); letter-spacing: 0.16em; color: var(--c-gold); }
   .reason p { color: color-mix(in oklab, var(--c-cream) 88%, var(--c-pink)); font-size: var(--fs-body); line-height: 1.6; }
+  /* the satellites are drawn in the chart on desktop; as tags on phones */
+  .reason-tags { list-style: none; padding: 0; display: none; flex-wrap: wrap; gap: var(--s-2); }
+  .reason-tags li {
+    padding: 0.25em 0.8em;
+    border: 1px solid color-mix(in oklab, var(--c-gold) 55%, transparent);
+    border-radius: var(--radius-ui);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--fs-small);
+  }
 
   /* 2 · the sheet and the levels */
   .sheet {
@@ -409,12 +478,9 @@ const sky: [number, number, number][] = [[4, 10, 0.6], [22, 40, 0.4], [34, 8, 0.
     .flag { scroll-snap-align: start; }
   }
   @media (max-width: 900px) {
-    .constellation { height: auto; margin-top: var(--s-7); }
-    .constellation-lines { display: none; }
-    .reasons { display: grid; gap: var(--s-7); border-left: 1px dashed var(--c-gold); padding-left: var(--s-5); }
-    .reason, .reason:nth-child(3) { position: static; width: auto; translate: none; text-align: left; justify-items: start; }
-    .reason:nth-child(3) h3 { flex-direction: row; }
-    .reason-star { margin-left: calc(-1 * var(--s-5) - 1.2rem); margin-bottom: calc(-1 * var(--s-6)); width: 2.2rem; height: 2.2rem; }
+    .chart-sat text, .chart-num, .chart-title { display: none; }
+    .reasons { grid-template-columns: minmax(0, 1fr); gap: var(--s-7); }
+    .reason-tags { display: flex; }
     .levels-foot, .experience-close { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
   }
   @media (max-width: 600px) {

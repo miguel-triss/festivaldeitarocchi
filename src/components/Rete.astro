@@ -5,6 +5,7 @@
 // roadmap is the moon waxing from crescent to full, one phase per stage.
 import Star from "./art/Star.astro";
 import Moon from "./art/Moon.astro";
+import Flora from "./art/Flora.astro";
 
 const institutions = ["musei", "fondazioni", "università", "accademie", "biblioteche", "archivi", "editori", "centri di ricerca"];
 const topics = ["ricerca", "prestiti", "attività scientifiche", "incontri", "pubblicazioni", "educational", "produzione artistica", "progetti speciali"];
@@ -52,6 +53,7 @@ const ring = institutions.map((t, i) => {
       </div>
 
       <figure class="astrolabe" data-astrolabe>
+        <Flora seed={9} flip stems={[["cosmo", 90, 220, -8], ["lavanda", 160, 190, 6, 8], ["cosmo", 220, 170, 12, 10]]} style="right:-2rem;bottom:-1rem;width:clamp(11.9rem, 19.2vw, 18.7rem)" />
         <svg viewBox="-60 -20 620 540" role="img" aria-label="La Fabbrica del Vapore al centro e intorno i tipi di istituzioni con cui il Festival costruisce relazioni">
           <g class="astro-turn">
             <circle cx="250" cy="250" r={R2 + 34} class="astro-rim" />
@@ -130,7 +132,7 @@ const ring = institutions.map((t, i) => {
   .dots li:not(:last-child)::after { content: "·"; margin-inline: 0.45em; color: var(--c-gold); }
   .rete-small { margin-top: var(--s-2); font-size: var(--step--1); color: var(--c-pink); }
 
-  .astrolabe { margin: 0; }
+  .astrolabe { margin: 0; position: relative; }
   .astrolabe svg { width: 100%; max-width: 36rem; margin-inline: auto; overflow: visible; }
   .astro-turn { transform-origin: 250px 250px; transform-box: view-box; }
   .astro-rim { fill: none; stroke: var(--c-gold); stroke-width: 1.2; }

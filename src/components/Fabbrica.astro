@@ -7,7 +7,10 @@ import { Picture } from "astro:assets";
 import Star from "./art/Star.astro";
 import Tape from "./art/Tape.astro";
 import TornEdge from "./art/TornEdge.astro";
+import Flora from "./art/Flora.astro";
 import fabbrica from "../assets/photos/fabbrica-del-vapore.avif";
+import interno from "../assets/photos/fabbrica-interno.jpg";
+import cortile from "../assets/photos/fabbrica-cortile-sera.jpg";
 
 const spaces = ["incontri", "attività", "performance", "bookshop", "aree partner"];
 const reasons = [
@@ -55,6 +58,20 @@ const outer = spaces.map((s, i) => {
       />
     </div>
     <p class="fabbrica-caption" aria-hidden="true"><Star size=".7em" color="var(--c-gold)" /> Milano</p>
+  </div>
+
+  <div class="wrap prints" aria-label="La Fabbrica del Vapore in due fotografie">
+    <figure class="print print--a" data-speed="0.35">
+      <Tape rotate={-9} width="5rem" style="top:-1rem;left:12%" />
+      <Picture src={interno} alt="L'interno della Fabbrica del Vapore: una grande sala con capriate in legno, vetrate e arcate in mattoni" widths={[520, 900, 1300]} sizes="(max-width: 900px) 88vw, 44vw" formats={["avif", "webp"]} fallbackFormat="webp" quality={62} loading="lazy" decoding="async" />
+      <figcaption>Fabbrica del Vapore, interno</figcaption>
+    </figure>
+    <figure class="print print--b" data-speed="-0.25">
+      <Tape rotate={7} width="4.5rem" style="top:-0.9rem;right:14%" />
+      <Picture src={cortile} alt="Il cortile della Fabbrica del Vapore al tramonto, con file di luci sospese, ombrelloni e sedie" widths={[520, 1000]} sizes="(max-width: 900px) 88vw, 40vw" formats={["avif", "webp"]} fallbackFormat="webp" quality={62} loading="lazy" decoding="async" />
+      <figcaption>Il cortile, di sera</figcaption>
+      <Flora seed={5} flip stems={[["felce", 80, 190, 10, 6], ["cosmo", 150, 230, -12]]} style="right:-2.5rem;bottom:-2rem;width:clamp(11.9rem, 17.6vw, 17.0rem)" />
+    </figure>
   </div>
 
   <div class="wrap fabbrica-plan">
@@ -160,6 +177,41 @@ const outer = spaces.map((s, i) => {
     rotate: 2deg;
   }
 
+  /* prints: two photographs on paper, taped to the wall */
+  .prints {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+    margin-block: var(--s-6) var(--section-dense);
+  }
+  .print {
+    position: relative;
+    margin: 0;
+    padding: 0.8rem 0.8rem 0;
+    background:
+      url("/textures/paper-grain.webp") 0 0 / 200px,
+      var(--c-paper);
+    background-blend-mode: soft-light;
+    box-shadow: 0 22px 40px -18px rgb(24 27 46 / 0.4);
+  }
+  .print :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 11;
+    object-fit: cover;
+    filter: sepia(0.26) saturate(0.9) contrast(1.03);
+  }
+  .print figcaption {
+    padding: 0.7em 0.2em 0.9em;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--fs-small);
+    color: var(--c-night);
+  }
+  .print--a { grid-column: 1 / span 7; rotate: -2deg; z-index: 1; }
+  .print--b { grid-column: 7 / -1; margin-top: clamp(6rem, 12vw, 11rem); rotate: 2.4deg; z-index: 2; }
+
   .fabbrica-plan {
     display: grid;
     grid-template-columns: 5fr 6fr;
@@ -214,6 +266,9 @@ const outer = spaces.map((s, i) => {
   @media (max-width: 900px) {
     .fabbrica-frame { height: 62svh; border-radius: 50vw 50vw 0.5rem 0.5rem / 44vw 44vw 0.5rem 0.5rem; }
     .fabbrica-plan { grid-template-columns: 1fr; }
+    .prints { grid-template-columns: minmax(0, 1fr); gap: var(--s-7); }
+    .print--a, .print--b { grid-column: 1 / -1; margin-top: 0; }
+    .print--b { width: 88%; justify-self: end; }
     .reasons { grid-template-columns: 1fr; gap: var(--s-6); }
     .opencity { rotate: 0deg; }
   }

@@ -5,6 +5,7 @@
 // without JS (posts to FormSubmit); with JS it sends in place and thanks you.
 import Arch from "./art/Arch.astro";
 import Star from "./art/Star.astro";
+import Flora from "./art/Flora.astro";
 import { CONTACT_EMAIL, FORM_ENDPOINT, mailto } from "../data/sections";
 
 const kinds = [
@@ -44,6 +45,8 @@ const kinds = [
           <span class="night-star"><Star size="100%" color="var(--c-cream)" /></span>
         </div>
         <Arch variant="portal" color="var(--c-gold)" lights={19} />
+        <Flora seed={11} stems={[["cosmo", 40, 200, -10, -10], ["felce", 100, 170, 6], ["lavanda", 150, 150, 4, 8]]} style="left:-4.5rem;bottom:-0.3rem;width:14.4rem" />
+        <Flora seed={12} flip stems={[["ramo", 60, 170, 16, 8], ["cosmo", 120, 150, -8]]} style="right:-4.5rem;bottom:-0.3rem;width:13.6rem" />
       </div>
     </div>
 
@@ -163,7 +166,7 @@ const kinds = [
     min-height: 3rem;
     padding: 0.5em;
     border: 1px solid var(--c-night-deep);
-    border-radius: 999px 999px 0.3rem 0.3rem;
+    border-radius: var(--radius-ui);
     font-family: var(--font-display); font-size: var(--step-1);
     transition: background-color var(--dur-fast), color var(--dur-fast);
   }

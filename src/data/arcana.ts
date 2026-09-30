@@ -14,6 +14,7 @@ export interface Arcanum {
   numeral: string;
   name: string;
   art?: string;
+  aspect: string; // one aspect of the Festival, from the source text
 }
 
 const G = "var(--c-gold)";
@@ -121,26 +122,26 @@ const matto = `
 `;
 
 export const arcana: Arcanum[] = [
-  { n: 0, numeral: "0", name: "Il Matto", art: matto },
-  { n: 1, numeral: "I", name: "Il Bagatto", art: art[1] },
-  { n: 2, numeral: "II", name: "La Papessa", art: art[2] },
-  { n: 3, numeral: "III", name: "L'Imperatrice", art: art[3] },
-  { n: 4, numeral: "IV", name: "L'Imperatore", art: art[4] },
-  { n: 5, numeral: "V", name: "Il Papa", art: art[5] },
-  { n: 6, numeral: "VI", name: "Gli Amanti", art: art[6] },
-  { n: 7, numeral: "VII", name: "Il Carro", art: art[7] },
-  { n: 8, numeral: "VIII", name: "La Giustizia", art: art[8] },
-  { n: 9, numeral: "IX", name: "L'Eremita", art: art[9] },
-  { n: 10, numeral: "X", name: "La Ruota", art: art[10] },
-  { n: 11, numeral: "XI", name: "La Forza", art: art[11] },
-  { n: 12, numeral: "XII", name: "L'Appeso", art: art[12] },
-  { n: 13, numeral: "XIII", name: "La Morte", art: art[13] },
-  { n: 14, numeral: "XIV", name: "La Temperanza", art: art[14] },
-  { n: 15, numeral: "XV", name: "Il Diavolo", art: art[15] },
-  { n: 16, numeral: "XVI", name: "La Torre", art: art[16] },
-  { n: 17, numeral: "XVII", name: "La Stella", art: stella },
-  { n: 18, numeral: "XVIII", name: "La Luna", art: art[18] },
-  { n: 19, numeral: "XIX", name: "Il Sole", art: sole },
-  { n: 20, numeral: "XX", name: "Il Giudizio", art: art[20] },
-  { n: 21, numeral: "XXI", name: "Il Mondo", art: art[21] },
+  { n: 0, numeral: "0", name: "Il Matto", art: matto, aspect: "Ogni visitatore decide autonomamente l'ordine delle proprie tappe." },
+  { n: 1, numeral: "I", name: "Il Bagatto", art: art[1], aspect: "Opere d'arte contemporanea, installazioni, incontri, performance." },
+  { n: 2, numeral: "II", name: "La Papessa", art: art[2], aspect: "Conferenze e conversazioni, tavole rotonde, presentazioni editoriali." },
+  { n: 3, numeral: "III", name: "L'Imperatrice", art: art[3], aspect: "Ogni edizione aggiunge opere alla Collezione Permanente e materiali all'Archivio." },
+  { n: 4, numeral: "IV", name: "L'Imperatore", art: art[4], aspect: "La Fabbrica del Vapore: una sede unica e riconoscibile." },
+  { n: 5, numeral: "V", name: "Il Papa", art: art[5], aspect: "Masterclass, visite e attività guidate, progetti educational." },
+  { n: 6, numeral: "VI", name: "Gli Amanti", art: art[6], aspect: "Artisti, studiosi, curatori, istituzioni e aziende costruiscono insieme il progetto." },
+  { n: 7, numeral: "VII", name: "Il Carro", art: art[7], aspect: "Dalle prime Dimore alla configurazione completa dei ventidue Arcani." },
+  { n: 8, numeral: "VIII", name: "La Giustizia", art: art[8], aspect: "Il Premio Festival dei Tarocchi, a chi ha dato un contributo significativo alla loro cultura." },
+  { n: 9, numeral: "IX", name: "L'Eremita", art: art[9], aspect: "Ricerca, archivio, pubblicazioni: la conoscenza della storia dei Tarocchi." },
+  { n: 10, numeral: "X", name: "La Ruota", art: art[10], aspect: "Tre giorni, un Hub Principale e le Dimore degli Arcani." },
+  { n: 11, numeral: "XI", name: "La Forza", art: art[11], aspect: "Una Call for Artists chiama gli artisti a lavorare sui diversi Arcani." },
+  { n: 12, numeral: "XII", name: "L'Appeso", art: art[12], aspect: "Nuove opere e nuove interpretazioni, a partire dalla storia." },
+  { n: 13, numeral: "XIII", name: "La Morte", art: art[13], aspect: "Le interpretazioni che entreranno nella storia futura dei Tarocchi." },
+  { n: 14, numeral: "XIV", name: "La Temperanza", art: art[14], aspect: "Workshop e laboratori: le Esperienze del Festival." },
+  { n: 15, numeral: "XV", name: "Il Diavolo", art: art[15], aspect: "Performance e podcast dal vivo." },
+  { n: 16, numeral: "XVI", name: "La Torre", art: art[16], aspect: "Installazioni fatte di luce, suono, immagini, materiali, video o tecnologie digitali." },
+  { n: 17, numeral: "XVII", name: "La Stella", art: stella, aspect: "Una Dimora per ogni Arcano Maggiore." },
+  { n: 18, numeral: "XVIII", name: "La Luna", art: art[18], aspect: "La domenica sera, la Notte degli Arcani." },
+  { n: 19, numeral: "XIX", name: "Il Sole", art: sole, aspect: "L'Hub Principale: informazioni, Passaporto, bookshop, pubblicazioni." },
+  { n: 20, numeral: "XX", name: "Il Giudizio", art: art[20], aspect: "La Direzione Artistica seleziona un'opera per la Collezione Permanente." },
+  { n: 21, numeral: "XXI", name: "Il Mondo", art: art[21], aspect: "Milano Open City: musei, fondazioni, università e luoghi della città." },
 ];

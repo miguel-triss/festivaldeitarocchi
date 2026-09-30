@@ -4,6 +4,7 @@
 // drawn in ink line by line, as the hand drawing the sun in the moodboard.
 import Moon from "./art/Moon.astro";
 import Star from "./art/Star.astro";
+import Flora from "./art/Flora.astro";
 
 // a hand-drawn sun: disc, face, and rays of two lengths, as ink strokes
 const rays = Array.from({ length: 24 }, (_, i) => {
@@ -60,6 +61,7 @@ const rays = Array.from({ length: 24 }, (_, i) => {
         <path class="ink ink--face" d="M126 140q6 -6 12 0M162 140q6 -6 12 0M124 132q8 -6 16 -2M160 130q8 -4 16 2M150 142q-4 14 2 16M140 170q10 6 20 0" />
       </svg>
       <span class="ink-pot"></span>
+      <Flora seed={10} stems={[["ramo", 80, 200, 20, -10], ["felce", 150, 170, -8]]} style="left:0;bottom:-1rem;width:clamp(11.9rem, 17.6vw, 17.0rem)" />
     </figure>
   </div>
 </section>

@@ -83,6 +83,7 @@
   /* shape */
   --arch: 999px 999px 0 0;
   --radius: 3px;
+  --radius-ui: 10px; /* header, buttons and controls */
 }
 
 /* scenes: the day moves towards night along the page */

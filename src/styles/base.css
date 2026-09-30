@@ -156,7 +156,7 @@ p { text-wrap: pretty; max-width: var(--measure); }
   gap: 0.6em;
   min-height: 3.1rem;
   padding: 0.85em 1.7em 0.75em;
-  border-radius: 1.6em 1.6em 0.35em 0.35em;
+  border-radius: var(--radius-ui);
   background: var(--btn-bg);
   color: var(--btn-fg);
   border: 1px solid currentColor;
@@ -168,10 +168,8 @@ p { text-wrap: pretty; max-width: var(--measure); }
   text-decoration: none;
   line-height: 1;
   cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out),
-    border-radius var(--dur-base) var(--ease-out);
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
-.btn:hover { border-radius: 2.4em 2.4em 0.35em 0.35em; }
 .btn--gold { --btn-bg: var(--c-gold); --btn-fg: var(--c-night-deep); border-color: var(--c-gold); }
 .btn--gold:hover { --btn-bg: var(--c-cream); border-color: var(--c-cream); }
 .btn--line { --btn-fg: var(--c-cream); }

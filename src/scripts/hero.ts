@@ -102,6 +102,7 @@ export function initHero() {
     });
     // modest scale only: very large scaled layers stall the compositor
     tl.to(q(".hero-copy"), { y: -60, opacity: 0, duration: 0.3 }, 0)
+      .to(q(".hero-flora"), { y: 40, opacity: 0, duration: 0.3 }, 0)
       .to(crescents, { opacity: 0, x: (i) => (i ? 50 : -50), duration: 0.3 }, 0)
       .to(q(".hero-sky"), { yPercent: 10, opacity: 0.4, duration: 1 }, 0)
       .to(portal, { scale: S, ease: "power2.in", duration: 0.55 }, 0.05)

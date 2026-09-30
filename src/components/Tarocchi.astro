@@ -62,8 +62,14 @@ const values = [
       <span class="deck-name" data-deck-name>Il Matto</span>
     </div>
     <div class="deck-orbit" aria-hidden="true"></div>
+    <p class="deck-aspect" aria-hidden="true"><span class="deck-aspect-k">Nel Festival</span><span data-deck-aspect></span></p>
     <ol class="deck" role="list" aria-label="I ventidue Arcani Maggiori" tabindex="0">
-      {arcana.map((a) => <li><Card n={a.n} /></li>)}
+      {arcana.map((a) => (
+        <li>
+          <Card n={a.n} />
+          <p class="card-aspect"><span class="card-aspect-k" aria-hidden="true">{a.numeral}</span>{a.aspect}</p>
+        </li>
+      ))}
     </ol>
     <p class="deck-hint" aria-hidden="true">Scorri il mazzo <span>→</span></p>
   </div>
@@ -89,7 +95,7 @@ const values = [
 </section>
 
 <style>
-  .tarocchi { padding-block: var(--section-dense) var(--section-airy); overflow-x: clip; }
+  .tarocchi { padding-block: var(--section-dense) var(--section-airy); }
   .tarocchi-intro .statement { max-width: 17ch; }
 
   /* ribbon of the arts: a strip of rose paper that slides with the scroll */
@@ -118,13 +124,24 @@ const values = [
   .deck-head { width: min(100% - 2 * var(--gutter), var(--max)); margin-inline: auto; }
   .deck-title { font-size: var(--fs-h3); }
   .deck-sub { font-family: var(--font-display); font-style: italic; font-size: var(--step-1); color: var(--fg-soft); }
-  .deck-counter, .deck-orbit { display: none; }
+  .deck-counter, .deck-orbit, .deck-aspect { display: none; }
+  /* one aspect of the Festival under each card */
+  .card-aspect {
+    margin-top: var(--s-3);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--fs-small);
+    line-height: 1.35;
+    color: var(--fg-soft);
+    text-wrap: balance;
+  }
+  .card-aspect-k { display: block; font-style: normal; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.16em; color: var(--c-magenta); margin-bottom: 0.2em; }
   .deck {
     list-style: none;
     padding: var(--s-6) var(--gutter);
     display: grid;
-    grid-template-columns: repeat(11, 1fr);
-    gap: clamp(0.5rem, 1.2vw, 1.25rem);
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+    gap: var(--s-6) clamp(0.75rem, 1.4vw, 1.5rem);
     max-width: var(--max);
     margin-inline: auto;
   }
@@ -205,6 +222,38 @@ const values = [
     display: block;
     padding: 0;
     max-width: none;
+  }
+  .is-procession .card-aspect { display: none; }
+  .is-procession .deck-aspect {
+    display: grid;
+    justify-items: center;
+    gap: var(--s-2);
+    position: absolute;
+    left: 50%;
+    top: calc(var(--apex) + var(--card-w) * 0.98);
+    width: min(26rem, 34vw);
+    translate: -50% 0;
+    z-index: 150;
+    text-align: center;
+    pointer-events: none;
+  }
+  .deck-aspect-k {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--fs-kicker);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-magenta);
+  }
+  [data-deck-aspect] {
+    font-family: var(--font-display);
+    font-size: var(--fs-h4);
+    line-height: 1.25;
+    color: var(--c-night-deep);
+    text-wrap: balance;
+    padding: 0.4em 0.9em;
+    background: color-mix(in oklab, var(--c-cream) 88%, transparent);
+    border-radius: var(--radius-ui);
   }
   .is-procession .deck li {
     position: absolute;

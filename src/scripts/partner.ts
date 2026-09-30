@@ -14,18 +14,43 @@ function constellation() {
   const box = document.querySelector<HTMLElement>("[data-constellation]");
   if (!box) return;
   const q = gsap.utils.selector(box);
-  const stars = q(".reason-star");
-  const lines = q(".constellation-lines line");
-  const texts = q(".reason h3, .reason p");
+
+  // hovering (or focusing) a column lights its group in the sky
+  q(".reason").forEach((r) => {
+    const i = (r as HTMLElement).dataset.reason!;
+    const on = () => {
+      box.dataset.active = i;
+      q(".chart-group").forEach((g) => g.classList.toggle("is-active", (g as HTMLElement).dataset.group === i));
+    };
+    const off = () => { delete box.dataset.active; };
+    r.addEventListener("pointerenter", on);
+    r.addEventListener("pointerleave", off);
+    r.addEventListener("focusin", on);
+    r.addEventListener("focusout", off);
+  });
+
+  // drawn with the scroll: the three stars and their line, then each group
   const tl = gsap.timeline({
     defaults: { ease: "none" },
-    scrollTrigger: { trigger: box, start: "top 78%", end: "center 45%", scrub: 0.8 },
+    scrollTrigger: { trigger: box.querySelector(".chart"), start: "top 80%", end: "bottom 45%", scrub: 0.8 },
   });
-  // star, line, star, line, star: the figure is drawn in reading order
-  stars.forEach((s, i) => {
-    tl.from(s, { scale: 0, rotation: -90, opacity: 0, duration: 0.5, ease: "back.out(2)" }, i * 1.1)
-      .from(texts.slice(i * 2, i * 2 + 2), { opacity: 0, y: 12, duration: 0.5, stagger: 0.12 }, i * 1.1 + 0.2);
-    if (lines[i]) tl.fromTo(lines[i], { drawSVG: "0%" }, { drawSVG: "100%", duration: 0.6 }, i * 1.1 + 0.45);
+  tl.from(q(".chart-dust"), { opacity: 0, duration: 0.6, stagger: { each: 0.01, from: "random" } }, 0)
+    .from(q(".chart-ring"), { opacity: 0, scale: 0.8, transformOrigin: "50% 50%", duration: 0.8 }, 0);
+  q(".chart-group").forEach((g, i) => {
+    const gq = gsap.utils.selector(g);
+    const at = 0.3 + i * 1.1;
+    tl.from(gq(".chart-star"), { scale: 0, rotation: -90, transformOrigin: "50% 50%", duration: 0.45, ease: "back.out(2)" }, at)
+      .fromTo(gq(".chart-line--sat"), { drawSVG: "0%" }, { drawSVG: "100%", duration: 0.4, stagger: 0.06 }, at + 0.25)
+      .from(gq(".chart-sat circle"), { scale: 0, transformOrigin: "50% 50%", duration: 0.25, stagger: 0.06, ease: "back.out(3)" }, at + 0.45)
+      .from(gq(".chart-sat text"), { opacity: 0, duration: 0.3, stagger: 0.06 }, at + 0.55)
+      .fromTo(gq(".chart-line--rim"), { drawSVG: "0%" }, { drawSVG: "100%", duration: 0.3, stagger: 0.05 }, at + 0.7);
+    const main = q(".chart-line--main")[i];
+    if (main) tl.fromTo(main, { drawSVG: "0%" }, { drawSVG: "100%", duration: 0.5 }, at + 0.8);
+  });
+  tl.fromTo(q(".chart-line--faint"), { drawSVG: "0%" }, { drawSVG: "100%", duration: 0.6 }, 3.2);
+  gsap.from(q(".reason"), {
+    y: 24, opacity: 0, duration: 1, stagger: 0.12, ease: "expo.out",
+    scrollTrigger: { trigger: box.querySelector(".reasons"), start: "top 88%", once: true },
   });
 }
 

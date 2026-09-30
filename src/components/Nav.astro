@@ -13,6 +13,7 @@ import { sections, CONTACT_EMAIL, mailto } from "../data/sections";
     <Star size="1.1rem" color="var(--c-magenta)" />
     <span class="nav-brand-text">Festival dei Tarocchi</span>
   </a>
+  <p class="nav-where" aria-hidden="true" data-nav-where></p>
   <div class="nav-actions">
     <a class="nav-cta" href="#partecipa" data-magnetic>Richiedi il masterplan</a>
     <button class="nav-menu" type="button" aria-haspopup="dialog" aria-controls="menu" data-magnetic>
@@ -64,7 +65,7 @@ import { sections, CONTACT_EMAIL, mailto } from "../data/sections";
     padding: 0 var(--s-2) 0 var(--s-5);
     background: color-mix(in oklab, var(--c-paper) 94%, transparent);
     color: var(--c-night-deep);
-    border-radius: 999px 999px 0.5rem 0.5rem;
+    border-radius: var(--radius-ui);
     box-shadow: 0 6px 20px rgb(24 27 46 / 0.14);
     transition: translate var(--dur-base) var(--ease-out);
   }
@@ -78,12 +79,28 @@ import { sections, CONTACT_EMAIL, mailto } from "../data/sections";
     letter-spacing: 0.2em;
     text-transform: uppercase;
   }
+  .nav-where {
+    margin-right: auto;
+    margin-left: var(--s-5);
+    padding-left: var(--s-5);
+    border-left: 1px solid color-mix(in oklab, var(--c-night-deep) 22%, transparent);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--step-0);
+    color: var(--c-night);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity var(--dur-base);
+  }
+  .nav-where.is-on { opacity: 1; }
+  .nav-where :global(span) { font-style: normal; font-weight: 700; font-size: var(--fs-kicker); letter-spacing: 0.14em; color: var(--c-magenta); margin-right: 0.6em; }
+  @media (max-width: 1000px) { .nav-where { display: none; } }
   .nav-actions { display: flex; align-items: center; gap: var(--s-2); height: 100%; padding-block: var(--s-2); }
   .nav-cta, .nav-menu {
     height: 100%;
     display: inline-flex; align-items: center; gap: 0.7em;
     padding: 0 1.3em;
-    border-radius: 999px 999px 0.3rem 0.3rem;
+    border-radius: calc(var(--radius-ui) - 3px);
     font-family: var(--font-display);
     font-weight: 700;
     font-size: var(--step--1);
@@ -136,7 +153,7 @@ import { sections, CONTACT_EMAIL, mailto } from "../data/sections";
     position: absolute;
     top: var(--s-5); right: 0;
     background: none; border: 1px solid currentColor; color: inherit;
-    border-radius: 999px 999px 0.3rem 0.3rem;
+    border-radius: var(--radius-ui);
     padding: 0.7em 1.3em;
     font-family: var(--font-display); font-weight: 700;
     font-size: var(--step--1); letter-spacing: 0.16em; text-transform: uppercase;

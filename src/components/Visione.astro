@@ -6,6 +6,7 @@ import Moon from "./art/Moon.astro";
 import Star from "./art/Star.astro";
 import Tape from "./art/Tape.astro";
 import Sun from "./art/Sun.astro";
+import Flora from "./art/Flora.astro";
 
 const who = [
   ["Artisti", -6, 0.5],
@@ -25,6 +26,7 @@ const grows = [
 <section class="section visione" id="visione" data-scene="day" aria-labelledby="h-visione">
   <div class="visione-sun" aria-hidden="true" data-speed="0.6"><Sun /></div>
 
+  <Flora seed={3} stems={[["lavanda", 40, 180, -5, -10], ["cosmo", 100, 250, -10], ["felce", 150, 200, 8], ["ramo", 200, 230, 20, 10], ["cosmo", 250, 170, 12, 14]]} style="left:-1rem;bottom:-3.5rem;width:clamp(13.6rem, 24.0vw, 23.8rem)" />
   <div class="wrap visione-grid">
     <header class="sec-head visione-head">
       <span class="sec-num" aria-hidden="true">01</span>
@@ -69,7 +71,6 @@ const grows = [
 <style>
   .visione {
     padding-block: var(--section-airy) var(--section-dense);
-    overflow: clip;
   }
   .visione-sun {
     position: absolute;
