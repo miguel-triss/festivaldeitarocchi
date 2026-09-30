@@ -30,12 +30,8 @@ const gap = 12 + a.numeral.length * 6.5; // the rules either side of the numeral
         <stop offset=".55" stop-color="var(--c-night-deep)" stop-opacity="0" />
         <stop offset="1" stop-color="var(--c-night-deep)" stop-opacity=".55" />
       </radialGradient>
-      <pattern id={`${uid}-grain`} patternUnits="userSpaceOnUse" width="96" height="96">
-        <image href="/textures/paper-grain.webp" width="96" height="96" />
-      </pattern>
     </defs>
     <rect width="220" height="380" rx="7" fill="var(--c-paper)" />
-    <rect width="220" height="380" rx="7" fill={`url(#${uid}-grain)`} class="card-grain card-grain--paper" />
     <rect x="8" y="8" width="204" height="364" rx="3" fill="var(--c-night-deep)" />
     <rect x="14" y="14" width="192" height="352" rx="2" fill="none" stroke={`url(#${uid}-foil)`} stroke-width="1" />
     <text x="110" y="40" text-anchor="middle" class="card-num">{a.numeral}</text>
@@ -52,7 +48,6 @@ const gap = 12 + a.numeral.length * 6.5; // the rules either side of the numeral
         </g>
       )}
       <rect x="40" y="70" width="140" height="250" fill={`url(#${uid}-vig)`} />
-      <rect x="40" y="70" width="140" height="250" fill={`url(#${uid}-grain)`} class="card-grain" />
     </g>
     <path d="M40 320V140A70 70 0 0 1 180 140V320" fill="none" stroke={`url(#${uid}-foil)`} stroke-width="1.6" />
     <path d="M36 320V140A74 74 0 0 1 184 140V320" fill="none" stroke="var(--c-gold)" stroke-width=".4" opacity=".6" />
@@ -70,9 +65,19 @@ const gap = 12 + a.numeral.length * 6.5; // the rules either side of the numeral
   }
   .card { position: relative; overflow: hidden; border-radius: 7px; }
   .card svg { width: 100%; height: 100%; }
-  /* painted texture: the moodboard's paper grain pressed into the image */
-  .card-grain { mix-blend-mode: soft-light; opacity: 0.85; }
-  .card-grain--paper { opacity: 0.6; }
+  /* painted texture: the moodboard's paper grain pressed into the card,
+     one cheap layer per card instead of an image inside the SVG */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: 7px;
+    background: url("/textures/paper-grain.webp") 0 0 / 110px;
+    mix-blend-mode: overlay;
+    opacity: 0.55;
+    pointer-events: none;
+  }
   /* a sheen of light crossing the card under the pointer */
   .card::after {
     content: "";

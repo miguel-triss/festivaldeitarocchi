@@ -9,7 +9,16 @@ export async function initReveals() {
 
   // section titles: the capitals rise letter by letter, the number slides in,
   // the rule with its star is drawn from the left
-  document.querySelectorAll<HTMLElement>(".sec-head").forEach((head) => {
+  // split lazily: each title is cut into letters only when it comes near the
+  // screen, so the page does not pay for all of them at load
+  const soon = (el: Element, fn: () => void) => {
+    const io = new IntersectionObserver((es) => {
+      if (es.some((e) => e.isIntersecting)) { io.disconnect(); fn(); }
+    }, { rootMargin: "0px 0px 60% 0px" });
+    io.observe(el);
+  };
+
+  document.querySelectorAll<HTMLElement>(".sec-head").forEach((head) => soon(head, () => {
     const title = head.querySelector<HTMLElement>(".sec-title");
     const num = head.querySelector<HTMLElement>(".sec-num");
     if (!title) return;
@@ -25,9 +34,9 @@ export async function initReveals() {
         return tl;
       },
     });
-  });
+  }));
 
-  document.querySelectorAll<HTMLElement>("[data-split]").forEach((el) => {
+  document.querySelectorAll<HTMLElement>("[data-split]").forEach((el) => soon(el, () => {
     SplitText.create(el, {
       type: "lines",
       mask: "lines",
@@ -42,7 +51,7 @@ export async function initReveals() {
           scrollTrigger: { trigger: el, start: "top 84%", once: true },
         }),
     });
-  });
+  }));
 
   // plants grow in from the ground, stem after stem (the hero's come with the rite)
   gsap.utils.toArray<HTMLElement>("[data-flora]").forEach((fl) => {

@@ -39,9 +39,17 @@ const W = 300, H = 320;
   @media (max-width: 700px) { .flora { max-width: 44vw; } }
   .flora svg { width: 100%; height: auto; overflow: visible; max-width: none; }
   .flora-stem { transform-box: fill-box; transform-origin: 50% 100%; }
-  :global(.motion) .flora-stem { animation: flora-sway var(--d) ease-in-out var(--del) infinite; }
+  :global(.motion) .flora.is-live .flora-stem { animation: flora-sway var(--d) ease-in-out var(--del) infinite; }
   @keyframes flora-sway {
     0%, 100% { rotate: -1.8deg; }
     50% { rotate: 1.8deg; }
   }
 </style>
+
+<script>
+  // sway only while visible: no animation work for plants off screen
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) e.target.classList.toggle("is-live", e.isIntersecting);
+  }, { rootMargin: "100px" });
+  document.querySelectorAll("[data-flora]").forEach((el) => io.observe(el));
+</script>
