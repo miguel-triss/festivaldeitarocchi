@@ -10,6 +10,9 @@ import Star from "./art/Star.astro";
 import Moon from "./art/Moon.astro";
 import Sun from "./art/Sun.astro";
 import TornEdge from "./art/TornEdge.astro";
+import Print from "./art/Print.astro";
+// trial image cropped from design/moodboard.jpg: replace with a real photo
+import stendardiTramonto from "../assets/photos/moodboard-stendardi-tramonto.png";
 import Flora from "./art/Flora.astro";
 import { mailto } from "../data/sections";
 
@@ -197,8 +200,13 @@ const sky: [number, number, number][] = [[4, 10, 0.6], [22, 40, 0.4], [34, 8, 0.
   <!-- 3 · Partner Experience: banners on a string -->
   <div class="experience">
     <div class="wrap">
-      <h3 class="experience-title" data-split>Partner Experience: <em>alcuni formati possibili</em></h3>
-      <p class="experience-sub">Le Partner Experience vengono progettate caso per caso. Possono comprendere:</p>
+      <div class="experience-head">
+        <div>
+          <h3 class="experience-title" data-split>Partner Experience: <em>alcuni formati possibili</em></h3>
+          <p class="experience-sub">Le Partner Experience vengono progettate caso per caso. Possono comprendere:</p>
+        </div>
+        <Print src={stendardiTramonto} alt="Stendardi con soli e lune al tramonto sopra un prato con persone sedute" rotate={-3} speed={0.35} class="experience-print" />
+      </div>
     </div>
 
     <div class="bunting" data-bunting>
@@ -415,6 +423,9 @@ const sky: [number, number, number][] = [[4, 10, 0.6], [22, 40, 0.4], [34, 8, 0.
 
   /* 3 · Partner Experience */
   .experience { padding-block: var(--section-dense) var(--section-airy); }
+  .experience-head { display: grid; grid-template-columns: 1fr auto; gap: var(--s-7); align-items: end; }
+  .experience-head :global(.experience-print) { width: clamp(15rem, 24vw, 22rem); }
+  @media (max-width: 900px) { .experience-head { grid-template-columns: minmax(0, 1fr); } .experience-head :global(.experience-print) { width: 80%; justify-self: end; } }
   .experience-title { font-size: var(--fs-h3); line-height: 1.05; max-width: 22ch; }
   .experience-title :global(em) { color: var(--c-gold); }
   .experience-sub { margin-top: var(--s-4); color: var(--c-pink); }

@@ -4,6 +4,9 @@
 // lights up lamp by lamp as you scroll, the moon rises over it, and the
 // Dimore glow at its feet.
 import Star from "./art/Star.astro";
+import Print from "./art/Print.astro";
+// trial image cropped from design/moodboard.jpg: replace with a real photo
+import portaleNotte from "../assets/photos/moodboard-portale-notte.png";
 
 const N = 31;
 const lamps = Array.from({ length: N }, (_, i) => {
@@ -74,6 +77,7 @@ const sky: [number, number, number][] = [[6, 12, 0.7], [18, 34, 0.45], [30, 8, 0
   </figure>
 
   <div class="wrap notte-text">
+    <Print src={portaleNotte} alt="Un portale di luci ad arco nella notte, con lanterne a terra e persone che lo attraversano" rotate={-2.5} speed={0.3} class="notte-print" />
     <p class="lead" data-rise>
       Interventi performativi nelle diverse Dimore e la chiusura finale nell'Hub.
     </p>
@@ -102,7 +106,8 @@ const sky: [number, number, number][] = [[6, 12, 0.7], [18, 34, 0.45], [30, 8, 0
   .lamp:nth-child(3n) .lamp-core { animation-delay: -1.3s; }
   .lamp:nth-child(3n + 1) .lamp-core { animation-delay: -2.6s; }
   @keyframes lamp { 50% { opacity: 0.75; } }
-  .notte-text { margin-top: var(--s-6); text-align: center; }
+  .notte-text { margin-top: var(--s-6); text-align: center; display: grid; justify-items: center; gap: var(--s-7); }
+  .notte-text :global(.notte-print) { width: clamp(14rem, 24vw, 21rem); order: 2; }
   .notte-text .lead { margin-inline: auto; max-width: 30rem; font-family: var(--font-display); font-size: var(--fs-h4); }
 
   @media (max-width: 900px) {

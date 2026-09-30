@@ -31,7 +31,7 @@ export function initHero() {
   const intro = gsap.timeline({ defaults: { ease: "expo.out" }, onComplete: finish });
   intro
     .fromTo(q(".arch-line"), { drawSVG: "50% 50%" }, { drawSVG: "0% 100%", duration: 1.4, ease: "power2.inOut", stagger: 0.12 }, 0)
-    .from(q(".arch-light"), { scale: 0, opacity: 0, transformOrigin: "50% 50%", duration: 0.5, stagger: { each: 0.035, from: "center" } }, 0.55)
+    .from(q(".arch-light-g"), { scale: 0, opacity: 0, transformOrigin: "50% 50%", duration: 0.5, stagger: { each: 0.035, from: "center" } }, 0.55)
     .from(q(".arch-eye, .arch-pupil"), { opacity: 0, scale: 0.4, transformOrigin: "50% 50%", duration: 0.9 }, 0.5)
     .from(q(".hero-star"), { opacity: 0, scale: 0.2, duration: 0.9, stagger: { each: 0.04, from: "random" } }, 0.25)
     .from(win, { opacity: 0, duration: 1.1, ease: "power1.inOut" }, 0.95)

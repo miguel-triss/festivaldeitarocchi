@@ -25,7 +25,13 @@ const dots = Array.from({ length: lights }, (_, i) => {
   <svg class:list={["arch-portal", cls]} viewBox="0 0 200 260" style={`--arch-c:${color};${style}`} aria-hidden="true" focusable="false">
     <path class="arch-line arch-line--outer" d={outer} />
     <path class="arch-line arch-line--inner" d={inner} />
-    {dots.map((d) => <circle class="arch-light" cx={d.x.toFixed(1)} cy={d.y.toFixed(1)} r="2.2" />)}
+    {dots.map((d) => (
+      <g class="arch-light-g">
+        <circle class="arch-halo arch-halo--far" cx={d.x.toFixed(1)} cy={d.y.toFixed(1)} r="8" />
+        <circle class="arch-halo" cx={d.x.toFixed(1)} cy={d.y.toFixed(1)} r="4.6" />
+        <circle class="arch-light" cx={d.x.toFixed(1)} cy={d.y.toFixed(1)} r="2.2" />
+      </g>
+    ))}
     <path class="arch-eye" d="M84 36Q100 24 116 36Q100 48 84 36Z" />
     <circle class="arch-pupil" cx="100" cy="36" r="4" />
   </svg>
@@ -56,7 +62,9 @@ const dots = Array.from({ length: lights }, (_, i) => {
   .arch-portal { width: 100%; height: auto; overflow: visible; }
   .arch-line { fill: none; stroke: var(--arch-c); stroke-width: 1.4; }
   .arch-line--inner { stroke-width: 0.8; opacity: 0.7; }
-  .arch-light { fill: var(--arch-c); }
+  .arch-light { fill: color-mix(in oklab, var(--arch-c) 60%, var(--c-cream)); }
+  .arch-halo { fill: var(--arch-c); opacity: 0.28; }
+  .arch-halo--far { opacity: 0.09; }
   .arch-eye { fill: none; stroke: var(--arch-c); stroke-width: 1.2; }
   .arch-pupil { fill: var(--arch-c); }
 </style>

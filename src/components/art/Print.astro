@@ -1,0 +1,58 @@
+---
+// A photograph printed on paper and taped to the wall, as in the moodboard
+// collage. Warm analog grade, a strip of tape, an optional caption, its own
+// scroll depth (data-speed). Place it with `style`.
+import { Picture } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Tape from "./Tape.astro";
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  caption?: string;
+  rotate?: number;
+  speed?: number;
+  widths?: number[];
+  sizes?: string;
+  class?: string;
+  style?: string;
+}
+const {
+  src, alt, caption, rotate = -2, speed, widths = [360, 640], sizes = "(max-width: 900px) 70vw, 24vw",
+  class: cls = "", style = "",
+} = Astro.props;
+---
+
+<figure class:list={["print", cls]} style={`--rot:${rotate}deg;${style}`} data-speed={speed}>
+  <Tape rotate={rotate * -3} width="4.2rem" style="top:-0.9rem;left:50%;margin-left:-2.1rem" />
+  <Picture src={src} alt={alt} widths={widths.filter((w) => w <= src.width)} sizes={sizes} formats={["avif", "webp"]} fallbackFormat="webp" quality={70} loading="lazy" decoding="async" />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .print {
+    position: relative;
+    margin: 0;
+    padding: 0.6rem 0.6rem 0;
+    background:
+      url("/textures/paper-grain.webp") 0 0 / 200px,
+      var(--c-paper);
+    background-blend-mode: soft-light;
+    rotate: var(--rot);
+    box-shadow: 0 20px 36px -16px rgb(24 27 46 / 0.45);
+  }
+  .print :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: sepia(0.18) saturate(0.95) contrast(1.02);
+  }
+  .print:not(:has(figcaption)) { padding-bottom: 0.6rem; }
+  .print figcaption {
+    padding: 0.6em 0.2em 0.8em;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--fs-small);
+    color: var(--c-night);
+  }
+</style>

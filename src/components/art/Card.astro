@@ -17,9 +17,27 @@ const gap = 12 + a.numeral.length * 6.5; // the rules either side of the numeral
 
 <figure class:list={["card", cls]} style={style} data-arcanum={a.n}>
   <svg viewBox="0 0 220 380" role="img" aria-label={label} focusable="false">
+    <defs>
+      <!-- gilded rules: gold that catches a little light -->
+      <linearGradient id={`${uid}-foil`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="var(--c-gold)" />
+        <stop offset=".45" stop-color="color-mix(in oklab, var(--c-gold) 55%, var(--c-cream))" />
+        <stop offset=".55" stop-color="var(--c-gold)" />
+        <stop offset="1" stop-color="color-mix(in oklab, var(--c-gold) 70%, var(--c-terra))" />
+      </linearGradient>
+      <!-- the painted window: darker towards the edges of the arch -->
+      <radialGradient id={`${uid}-vig`} cx=".5" cy=".42" r=".62">
+        <stop offset=".55" stop-color="var(--c-night-deep)" stop-opacity="0" />
+        <stop offset="1" stop-color="var(--c-night-deep)" stop-opacity=".55" />
+      </radialGradient>
+      <pattern id={`${uid}-grain`} patternUnits="userSpaceOnUse" width="96" height="96">
+        <image href="/textures/paper-grain.webp" width="96" height="96" />
+      </pattern>
+    </defs>
     <rect width="220" height="380" rx="7" fill="var(--c-paper)" />
+    <rect width="220" height="380" rx="7" fill={`url(#${uid}-grain)`} class="card-grain card-grain--paper" />
     <rect x="8" y="8" width="204" height="364" rx="3" fill="var(--c-night-deep)" />
-    <rect x="14" y="14" width="192" height="352" rx="2" fill="none" stroke="var(--c-gold)" stroke-width=".8" />
+    <rect x="14" y="14" width="192" height="352" rx="2" fill="none" stroke={`url(#${uid}-foil)`} stroke-width="1" />
     <text x="110" y="40" text-anchor="middle" class="card-num">{a.numeral}</text>
     <path d={`M${110 - gap} 34H${94 - gap}M${110 + gap} 34H${126 + gap}`} stroke="var(--c-gold)" stroke-width=".8" />
     <clipPath id={uid}><path d="M40 320V140A70 70 0 0 1 180 140V320Z" /></clipPath>
@@ -33,8 +51,11 @@ const gap = 12 + a.numeral.length * 6.5; // the rules either side of the numeral
           <text x="110" y="212" text-anchor="middle" class="card-todo">da disegnare</text>
         </g>
       )}
+      <rect x="40" y="70" width="140" height="250" fill={`url(#${uid}-vig)`} />
+      <rect x="40" y="70" width="140" height="250" fill={`url(#${uid}-grain)`} class="card-grain" />
     </g>
-    <path d="M40 320V140A70 70 0 0 1 180 140V320" fill="none" stroke="var(--c-gold)" stroke-width="1.2" />
+    <path d="M40 320V140A70 70 0 0 1 180 140V320" fill="none" stroke={`url(#${uid}-foil)`} stroke-width="1.6" />
+    <path d="M36 320V140A74 74 0 0 1 184 140V320" fill="none" stroke="var(--c-gold)" stroke-width=".4" opacity=".6" />
     <rect x="22" y="330" width="176" height="32" rx="1.5" fill="var(--c-paper)" />
     <text x="110" y="352" text-anchor="middle" class="card-name">{a.name.toUpperCase()}</text>
   </svg>
@@ -47,7 +68,27 @@ const gap = 12 + a.numeral.length * 6.5; // the rules either side of the numeral
     aspect-ratio: 220 / 380;
     filter: drop-shadow(0 10px 18px rgb(24 27 46 / 0.28));
   }
+  .card { position: relative; overflow: hidden; border-radius: 7px; }
   .card svg { width: 100%; height: 100%; }
+  /* painted texture: the moodboard's paper grain pressed into the image */
+  .card-grain { mix-blend-mode: soft-light; opacity: 0.85; }
+  .card-grain--paper { opacity: 0.6; }
+  /* a sheen of light crossing the card under the pointer */
+  .card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 7px;
+    background: linear-gradient(105deg, transparent 35%, color-mix(in oklab, var(--c-cream) 55%, transparent) 50%, transparent 65%);
+    mix-blend-mode: soft-light;
+    translate: -120% 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: translate 0s, opacity 0.3s;
+  }
+  @media (hover: hover) {
+    .card:hover::after { translate: 120% 0; opacity: 1; transition: translate 1.1s var(--ease-out), opacity 0.2s; }
+  }
   .card-num {
     fill: var(--c-cream);
     font-family: var(--font-display);

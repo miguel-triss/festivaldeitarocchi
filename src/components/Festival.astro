@@ -9,6 +9,9 @@ import Star from "./art/Star.astro";
 import Moon from "./art/Moon.astro";
 import Sun from "./art/Sun.astro";
 import Tape from "./art/Tape.astro";
+import Print from "./art/Print.astro";
+// trial image cropped from design/moodboard.jpg: replace with a real photo
+import stendardiMuro from "../assets/photos/moodboard-stendardi-muro.png";
 import Flora from "./art/Flora.astro";
 
 const parts = [
@@ -40,6 +43,7 @@ const stamps = [
       <p class="statement festival-statement" data-split>
         Tre giorni alla Fabbrica del Vapore, intorno a un <em>Hub Principale</em> e alle <em>Dimore degli Arcani.</em>
       </p>
+      <Print src={stendardiMuro} alt="Stendardi dipinti con soli e lune appesi a un muro di pietra" rotate={3} speed={0.3} class="festival-print" />
       <div class="festival-days" aria-hidden="true" data-rise>
         <span class="day"><span class="day-sun"><Sun /></span></span>
         <span class="day"><span class="day-sun"><Sun /></span></span>
@@ -136,12 +140,13 @@ const stamps = [
   .festival { padding-block: var(--section-dense); }
   .festival-top {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto auto;
     align-items: end;
     gap: var(--s-7);
     margin-bottom: var(--section-dense);
   }
   .festival-statement { max-width: 22ch; }
+  .festival-top :global(.festival-print) { width: clamp(13rem, 20vw, 19rem); align-self: start; margin-top: calc(-1 * var(--s-6)); }
   .festival-days { display: flex; gap: var(--s-4); align-items: center; padding-bottom: var(--s-3); }
   .day {
     display: grid;
@@ -333,6 +338,7 @@ const stamps = [
 
   @media (max-width: 900px) {
     .festival-top { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
+    .festival-top :global(.festival-print) { width: 70%; margin: var(--s-4) 0 0 auto; }
     .festival-way { grid-template-columns: minmax(0, 1fr); }
     .signpost { display: none; }
     .part { min-height: 0; }
